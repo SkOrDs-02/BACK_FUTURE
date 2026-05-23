@@ -1,0 +1,34 @@
+{
+  "name": "BACK_FUTURE — Що ти пропустив після випускного",
+  "short_name": "BACK_FUTURE",
+  "description": "Введи рік випуску й дізнайся, що змінилось у науці, історії й світі від тих часів — українською мовою.",
+  "lang": "uk-UA",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#1e3a8a",
+  "background_color": "#fdf8f0",
+  "categories": ["education", "reference"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Квіз: вгадай рік",
+      "short_name": "Квіз",
+      "url": "/quiz/",
+      "description": "Перевір себе: вгадай рік відкриття"
+    },
+    {
+      "name": "Порівняти роки",
+      "short_name": "Порівняти",
+      "url": "/compare/",
+      "description": "Порівняй два роки випуску поруч"
+    }
+  ]
+}

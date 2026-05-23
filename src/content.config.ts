@@ -6,6 +6,7 @@ import { z } from "astro/zod";
 // lives at the same import path as the field definition. The implementation
 // (with the ISO-3166-1 code table) is in `src/lib/regions.ts`.
 export { parseRegion, type ParsedRegion } from "./lib/regions";
+import { isKnownRegionCode } from "./lib/regions";
 
 const SUBJECT = z.enum([
   "astronomy",
@@ -29,7 +30,16 @@ const ERA = z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.l
 const REGION = z.union([
   z.literal("world"),
   z.literal("ukraine"),
-  z.string().regex(/^country:[a-z]{2}$/, "expected 'country:<iso2 lowercase>' (e.g. country:cz)"),
+  z
+    .string()
+    .regex(/^country:[a-z]{2}$/, "expected 'country:<iso2 lowercase>' (e.g. country:cz)")
+    .refine(
+      (v) => isKnownRegionCode(v.slice(8)),
+      (v) =>
+        ({
+          message: `Unknown country code "${v.slice(8).toUpperCase()}". Add it to src/lib/regions.ts first.`,
+        }) as const,
+    ),
 ]);
 const IMPACT = z.enum(["low", "medium", "high"]);
 const SOURCE_URL = z.string().refine((value) => URL.canParse(value), {
@@ -44,6 +54,8 @@ const facts = defineCollection({
     short: z.string().min(20).max(280),
     before: z.string().min(10).max(280).optional(),
     after: z.string().min(10).max(280).optional(),
+    // +1 allows editors to pre-publish facts for events confirmed but not yet past
+    // (e.g. a scheduled rocket launch or treaty ratification in December).
     yearOfEvent: z
       .number()
       .int()

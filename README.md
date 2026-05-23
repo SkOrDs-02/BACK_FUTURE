@@ -112,4 +112,4 @@ PUBLIC_SENTRY_DSN=https://xxxxxxxxxxxxxxxx@oXXXXXX.ingest.sentry.io/XXXXXXXX
 
 ## Ліцензія
 
-Код — MIT (див. `LICENSE`). Контент — CC BY-SA 4.0 (буде додано окремо).
+Код — MIT (див. [`LICENSE`](LICENSE)). Контент (`content/`) — CC BY-SA 4.0 (див. [`CONTENT_LICENSE`](CONTENT_LICENSE)).
