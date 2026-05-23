@@ -35,10 +35,7 @@ const REGION = z.union([
     .regex(/^country:[a-z]{2}$/, "expected 'country:<iso2 lowercase>' (e.g. country:cz)")
     .refine(
       (v) => isKnownRegionCode(v.slice(8)),
-      (v) =>
-        ({
-          message: `Unknown country code "${v.slice(8).toUpperCase()}". Add it to src/lib/regions.ts first.`,
-        }) as const,
+      "Unknown ISO-3166-1 alpha-2 country code. Add it to src/lib/regions.ts first.",
     ),
 ]);
 const IMPACT = z.enum(["low", "medium", "high"]);
