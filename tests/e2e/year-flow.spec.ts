@@ -57,6 +57,10 @@ test("supports keyboard navigation and core landmarks", async ({ page }) => {
   await page.keyboard.press("Tab");
   await expect(mainNav.getByRole("link", { name: "Хронологія" })).toBeFocused();
   await page.keyboard.press("Tab");
+  await expect(mainNav.getByRole("link", { name: "Усі факти" })).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(mainNav.getByRole("link", { name: "Порівняти" })).toBeFocused();
+  await page.keyboard.press("Tab");
   await expect(mainNav.getByRole("link", { name: "Квіз" })).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(mainNav.getByRole("link", { name: "Методологія" })).toBeFocused();
