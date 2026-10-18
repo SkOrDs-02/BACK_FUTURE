@@ -12,7 +12,7 @@ sources:
   - title: "Managed Healthcare Executive: FDA approves lenacapavir as the first twice-yearly PrEP for HIV prevention"
     url: "https://www.managedhealthcareexecutive.com/view/fda-approves-lenacapavir-as-the-first-twice-yearly-prep-for-hiv-prevention"
   - title: "Gilead: Yeztugo is now the first and only FDA-approved HIV prevention option offering 6 months of protection"
-    url: "https://www.businesswire.com/news/home/20250520465880/en"
+    url: "https://www.gilead.com/news/news-details/2025/yeztugo-lenacapavir-is-now-the-first-and-only-fda-approved-hiv-prevention-option-offering-6-months-of-protection"
 tags: ["ВІЛ", "ПрЕП", "ленакапавір", "FDA", "профілактика"]
 draft: false
 ---

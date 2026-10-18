@@ -10,7 +10,7 @@ region: "ukraine"
 impact: "medium"
 sources:
   - title: "МОЗ України: В Україні починає діяти оновлений Національний календар профілактичних щеплень"
-    url: "https://moz.gov.ua/uk/v-ukrayini-pochinaye-diyati-onovlenij-nacionalnij-kalendar-profilaktichnih-sheplen"
+    url: "https://www.kmu.gov.ua/news/v-ukraini-pochynaie-diiaty-onovlenyi-natsionalnyi-kalendar-profilaktychnykh-shcheplen"
   - title: "Аптека online: Наказ МОЗ України від 05.03.2025 № 396"
     url: "https://www.apteka.ua/article/718359"
 tags: ["вакцинація", "ВПЛ", "МОЗ", "профілактика", "рак шийки матки"]
