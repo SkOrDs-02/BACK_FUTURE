@@ -20,7 +20,7 @@ export const SITE = {
   yearMax: new Date().getFullYear(),
   monobankJarUrl: "",
   buyMeACoffeeUrl: "",
-  repoUrl: "https://github.com/Skords-01/BACK_FUTURE",
+  repoUrl: "https://github.com/SkOrDs-02/BACK_FUTURE",
 } as const;
 
 export const SUBJECTS = [
