@@ -11,8 +11,8 @@ impact: "low"
 sources:
   - title: "Kyiv Independent: Ukraine takes 9th place in Eurovision 2025"
     url: "https://kyivindependent.com/ukraine-takes-9th-place-in-eurovision-2025/"
-  - title: "Eurovision Song Contest: Basel 2025"
-    url: "https://eurovision.tv/event/basel-2025"
+  - title: "Eurovision Song Contest: Austria's JJ wins the Eurovision Song Contest 2025"
+    url: "https://www.eurovision.com/stories/austrias-jj-wins-the-eurovision-song-contest-2025/"
 tags: ["Євробачення", "музика", "Австрія", "Ziferblat"]
 draft: false
 updatedAt: 2026-10-18
