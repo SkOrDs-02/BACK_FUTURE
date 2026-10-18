@@ -10,11 +10,12 @@ Security updates are applied to the `main` branch only.
 
 Please report security issues via GitHub's private security advisory system:
 
-👉 **[Open a private security advisory](https://github.com/Skords-01/BACK_FUTURE/security/advisories/new)**
+👉 **[Open a private security advisory](https://github.com/SkOrDs-02/BACK_FUTURE/security/advisories/new)**
 
-Alternatively, contact the repository owner directly via GitHub: [@Skords-01](https://github.com/Skords-01).
+Alternatively, contact the repository owner directly via GitHub: [@SkOrDs-02](https://github.com/SkOrDs-02).
 
 Please include:
+
 - Description of the vulnerability and its potential impact
 - Steps to reproduce or proof-of-concept
 - Affected component (content schema, analytics config, CSP headers, etc.)
