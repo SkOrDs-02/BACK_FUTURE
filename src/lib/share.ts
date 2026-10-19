@@ -8,7 +8,7 @@ export const SHARE_HEIGHT = 1920;
 
 type FactEntry = CollectionEntry<"facts">;
 
-function escapeXml(value: string): string {
+export function escapeXml(value: string): string {
   return value
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")

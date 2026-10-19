@@ -1,0 +1,53 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { SITE } from "../../../config/site";
+import { QUIZ_TOTAL, quizResultPngPath, quizShareText, quizVerdict } from "../../../lib/quizShare";
+
+export function getStaticPaths() {
+  return Array.from({ length: QUIZ_TOTAL + 1 }, (_, score) => ({
+    params: { score: String(score) },
+  }));
+}
+
+const score = Number(Astro.params.score);
+const verdict = quizVerdict(score);
+const pngPath = quizResultPngPath(score);
+const ogImage = new URL(pngPath, SITE.defaultUrl).toString();
+---
+
+<Base
+  title={`${score} з ${QUIZ_TOTAL} у квізі`}
+  description={`${quizShareText(score)} Квіз «Вгадай рік відкриття» на ${SITE.name}.`}
+  ogImage={ogImage}
+  noindex
+>
+  <section class="container-prose pt-16 pb-20">
+    <span class="font-mono text-[11px] tracking-[0.14em] text-[color:var(--muted)] uppercase">
+      {SITE.name} · квіз
+    </span>
+    <h1
+      class="font-display mt-3 text-[clamp(2rem,5vw,3.5rem)] leading-tight font-extrabold tracking-[-0.03em] text-[color:var(--ink)]"
+    >
+      {score} з {QUIZ_TOTAL} років відкриттів
+    </h1>
+    <p class="mt-4 max-w-[520px] text-lg text-[color:var(--ink-2)]">
+      {verdict.title}. {verdict.sub}
+    </p>
+
+    <img
+      src={pngPath}
+      alt={`Результат квізу: ${score} з ${QUIZ_TOTAL}. ${verdict.title}.`}
+      width="1080"
+      height="1080"
+      decoding="async"
+      class="mt-8 w-full max-w-[480px] rounded-3xl border border-[color:var(--card-edge)]"
+    />
+
+    <a
+      href="/quiz/"
+      class="mt-8 inline-flex min-h-12 items-center rounded-sm bg-[color:var(--accent)] px-8 py-3 text-[17px] font-semibold text-[#fff7ec] transition hover:bg-[color:var(--accent-2)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+    >
+      Пройти квіз →
+    </a>
+  </section>
+</Base>

@@ -35,6 +35,7 @@ export const EVENTS = {
   quizQuestionAnswered: "quiz_question_answered",
   quizFinished: "quiz_finished",
   quizRestarted: "quiz_restarted",
+  quizResultShared: "quiz_result_shared",
 
   // Search
   searchOpened: "search_opened",

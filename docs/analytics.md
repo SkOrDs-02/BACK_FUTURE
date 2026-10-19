@@ -90,6 +90,7 @@ Hе використовуй стрінгові літерали — імпор�
 | `quiz_question_answered` | відповідь на питання                      | `question_index`, `correct`, `year`, `guessed_year`, `delta`          |
 | `quiz_finished`          | фінальний скор                            | `score`, `total`                                                      |
 | `quiz_restarted`         | клік «Спробувати знов»                    | —                                                                     |
+| `quiz_result_shared`     | шеринг результату квізу                   | `score`, `method: "native" \| "copy" \| "download"`                   |
 | `search_opened`          | відкритий пошук-діалог                    | `source: "button" \| "shortcut"`                                      |
 | `search_query`           | юзер набрав ≥2 символи (700ms throttle)   | `length` (тільки довжина, без вмісту)                                 |
 | `search_result_clicked`  | клік на результат пошуку                  | `result_index`                                                        |

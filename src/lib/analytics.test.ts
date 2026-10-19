@@ -89,6 +89,7 @@ describe("analytics", () => {
     it("exposes stable event names (regression guard)", () => {
       expect(EVENTS.yearSubmitted).toBe("year_submitted");
       expect(EVENTS.quizFinished).toBe("quiz_finished");
+      expect(EVENTS.quizResultShared).toBe("quiz_result_shared");
       expect(EVENTS.shareClicked).toBe("share_clicked");
       expect(EVENTS.supportClicked).toBe("support_clicked");
       expect(EVENTS.outboundLinkClicked).toBe("outbound_link_clicked");
