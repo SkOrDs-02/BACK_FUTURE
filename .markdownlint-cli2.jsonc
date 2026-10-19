@@ -7,5 +7,6 @@
     "MD034": false,
     "MD040": false,
   },
+  "ignores": [".claude/**", ".specify/templates/**"],
   "globs": ["**/*.md", "!node_modules", "!dist", "!d"],
 }
