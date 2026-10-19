@@ -55,10 +55,16 @@ const sentryIntegration = sentryDsn
 // зібраний HTML (sitemap запускається після запису dist), тож будь-яка
 // сторінка з `noindex` (404, /share/*, /themes, порожні роки) випадає сама.
 const NOINDEX_RE = /<meta name="robots" content="noindex/;
+const CANONICAL_RE = /<link rel="canonical" href="([^"]+)"/;
 /** @param {string} page */
 function isIndexable(page) {
   const file = new URL(`./dist${new URL(page).pathname}index.html`, import.meta.url);
-  return !existsSync(file) || !NOINDEX_RE.test(readFileSync(file, "utf8"));
+  if (!existsSync(file)) return true;
+  const html = readFileSync(file, "utf8");
+  if (NOINDEX_RE.test(html)) return false;
+  // Сторінка з canonical на іншу адресу (рік → ера) не належить у sitemap.
+  const canonical = CANONICAL_RE.exec(html)?.[1];
+  return !canonical || new URL(canonical).pathname === new URL(page).pathname;
 }
 
 export default defineConfig({

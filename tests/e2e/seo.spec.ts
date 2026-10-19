@@ -104,4 +104,13 @@ test("robots.txt allows AI crawlers and sitemap skips noindex pages", async ({ r
   expect(sitemap).toContain("/about/");
   expect(sitemap).not.toContain("/share/");
   expect(sitemap).not.toContain("/themes/");
+  expect(sitemap).not.toContain("/region/");
+  expect(sitemap).not.toMatch(/\/\d{4}\/</);
+  expect(sitemap).toContain("/era/");
+});
+
+test("year page points canonical to its era", async ({ page }) => {
+  await page.goto("/2005/");
+  const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
+  expect(canonical!).toMatch(/\/era\/2004-2010\/$/);
 });

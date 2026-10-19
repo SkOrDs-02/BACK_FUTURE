@@ -3,6 +3,14 @@
   "outputDirectory": "dist",
   "framework": "astro",
   "installCommand": "npm install",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "back-future.vercel.app" }],
+      "destination": "https://www.back-future.com/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

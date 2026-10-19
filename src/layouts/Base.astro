@@ -14,6 +14,8 @@ interface Props {
   ogType?: "website" | "article";
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
+  /** Шлях канонічної сторінки, коли ця сторінка дублює іншу (рік → його ера). */
+  canonicalPath?: string;
 }
 
 const defaultOgImage = new URL("/og/default.png", SITE.defaultUrl).toString();
@@ -24,9 +26,10 @@ const {
   ogType = "website",
   jsonLd,
   noindex = false,
+  canonicalPath,
 } = Astro.props;
 const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | ${SITE.tagline}`;
-const canonical = new URL(Astro.url.pathname, SITE.defaultUrl).toString();
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.defaultUrl).toString();
 const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 
 // Опційні токени верифікації пошуковців для Search Console / Bing Webmaster.
@@ -65,7 +68,7 @@ const serializeJsonLd = (data: Record<string, unknown>): string =>
     <meta name="theme-color" content="#1e3a8a" />
     <meta name="generator" content={Astro.generator} />
     <meta name="format-detection" content="telephone=no" />
-    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    {noindex && <meta name="robots" content="noindex,follow" />}
     {
       import.meta.env.SENTRY_DSN && (
         <link rel="dns-prefetch" href="https://browser.sentry-cdn.com" />
