@@ -7,7 +7,7 @@
 - [Astro](https://astro.build) 6 + TypeScript (strict)
 - [Tailwind CSS](https://tailwindcss.com)
 - Контент — Markdown з frontmatter, типобезпечно валідований через Zod
-- Статичний білд → деплой на будь-який static host (Vercel/Netlify/Cloudflare Pages)
+- Статичний білд, деплой на Vercel (Git-інтеграція, гілка `main`), домен `back-future.com`
 
 ## Швидкий старт
 
@@ -102,13 +102,17 @@ PUBLIC_SENTRY_DSN=https://xxxxxxxxxxxxxxxx@oXXXXXX.ingest.sentry.io/XXXXXXXX
 
 Деталі (інструментовані події, фунели, скрипт `posthog-setup.ts` для dashboard-as-code) — у [`docs/analytics.md`](docs/analytics.md).
 
+## Spec Kit і правила для агентів
+
+Нові фічі ведуться через [GitHub Spec Kit](https://github.com/github/spec-kit): конституція в `.specify/memory/constitution.md`, спеки в `specs/`. Правила для AI-агентів (гілки, коміти, антислоп) зібрані в `AGENTS.md`.
+
 ## Архітектура
 
 Див. [`docs/architecture.md`](docs/architecture.md). Сайт спроєктований так, щоб його можна було форкати в template для подібних контент-сайтів — основні точки кастомізації: `src/config/site.ts` + `content/`.
 
 ## Пам'ять проєкту
 
-Стан, рішення, дорожня карта, відкладені моменти — у [`docs/project-memory.md`](docs/project-memory.md). Цей документ оновлюється з кожним значущим етапом і є першим, що читає нова сесія Devin.
+Стан, рішення, дорожня карта, відкладені моменти — у [`docs/project-memory.md`](docs/project-memory.md). Цей документ оновлюється з кожним значущим етапом і є першим, що читає нова робоча сесія.
 
 ## Ліцензія
 

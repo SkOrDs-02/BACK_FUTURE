@@ -4,20 +4,20 @@
 > Цей документ описує **технічні** PR-и (інфра, контент-схема, UX, фічі) — як їх логічно розбити, у якій послідовності й з якими залежностями.
 > Список ідей-першоджерел: [`ideas.md`](./ideas.md).
 
-Останнє оновлення: травень 2026 (після PR #133: Pagefind-пошук, `/quiz`, observability-стек (Sentry/PostHog/GSC), `userState.ts`, 5 design-effects, `ScrollRestore` стійкий на iOS/bfcache, dead-code cleanup, JetBrains Mono замість IBM Plex Mono).
+Останнє оновлення: жовтень 2026 (після перезапуску: PR #161-#180, 218 фактів, домен `back-future.com`, деплой лише Vercel, Spec Kit, `llms.txt`, квадратний постер, `/support`, антислоп-перевірка).
 
 ---
 
-## Поточний стан (травень 2026)
+## Поточний стан (жовтень 2026)
 
 ### Уже на місці
 
-- **CI:** `.github/workflows/ci.yml` — install / lint / typecheck / validate-content / build / Playwright smoke (вкл. axe-аудит через `@axe-core/playwright`) / Lighthouse audit. Окремо `link-check.yml` і `deploy.yml`.
-- **Контент-валідація:** `npm run validate:content` (tone, sources, draft guard); `npm run coverage:content` (звіт по предметах і ерах).
+- **CI:** `.github/workflows/ci.yml`: install / lint / typecheck / validate-content / build / Playwright smoke (вкл. axe-аудит через `@axe-core/playwright`) / Lighthouse audit. Окремо `link-check.yml`. Деплой лише через Git-інтеграцію Vercel (GitHub Pages і `deploy.yml` прибрано).
+- **Контент-валідація:** `npm run validate:content` (tone, sources, draft guard, антислоп: error для фактів 2025+, warning для старіших); `npm run coverage:content` (звіт по предметах і ерах).
 - **Дизайн:** «3+1» (Mineral + Schoolbook акценти), токени в `tailwind.config.mjs`, глобальний `Header`/`Footer`. `/themes.astro` — дев-лабораторія тем, у проді redirect → 404 (PR #116).
-- **SEO:** RSS (`src/pages/rss.xml.ts`), sitemap (`@astrojs/sitemap`), robots.txt, canonical/OG/Twitter мета у `Base.astro`, GSC verification meta (env-gated, PR #117).
-- **Сторінки:** `/[year]` з фільтрами, `/subject/[id]`, `/era/[slug]`, `/fact/[slug]`, `/timeline`, `/quiz`, `/all`, `/about`, `/metodologia`, `/themes`.
-- **OG-зображення:** SVG + PNG ендпоінти `/og/[year].{svg,png}` і `/og/default.{svg,png}` (PR #43; PNG через `@resvg/resvg-js`). Inline OG-preview card у ShareBlock (PR #101).
+- **SEO:** RSS (`src/pages/rss.xml.ts`), sitemap (`@astrojs/sitemap`), robots.txt, canonical/OG/Twitter мета у `Base.astro`, GSC verification (meta env-gated, PR #117, плюс файл `public/google4081be111962d1d3.html`), `llms.txt` і `llms-full.txt`, правила для AI-краулерів у `robots.txt`, PNG-іконки 192/512 у manifest.
+- **Сторінки:** `/[year]` з фільтрами, `/subject/[id]`, `/era/[slug]`, `/fact/[slug]`, `/timeline`, `/quiz`, `/compare`, `/share/[year]` (сторіз 1080×1920 і квадрат 1080×1080), `/support`, `/all`, `/about`, `/metodologia`, `/themes`.
+- **OG-зображення:** SVG + PNG ендпоінти `/og/[year].{svg,png}` і `/og/default.{svg,png}` (PR #43; PNG через `@resvg/resvg-js`). Inline OG-preview card у ShareBlock (PR #101). Власна OG-картка для кожного факту `/og/fact-[slug].{svg,png}` (PR #175).
 - **Пошук:** Pagefind build-time індекс (PR #109): `SearchDialog` з lazy-load `/pagefind/pagefind-ui.{js,css}`, native `<dialog>`, Cmd/Ctrl+K, `data-pagefind-body` обмежує індекс.
 - **Аналітика / observability:** Plausible / Umami / **PostHog** через env (PR #44 + #117); PostHog інструментація подій + фунелів + dashboard-as-code (PR #131/#132). **Sentry** error tracking (PR #117 + #122). Без env — нульовий runtime. Доки у [`docs/analytics.md`](./analytics.md).
 - **GitHub-операційка:** `CODEOWNERS`, `dependabot.yml` (з груповими правилами після PR #41), шаблони issues, `PULL_REQUEST_TEMPLATE.md`.
@@ -28,18 +28,19 @@
 - **Глобальний `[data-reveal]`-fade-in observer:** Base.astro (PR #96) + 5 design-effects (PR #107: staggered entrance, magnetic 3D tilt, slot-machine GO, glitch reveal, DensityStrip tooltip). Усі ефекти поважають `prefers-reduced-motion`.
 - **`ScrollRestore`:** стійкий на iOS Safari і bfcache (PR #126/#127/#128) — запис позиції на `scrollend` debounce, restore через `pageshow`.
 - **`userState.ts`:** localStorage — last-visited year + read-tracking через IntersectionObserver (PR #116). Швидке повернення «До N» pill у Hero (PR #119) — закриває #4.3.
-- **Контент:** 11 предметів підтримуються в схемі/CMS/UI; **усі 11 заповнені — 175 фактів сумарно** (15–16 на предмет, ~30 з них високий impact — «★ Віха»).
+- **Контент:** 11 предметів у схемі/CMS/UI; **218 фактів**: 175 до 2024 плюс 43 за 2025-2026 (3-4 на предмет, PR #162-#173). Ще 9 фактів для прогалин 1991-2003 (culture, sport, ecology) у PR `content/era-gaps`.
+- **Репо і процес:** репо `SkOrDs-02/BACK_FUTURE`, Spec Kit (`.specify/`, `specs/001-relaunch/spec.md`), `AGENTS.md` з правилами для агентів (PR #174). Гілки `claude/<topic>` або `content/<topic>`, PR спершу draft.
+- **Порівняння років:** `/compare` показує різницю між роками, а не однакові топ-факти в обох колонках (PR #175).
 
 ### Лишилось зробити (узагальнено)
 
-| Напрям                     | Що бракує                                                                                                                                               |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Сторінки                   | `/share/[year]` (PNG-постер), `/saved` (bookmark-факти), `/contributors` (потребує `authors` поля), `/support` (потребує `monobankJarUrl` у `site.ts`). |
-| PWA                        | Manifest + сервіс-воркер (офлайн перегляд).                                                                                                             |
-| Спільнота                  | Action: issue з шаблону «Запропонувати факт» → draft PR. Email-дайджест (Buttondown / self-hosted).                                                     |
-| Схема                      | `authors` у frontmatter, `region: country:<iso2>` (зараз тільки `world` / `ukraine`), міграція `image` на `astro:assets`.                               |
-| i18n                       | Routing (`/uk/`, `/en/`), ICU plurals у форматерах кількості, англомовний UI.                                                                           |
-| Блокувальники від власника | Реальний домен (`defaultUrl` досі плейсхолдер), Monobank банка, Twitter handle, production-авторизація Sveltia/Decap CMS.                               |
+| Напрям            | Що бракує                                                                                                                                                                   |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Дії власника      | Перепідвʼязати Vercel до `SkOrDs-02/BACK_FUTURE` і виставити env, підтвердити DNS і Search Console, ключі PostHog/Sentry, URL банки Monobank, подати сайт на appmap.com.ua. |
+| Схема             | `region: country:<iso2>` розширити, міграція `image` на `astro:assets`.                                                                                                     |
+| Спільнота         | Email-дайджест (Buttondown / self-hosted). CMS (Sveltia/Decap) у проді: потрібна авторизація.                                                                               |
+| Ідеї без дедлайну | PWA (manifest + service-worker), issue «Запропонувати факт» → draft PR, i18n (`/uk/`, `/en/`), `/saved`, `/contributors` з полем `authors`. PR #144-#150 закриті без мержу. |
+| Контент           | Далі по `npm run coverage:content`: клітинки предмет × ера з найменшим покриттям.                                                                                           |
 
 ### Нещодавно виконано (фази 0–3)
 
@@ -81,6 +82,16 @@
 | UX badge                    | [#92](https://github.com/Skords-01/BACK_FUTURE/pull/92)                                                                                                                                                                                                                                                                                              | Inline explainer + легенда позначок на `/timeline`.                                                                                                                |
 | `/fact` UX                  | [#94](https://github.com/Skords-01/BACK_FUTURE/pull/94), [#95](https://github.com/Skords-01/BACK_FUTURE/pull/95)                                                                                                                                                                                                                                     | Reading progress bar + floating-pill «До YYYY» на `/fact/[slug]`.                                                                                                  |
 | Animation                   | [#96](https://github.com/Skords-01/BACK_FUTURE/pull/96)                                                                                                                                                                                                                                                                                              | Глобальний `[data-reveal]` observer у Base — fade-in на subject/era/timeline.                                                                                      |
+| Перезапуск 1                | [#161](https://github.com/SkOrDs-02/BACK_FUTURE/pull/161)                                                                                                                                                                                                                                                                                            | Зелений CI: Lint, оновлення залежностей, прибрано `deploy.yml` (GitHub Pages), закрито старі PR.                                                                   |
+| Перезапуск 2                | [#162](https://github.com/SkOrDs-02/BACK_FUTURE/pull/162)-[#172](https://github.com/SkOrDs-02/BACK_FUTURE/pull/172)                                                                                                                                                                                                                                  | Факти 2025-2026 по предметах (astronomy, biology, geography, history, physics, tech, medicine, economy, culture, sport, ecology): 43 факти.                        |
+| Перезапуск 3                | [#173](https://github.com/SkOrDs-02/BACK_FUTURE/pull/173)                                                                                                                                                                                                                                                                                            | Факти з #162-#172 доставлено в `main`.                                                                                                                             |
+| Перезапуск 4                | [#174](https://github.com/SkOrDs-02/BACK_FUTURE/pull/174)                                                                                                                                                                                                                                                                                            | Spec Kit: `.specify/`, конституція, `specs/001-relaunch/spec.md`, `AGENTS.md`.                                                                                     |
+| Перезапуск 5                | [#175](https://github.com/SkOrDs-02/BACK_FUTURE/pull/175)                                                                                                                                                                                                                                                                                            | `/compare` показує різницю між роками; OG-картка для кожного факту; тейглайн більше не обрізається.                                                                |
+| Перезапуск 6                | [#176](https://github.com/SkOrDs-02/BACK_FUTURE/pull/176)                                                                                                                                                                                                                                                                                            | Антислоп UI-копі, виправлені тони ер у `eras.json`, `src/lib/antislop.ts` і перевірка в `validate-content`.                                                        |
+| Перезапуск 7                | [#177](https://github.com/SkOrDs-02/BACK_FUTURE/pull/177)                                                                                                                                                                                                                                                                                            | markdownlint MD049 узгоджено з Prettier (курсив через підкреслення).                                                                                               |
+| Перезапуск 8                | [#178](https://github.com/SkOrDs-02/BACK_FUTURE/pull/178)                                                                                                                                                                                                                                                                                            | Сторінка `/support` з банкою Monobank (noindex, поки URL порожній).                                                                                                |
+| Перезапуск 9                | [#179](https://github.com/SkOrDs-02/BACK_FUTURE/pull/179)                                                                                                                                                                                                                                                                                            | SEO/GEO: `llms.txt`, `llms-full.txt`, AI-краулери в `robots.txt`, PNG-іконки, файл GSC, noindex-гігієна.                                                           |
+| Перезапуск 10               | [#180](https://github.com/SkOrDs-02/BACK_FUTURE/pull/180)                                                                                                                                                                                                                                                                                            | Квадратний постер `/share/[year]/square.png` (1080×1080) поруч зі сторіз.                                                                                          |
 
 ---
 
@@ -145,7 +156,7 @@
 
 ## Фаза 4 — Пошук і персоналізація — частково закрита
 
-Готові: 4.1 (Pagefind), 4.2 (фільтри), 4.3 («Мій рік»). Залишилося: 4.4 (`/saved` bookmark-факти).
+Готові: 4.1 (Pagefind), 4.2 (фільтри), 4.3 («Мій рік»). 4.4 (`/saved`, PR #149) закрито без мержу: ідея без дедлайну.
 
 | #   | PR                                 | Розмір | Залежить | Опис                                                                                                                                                                                                                                                                                                                                                |
 | --- | ---------------------------------- | ------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -156,7 +167,7 @@
 
 ## Фаза 5 — PWA / a11y / asset-pipeline — частково закрита
 
-Готово: 5.2 (axe-аудит). Залишилося: 5.1 (PWA manifest + service-worker), 5.3 (`astro:assets` для зображень).
+Готово: 5.2 (axe-аудит). 5.1 (PWA service-worker, PR #144) закрито без мержу: ідея без дедлайну. Залишилося: 5.3 (`astro:assets` для зображень).
 
 | #   | PR                                             | Розмір | Залежить | Опис                                                                                                                                                                                            |
 | --- | ---------------------------------------------- | ------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -166,7 +177,7 @@
 
 ## Фаза 6 — Залучення — частково закрита
 
-Готові: 6.1 (шер-кнопки), 6.2 (`/timeline`), 6.3 (`/compare`), 6.4 (`/quiz`). Залишилося: 6.5 (`/share/[year]` PNG-постер).
+Усі готові: 6.1 (шер-кнопки), 6.2 (`/timeline`), 6.3 (`/compare`), 6.4 (`/quiz`), 6.5 (`/share/[year]`).
 
 | #   | PR                                       | Розмір | Залежить | Опис                                                                                                                                                                                                                                                                                                                                   |
 | --- | ---------------------------------------- | ------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -174,16 +185,18 @@
 | 6.2 | `/timeline` — хронологія всіх фактів     | M      | —        | Done у [#93](https://github.com/Skords-01/BACK_FUTURE/pull/93) і [#97](https://github.com/Skords-01/BACK_FUTURE/pull/97) (Variant A: вертикальна вісь, era jump-strip, dark-mode contrast). (#9 у memory.)                                                                                                                             |
 | 6.3 | `/compare?a=…&b=…` — два роки поруч      | M      | —        | Done: статична `/compare` сторінка з side-by-side колонками (era badge, лічильник фактів, топ-3 high-impact, спільні предмети, epoch snapshot з nearest fallback), форма-пікер з `?a=…&b=…` валідацією через `parseYear`, кнопки `Поміняти місцями`/`Випадкова пара`, friendly error при `a === b`, динамічні OG/meta. (#12 у memory.) |
 | 6.4 | Квіз «вгадай рік відкриття»              | L      | —        | Done у [#109](https://github.com/Skords-01/BACK_FUTURE/pull/109) (`src/pages/quiz.astro`, 5 питань, логіка клієнтська) + [#111](https://github.com/Skords-01/BACK_FUTURE/pull/111) (маска року у question card). PostHog quiz funnel (start/answer/finish/restart) у [#131](https://github.com/Skords-01/BACK_FUTURE/pull/131).        |
-| 6.5 | `/share/[year]` — постер під шеринг      | M      | 1.3      | (#5 у memory.) PNG із OG-генератора + цитати.                                                                                                                                                                                                                                                                                          |
+| 6.5 | `/share/[year]` — постер під шеринг      | M      | 1.3      | Done: сторіз 1080×1920 і квадрат 1080×1080 ([#180](https://github.com/SkOrDs-02/BACK_FUTURE/pull/180)), цитати й три віхи.                                                                                                                                                                                                             |
 
 ## Фаза 7 — Спільнота й контент-операційка
 
-| #   | PR                                               | Розмір | Залежить | Опис                                                                       |
-| --- | ------------------------------------------------ | ------ | -------- | -------------------------------------------------------------------------- |
-| 7.1 | Action: issue (шаблон `new-fact.yml`) → draft PR | M      | —        | Авто-створення `.md`-факту з полями issue. (Сполучає #20 і #21 із memory.) |
-| 7.2 | `/contributors` — всі автори фактів              | S      | —        | Парсимо commit history або frontmatter `authors`.                          |
-| 7.3 | `/support` — як підтримати (Monobank, BMC)       | S      | —        | Підключити коли заповниться `monobankJarUrl` у `site.ts`.                  |
-| 7.4 | Email-дайджест (Buttondown / опційно)            | M      | 4.1      | Раз на місяць — нові факти.                                                |
+7.1 і 7.2 (PR #145, #150) закриті без мержу при перезапуску 2026-10: ідеї без дедлайну.
+
+| #   | PR                                               | Розмір | Залежить | Опис                                                                                                                               |
+| --- | ------------------------------------------------ | ------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 7.1 | Action: issue (шаблон `new-fact.yml`) → draft PR | M      | —        | Авто-створення `.md`-факту з полями issue. (Сполучає #20 і #21 із memory.)                                                         |
+| 7.2 | `/contributors` — всі автори фактів              | S      | —        | Парсимо commit history або frontmatter `authors`.                                                                                  |
+| 7.3 | `/support` — як підтримати (Monobank, BMC)       | S      | —        | Done у [#178](https://github.com/SkOrDs-02/BACK_FUTURE/pull/178); кнопка зʼявиться, коли заповниться `monobankJarUrl` у `site.ts`. |
+| 7.4 | Email-дайджест (Buttondown / опційно)            | M      | 4.1      | Раз на місяць — нові факти.                                                                                                        |
 
 ## Фаза 8 — Бренд і дизайн-система
 
@@ -195,11 +208,11 @@
 
 ## Фаза 9 — i18n
 
-| #   | PR                                  | Розмір | Залежить | Опис                                                       |
-| --- | ----------------------------------- | ------ | -------- | ---------------------------------------------------------- |
-| 9.1 | Astro i18n routing (`/uk/`, `/en/`) | L      | 3.x      | Без перекладів спочатку; готовність до англомовної версії. |
-| 9.2 | ICU plurals у форматерах ✅         | S      | —        | Зроблено — див. «Нещодавно виконано».                      |
-| 9.3 | Англомовний UI                      | L      | 9.1      | Тексти UI в `i18n/`, `/en/[year]` спочатку без контенту.   |
+| #   | PR                                  | Розмір | Залежить | Опис                                                                    |
+| --- | ----------------------------------- | ------ | -------- | ----------------------------------------------------------------------- |
+| 9.1 | Astro i18n routing (`/uk/`, `/en/`) | L      | 3.x      | Ідея без дедлайну (PR #146 закрито без мержу). Без перекладів спочатку. |
+| 9.2 | ICU plurals у форматерах ✅         | S      | —        | Зроблено — див. «Нещодавно виконано».                                   |
+| 9.3 | Англомовний UI                      | L      | 9.1      | Тексти UI в `i18n/`, `/en/[year]` спочатку без контенту.                |
 
 ---
 
@@ -213,7 +226,7 @@ PR [#51](https://github.com/Skords-01/BACK_FUTURE/pull/51) закриває по
 4. **#2.5** — розширення `SUBJECTS` до 11 предметів.
 5. **#2.6** — workflow-патч для `sources[].url`.
 
-Наступні найпрактичніші задачі (після PR #133): `/share/[year]` PNG-постер, `/saved` bookmark-факти, issue `new-fact.yml` → draft PR action, `/contributors` (потребує `authors` поля у frontmatter) + `/support` (потребує `monobankJarUrl` у `site.ts`), PWA manifest + service-worker, i18n routing.
+Наступні кроки: дії власника (Vercel, DNS, Search Console, Monobank, appmap.com.ua), потім контент за `npm run coverage:content`. Ідеї без дедлайну: PWA, issue → draft PR, i18n, `/saved`, `/contributors`.
 
 ---
 

@@ -6,7 +6,7 @@ The admin UI is available at `/admin/` and uses Sveltia CMS with the GitHub back
 
 For production, configure a GitHub OAuth app or a Sveltia/Decap-compatible auth gateway for this repository:
 
-- repository: `Skords-01/BACK_FUTURE`
+- repository: `SkOrDs-02/BACK_FUTURE`
 - branch: `main`
 - callback path: `/admin/`
 
