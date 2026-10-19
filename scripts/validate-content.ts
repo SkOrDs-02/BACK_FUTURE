@@ -6,8 +6,6 @@ import { findSlop } from "../src/lib/antislop";
 import { isKnownRegionCode } from "../src/lib/regions";
 
 const minFactsPerSubject = 1;
-// Факти до 2025 року написані до правила антислопу, тож для них лише попередження.
-const antislopStrictFromYear = 2025;
 const minFactsPerEra = 5;
 const bannedTerms = [
   "спецоперац",
@@ -74,7 +72,7 @@ for (const fact of facts) {
   const slop = findSlop(rawText);
   if (slop.length > 0) {
     const message = `${relativePath}: antislop: ${slop.join(", ")}`;
-    (fact.yearOfEvent >= antislopStrictFromYear ? errors : warnings).push(message);
+    errors.push(message);
   }
 
   const normalizedText = rawText.toLowerCase();
