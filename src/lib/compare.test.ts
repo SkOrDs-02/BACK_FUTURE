@@ -21,7 +21,7 @@ interface FactStub {
 }
 
 /**
- * Same shape as `filterFacts.test.ts` — only the fields the lib functions
+ * Same shape as `filterFacts.test.ts` - only the fields the lib functions
  * actually read are populated.
  */
 function makeFact(stub: FactStub): Fact {

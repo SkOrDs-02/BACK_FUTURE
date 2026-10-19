@@ -4,7 +4,7 @@
  *
  * Redesigned to match the mockup:
  * - Taller inner padding so dots/marker have breathing room
- * - Dots: 10px with `border: 2px solid var(--paper)` — look "placed" on the axis
+ * - Dots: 10px with `border: 2px solid var(--paper)` - look "placed" on the axis
  * - High-impact dots: 14px, amber/hl glow ring
  * - Axis: 2px height, rounded, ink-6/card-edge colour
  * - Major ticks (every 5y) vs minor ticks (every year)
@@ -31,7 +31,7 @@ const yearMin = SITE.yearMin;
 const yearMax = SITE.yearMax;
 const span = Math.max(1, yearMax - yearMin);
 
-// Simple linear percent — no extra buffer, 0% = yearMin, 100% = yearMax
+// Simple linear percent - no extra buffer, 0% = yearMin, 100% = yearMax
 const pct = (y: number): number => ((y - yearMin) / span) * 100;
 
 // Ticks: major every 5 years, minor every year. Хитрість для міток: коли
@@ -46,7 +46,7 @@ type Dot = {
   year: number;
   left: number;
   high: boolean;
-  // Keep tooltip short — just the year
+  // Keep tooltip short - just the year
   tip: string;
   href: string;
 };
@@ -344,7 +344,7 @@ const activeEraId = selectedYear
   /* Кінцеві мітки (yearMin / yearMax) тиснуться до межі axis, інакше їхня
      половина випадає за overflow інакого предка (.tl-scroll з overflow-x:auto)
      і ми бачимо лише «91» / «26». :first-of-type не матчить, бо першими
-     дітьми .tl-axis рендеряться minor ticks — використовуємо явний клас. */
+     дітьми .tl-axis рендеряться minor ticks - використовуємо явний клас. */
   .tl-tick--edge-left .tl-tick-label {
     left: 0;
     transform: translateX(0);
@@ -390,7 +390,7 @@ const activeEraId = selectedYear
     transform: translate(-50%, -50%) scale(1.35);
   }
 
-  /* Tooltip via CSS ::after — compact year-only pill, hidden on touch */
+  /* Tooltip via CSS ::after - compact year-only pill, hidden on touch */
   .tl-dot[data-tip]::after {
     content: attr(data-tip);
     position: absolute;

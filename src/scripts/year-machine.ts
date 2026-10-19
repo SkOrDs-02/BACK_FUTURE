@@ -1,4 +1,4 @@
-// Year Machine — singleton state for the interactive year picker on the homepage.
+// Year Machine - singleton state for the interactive year picker on the homepage.
 // Uses CustomEvent('year:change') to notify all components when the year changes.
 // SSR renders with DEFAULT_YEAR; JS hydrates from ?y= param or sessionStorage.
 
@@ -17,7 +17,7 @@ function dispatch(year: number): void {
   document.dispatchEvent(new CustomEvent("year:change", { detail: { year } }));
 }
 
-/** Call once from YearOdometer — initializes state and fires initial year:change. */
+/** Call once from YearOdometer - initializes state and fires initial year:change. */
 export function initYearMachine(yearMax: number = 2026): void {
   if (_initialized) return;
   _initialized = true;

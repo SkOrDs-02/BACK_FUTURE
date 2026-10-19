@@ -42,7 +42,7 @@ const impactLabel =
   fact.data.impact === "high" ? "Високий" : fact.data.impact === "low" ? "Низький" : "Середній";
 const relatedEras = fact.data.relevantForEras.map((id) => eraById(id));
 const aboutEntities = [subject.label, ...relatedEras.map((era) => era.label), ...fact.data.tags];
-const shareText = `${fact.data.title} — ${SITE.name}`;
+const shareText = `${fact.data.title} | ${SITE.name}`;
 const shareEncoded = encodeURIComponent(shareText);
 const urlEncoded = encodeURIComponent(canonical);
 const shareTargets = [
@@ -118,11 +118,11 @@ const breadcrumbsLd: Record<string, unknown> = {
 >
   {
     /*
-    Тонкий індикатор прогресу читання — спрямлена смужка зверху, яка заповнюється
+    Тонкий індикатор прогресу читання - спрямлена смужка зверху, яка заповнюється
     в міру скролу через `<article>` + body + share. Лежить ВИЩЕ за sticky-header
     (z-index 41 проти 40 у Header) і має `pointer-events: none`, щоб не ловити
     кліки. Оновлюється у requestAnimationFrame під час `scroll` / `resize`.
-    Оптимізовано через `transform: scaleX()` + `will-change` — без layout-перекраски.
+    Оптимізовано через `transform: scaleX()` + `will-change` - без layout-перекраски.
   */
   }
   <div
@@ -368,7 +368,7 @@ const breadcrumbsLd: Record<string, unknown> = {
 
   {
     /*
-    Floating-pill «Назад до року» — основна дія користувача після прочитання
+    Floating-pill «Назад до року» - основна дія користувача після прочитання
     факту. Видимий тільки після того, як hero (з кнопкою breadcrumb «Рік»)
     вислизнув з viewport-у, і ховається коли SupportBlock у viewport, щоб не
     перекривати CTA. Десктоп: ліворуч знизу. Mobile: по центру внизу, з
@@ -429,7 +429,7 @@ const breadcrumbsLd: Record<string, unknown> = {
 
 <script is:inline>
   // Back-to-year pill: видимий лише коли hero вислизнув з viewport-у І support-block
-  // ще не у viewport-і. Дві IntersectionObserver-сторожі — без scroll listener-у,
+  // ще не у viewport-і. Дві IntersectionObserver-сторожі - без scroll listener-у,
   // щоб не палити CPU на mobile. Два спостерігачі писали б у різні стани, тож
   // зливаємо у спільну функцію `update()` через два булеві прапорці.
   (function () {

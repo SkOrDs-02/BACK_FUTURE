@@ -115,7 +115,7 @@ describe("buildEraOgSvg", () => {
     const era = ERAS.find((e) => e.id === 1)!;
     const svg = buildEraOgSvg(era, []);
     // Кілька перших слів summary мають бути присутні (точне розбиття на рядки
-    // залежить від word-wrap — тому грепаємо лише початок).
+    // залежить від word-wrap - тому грепаємо лише початок).
     const firstWords = era.summary.split(/\s+/).slice(0, 3).join(" ");
     expect(svg).toContain(firstWords);
   });

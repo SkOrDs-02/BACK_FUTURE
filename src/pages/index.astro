@@ -20,7 +20,7 @@ for (let y = SITE.yearMin; y <= SITE.yearMax; y++) {
   factsFromYear[y] = allFacts.filter((f) => f.data.yearOfEvent >= y).length;
 }
 
-// Featured fact title per year — highest-impact fact (impact=high preferred), else first by id.
+// Featured fact title per year - highest-impact fact (impact=high preferred), else first by id.
 const featuredByYear: Record<number, string> = {};
 for (let y = SITE.yearMin; y <= SITE.yearMax; y++) {
   const yearFacts = allFacts.filter((f) => f.data.yearOfEvent === y);
@@ -72,7 +72,7 @@ const organizationLd: Record<string, unknown> = {
         <span
           class="hidden font-mono text-xs tracking-widest text-[color:var(--muted)] uppercase sm:inline"
         >
-          навчальні покоління, 1991—сьогодні
+          навчальні покоління, 1991–сьогодні
         </span>
       </div>
       <EraGrid />
@@ -126,7 +126,7 @@ const organizationLd: Record<string, unknown> = {
             },
             {
               n: "03",
-              title: "Кожен факт — з джерелом.",
+              title: "Кожен факт має джерело.",
               text: "Розгорни деталі або поділись фактом.",
             },
           ].map((step, i) => (
@@ -148,7 +148,7 @@ const organizationLd: Record<string, unknown> = {
       </ol>
     </section>
 
-    <!-- Або одразу — preset cards -->
+    <!-- Або одразу - preset cards -->
     <section class="border-t border-[color:var(--rule)] pt-20 pb-6">
       <div class="mb-8 flex items-baseline justify-between gap-6">
         <h2

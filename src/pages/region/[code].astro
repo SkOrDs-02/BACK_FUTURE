@@ -8,7 +8,7 @@ import { COUNTRY_REGIONS, getFlag, getRegionLabel } from "../../lib/regions";
 import { SITE } from "../../config/site";
 import { pageUrl } from "../../lib/url";
 
-// `/region/<iso2>/` index page — lists all facts with `region: country:<iso2>`.
+// `/region/<iso2>/` index page - lists all facts with `region: country:<iso2>`.
 // Static-paths is gated on COUNTRY_REGIONS to keep the build deterministic; any
 // country not in the curated list won't generate a page even if a fact references
 // it (validate-content already warns on that case).
@@ -49,7 +49,7 @@ const canonical = new URL(Astro.url.pathname, SITE.defaultUrl).toString();
 const collectionLd: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: `${resolvedLabel} — ${SITE.name}`,
+  name: `${resolvedLabel} | ${SITE.name}`,
   description,
   inLanguage: "uk",
   url: canonical,

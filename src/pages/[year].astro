@@ -41,7 +41,7 @@ const yearsPassed = yearNow - year;
 
 const updatesLabel = updatesCount(totalCount);
 
-const description = `Якщо ти випустився ${year}-го — ось що змінилось у науці й історії після того, як ти закрив підручник. ${SITE.name}.`;
+const description = `Якщо ти випустився ${year}-го, ось що змінилось у науці й історії після того, як ти закрив підручник. ${SITE.name}.`;
 const ogImage = new URL(`/og/${year}.png`, SITE.defaultUrl).toString();
 
 const fallbackYears =
@@ -123,7 +123,7 @@ const regionsPresent = matched.map((f) => f.data.region);
             Поки що для цього року тихо.
           </p>
           <p class="mt-2 text-base text-[color:var(--ink-2)]">
-            Ми постійно додаємо факти. Поки — спробуй ери, де вже є про що розповісти:
+            Ми постійно додаємо факти. Поки що спробуй ери, де вже є про що розповісти:
           </p>
 
           {fallbackYears.length > 0 && (
@@ -152,7 +152,7 @@ const regionsPresent = matched.map((f) => f.data.region);
           {teaserFacts.length > 0 && (
             <div class="mt-8">
               <p class="mb-3 font-mono text-xs tracking-widest text-[color:var(--muted)] uppercase">
-                Щоб не іти з порожніми руками — ось що вже є:
+                Щоб не іти з порожніми руками, ось що вже є:
               </p>
               <div class="grid gap-4">
                 {teaserFacts.map((f: Fact) => {

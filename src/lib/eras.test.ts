@@ -61,7 +61,7 @@ describe("eraById", () => {
   });
 
   it("throws for an unknown id", () => {
-    // @ts-expect-error — testing runtime guard with an out-of-domain value.
+    // @ts-expect-error - testing runtime guard with an out-of-domain value.
     expect(() => eraById(99)).toThrow(/Unknown era id/);
   });
 });

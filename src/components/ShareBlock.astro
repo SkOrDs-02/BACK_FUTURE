@@ -15,14 +15,14 @@ const messageBase =
   factsCount > 0
     ? `Випустився ${year}-го. З тих пір пропустив ${factsCount} ${updatesCount(factsCount)} у науці й історії.`
     : `Як змінились наука й історія від випуску ${year}-го?`;
-const message = `${messageBase} ${SITE.tagline} — ${SITE.name}.`;
+const message = `${messageBase} ${SITE.tagline}. ${SITE.name}.`;
 
 const shareEncoded = encodeURIComponent(message);
 const urlEncoded = encodeURIComponent(url);
 
-// Preview metadata — mirrors what Telegram / X / FB will scrape from <head>.
+// Preview metadata - mirrors what Telegram / X / FB will scrape from <head>.
 const previewHost = shareUrl.host.replace(/^www\./, "");
-const previewTitle = `Випуск ${year} — ${SITE.name}`;
+const previewTitle = `Випуск ${year} | ${SITE.name}`;
 const previewDescription = messageBase;
 const previewImage = new URL(`/og/${year}.png`, SITE.defaultUrl).toString();
 

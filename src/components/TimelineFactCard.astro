@@ -1,7 +1,7 @@
 ---
 /**
  * Compact fact card used on the /timeline page. Unlike FactCard.astro it does
- * not embed the full markdown body — rendering 165 of those would balloon the
+ * not embed the full markdown body - rendering 165 of those would balloon the
  * page weight. Just the meta row + title + short description, with a link to
  * the dedicated fact page for the full read.
  */
@@ -17,7 +17,7 @@ const { fact } = Astro.props;
 const detailUrl = factUrl(fact.id);
 const slug = factSlug(fact.id);
 const subject = SUBJECTS.find((s) => s.id === fact.data.subject);
-const mark = subject?.mark ?? "—";
+const mark = subject?.mark ?? "–";
 const subjectLabel = subject?.label ?? "Предмет";
 const isHighImpact = fact.data.impact === "high";
 const isUkraine = fact.data.region === "ukraine";

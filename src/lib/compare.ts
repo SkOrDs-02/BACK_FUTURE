@@ -115,7 +115,7 @@ export function subjectsForYear(facts: readonly Fact[]): CompareSubjectRef[] {
  * Collect everything `/compare` needs about a single year: matched fact count,
  * era metadata, top-impact picks, and subject breakdown. Pass `otherYear` to
  * get the pair-aware picks from `topFactsAgainst`. Returned shape is
- * intentionally small — anything heavier (FactCard renderer, FactTimeline)
+ * intentionally small - anything heavier (FactCard renderer, FactTimeline)
  * stays in the page layer.
  */
 export function collectYearStats(
@@ -159,7 +159,7 @@ export function randomYearPair(
 ): { a: number; b: number } {
   const span = yearMax - yearMin + 1;
   if (span < 2) {
-    // Degenerate range — only one valid year. Return it twice; callers should
+    // Degenerate range - only one valid year. Return it twice; callers should
     // guard against `a === b` themselves.
     return { a: yearMin, b: yearMin };
   }

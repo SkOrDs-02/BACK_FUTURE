@@ -147,7 +147,7 @@ export interface FallbackYear {
 
 /**
  * For a year that has no matching facts, build a list of representative years
- * the visitor can try instead — one per era that actually contains facts.
+ * the visitor can try instead - one per era that actually contains facts.
  * The representative year is the era's middle (or `yearEnd` if `forYear`
  * happens to land on the middle), and the list is ordered by closeness to
  * `forYear`, then by fact count descending.

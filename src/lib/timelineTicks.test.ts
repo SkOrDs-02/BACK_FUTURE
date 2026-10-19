@@ -17,7 +17,7 @@ describe("planMajorTicks", () => {
   });
 
   it("hides the 5y label that collides with yearMin (1992 → 1995 stays, 1991 endpoint)", () => {
-    // yearMin=1992 puts 1995 only 3 years away — outside default gap=2, label kept.
+    // yearMin=1992 puts 1995 only 3 years away - outside default gap=2, label kept.
     const { labeled } = planMajorTicks(1992, 2026);
     expect(labeled.has(1995)).toBe(true);
   });

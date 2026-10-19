@@ -1,5 +1,5 @@
 ---
-// Hero — main landing hero with ruled-paper background, headline, machine, counter, quick picks.
+// Hero: main landing hero with ruled-paper background, headline, machine, counter, quick picks.
 import YearMachine from "./YearMachine.astro";
 import MissedCounter from "./MissedCounter.astro";
 import QuickPicks from "./QuickPicks.astro";
@@ -41,7 +41,7 @@ const currentYear = new Date().getFullYear();
   <p
     class="mb-8 max-w-[640px] text-[clamp(1.125rem,4.5vw,1.375rem)] leading-relaxed font-normal text-[color:var(--ink-2)] sm:mb-14"
   >
-    Введи рік випуску — отримай стрічку оновлень у науці, історії й світі від&nbsp;тих часів.
+    Введи рік випуску й отримай стрічку оновлень у науці, історії й світі від&nbsp;тих часів.
     Стисло, науково-популярно, з&nbsp;джерелами.
   </p>
 
@@ -101,7 +101,7 @@ const currentYear = new Date().getFullYear();
           lastYearLink.hidden = false;
         }
       } catch {
-        // localStorage unavailable or parse error — silently skip
+        // localStorage unavailable or parse error - silently skip
       }
     }
   })();

@@ -25,12 +25,12 @@ const {
   jsonLd,
   noindex = false,
 } = Astro.props;
-const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | ${SITE.tagline}`;
 const canonical = new URL(Astro.url.pathname, SITE.defaultUrl).toString();
 const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 
 // Опційні токени верифікації пошуковців для Search Console / Bing Webmaster.
-// Якщо змінна не задана — meta-тег не рендериться.
+// Якщо змінна не задана, meta-тег не рендериться.
 const googleSiteVerification = import.meta.env.GOOGLE_SITE_VERIFICATION;
 const bingSiteVerification = import.meta.env.BING_SITE_VERIFICATION;
 
@@ -56,7 +56,7 @@ const serializeJsonLd = (data: Record<string, unknown>): string =>
           var isDark = stored === "dark" || (stored !== "light" && prefersDark);
           if (isDark) document.documentElement.classList.add("dark");
         } catch {
-          // localStorage / matchMedia недоступні — нічого не робимо.
+          // localStorage / matchMedia недоступні, нічого не робимо.
         }
       })();
     </script>
@@ -108,9 +108,9 @@ const serializeJsonLd = (data: Record<string, unknown>): string =>
       crossorigin
     />
     {
-      /* Display-шрифт для h1/h2/h3 — без preload браузер чекає
+      /* Display-шрифт для h1/h2/h3: без preload браузер чекає
        парсингу CSS і ставить FOUT поверх вже намальованого тіла.
-       31 KB кирилиці — найдешевша заявка на стабільний first paint. */
+       31 KB кирилиці, найдешевша заявка на стабільний first paint. */
     }
     <link
       rel="preload"

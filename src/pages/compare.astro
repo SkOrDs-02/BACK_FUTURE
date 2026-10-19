@@ -7,7 +7,7 @@ import { factSlug } from "../lib/url";
 
 // `/compare` is fully static (Astro `output: "static"`), so query params are
 // read client-side only. Server-side we embed a per-year stats table for the
-// whole supported window — the comparison view then just picks two entries
+// whole supported window - the comparison view then just picks two entries
 // out of the embedded JSON on page-load.
 
 const allFacts = await getCollection("facts");
@@ -78,7 +78,7 @@ for (let y = SITE.yearMin; y <= SITE.yearMax; y++) {
       title: f.data.title,
       short: f.data.short,
       yearOfEvent: f.data.yearOfEvent,
-      subjectMark: subjectMeta.get(f.data.subject)?.mark ?? "—",
+      subjectMark: subjectMeta.get(f.data.subject)?.mark ?? "–",
       subjectLabel: subjectMeta.get(f.data.subject)?.label ?? "",
       impact: f.data.impact ?? "medium",
       region: f.data.region ?? "world",
@@ -95,7 +95,7 @@ for (let y = SITE.yearMin; y <= SITE.yearMax; y++) {
     ranked: ranked.map((f) => factSlug(f.id)),
     subjects: stats.subjects.map((s) => ({
       subject: s.subject,
-      mark: subjectMeta.get(s.subject)?.mark ?? "—",
+      mark: subjectMeta.get(s.subject)?.mark ?? "–",
       label: subjectMeta.get(s.subject)?.label ?? "",
       count: s.count,
     })),
@@ -113,7 +113,7 @@ const ogImage = new URL("/og/default.png", SITE.defaultUrl).toString();
 const websiteLd: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "Порівняти роки — BACK_FUTURE",
+  name: "Порівняти роки | BACK_FUTURE",
   description,
   url: canonical,
   inLanguage: "uk",
@@ -155,7 +155,7 @@ const breadcrumbsLd: Record<string, unknown> = {
         Порівняти роки
       </h1>
       <p class="mt-4 max-w-2xl text-base leading-relaxed text-[color:var(--ink-2)] sm:text-lg">
-        Обери два роки випуску — і подивись, як зміщується картина: яка ера, скільки оновлень, що
+        Обери два роки випуску й подивись, як зміщується картина: яка ера, скільки оновлень, що
         стало вершиною часу і що було «у кишені» тоді.
       </p>
     </header>
@@ -239,7 +239,7 @@ const breadcrumbsLd: Record<string, unknown> = {
           <header class="compare-col__head">
             <span class="compare-col__label" data-bind="side-label">Рік A</span>
             <h3 class="compare-col__year font-display tabular-nums" data-bind="year-display">
-              ————
+              ––––
             </h3>
             <a class="compare-col__year-link" data-bind="year-link" href="/">
               Відкрити повний рік →
@@ -274,7 +274,7 @@ const breadcrumbsLd: Record<string, unknown> = {
           <section class="compare-col__section" aria-labelledby="subjects-a">
             <h4 id="subjects-a" class="compare-col__section-title">Предмети</h4>
             <ul class="compare-col__subjects" data-bind="subjects">
-              <li class="compare-col__empty" data-bind="empty-subjects">—</li>
+              <li class="compare-col__empty" data-bind="empty-subjects">–</li>
             </ul>
           </section>
 
@@ -292,7 +292,7 @@ const breadcrumbsLd: Record<string, unknown> = {
           <header class="compare-col__head">
             <span class="compare-col__label" data-bind="side-label">Рік B</span>
             <h3 class="compare-col__year font-display tabular-nums" data-bind="year-display">
-              ————
+              ––––
             </h3>
             <a class="compare-col__year-link" data-bind="year-link" href="/">
               Відкрити повний рік →
@@ -324,7 +324,7 @@ const breadcrumbsLd: Record<string, unknown> = {
           <section class="compare-col__section" aria-labelledby="subjects-b">
             <h4 id="subjects-b" class="compare-col__section-title">Предмети</h4>
             <ul class="compare-col__subjects" data-bind="subjects">
-              <li class="compare-col__empty" data-bind="empty-subjects">—</li>
+              <li class="compare-col__empty" data-bind="empty-subjects">–</li>
             </ul>
           </section>
 
@@ -435,7 +435,7 @@ const breadcrumbsLd: Record<string, unknown> = {
   const root = document.getElementById("compare-root");
   const dataScript = document.getElementById("compare-data");
   if (!root || !dataScript) {
-    // Page not configured — bail silently.
+    // Page not configured - bail silently.
   } else {
     const yearMin = Number(root.dataset.yearMin);
     const yearMax = Number(root.dataset.yearMax);
@@ -660,7 +660,7 @@ const breadcrumbsLd: Record<string, unknown> = {
     }
 
     function updateMeta(yearA: number, yearB: number): void {
-      const title = `${yearA} vs ${yearB} — що змінилось | BACK_FUTURE`;
+      const title = `${yearA} vs ${yearB}: що змінилось | BACK_FUTURE`;
       document.title = title;
       if (headingEl) {
         headingEl.textContent = `${yearA} vs ${yearB}`;
@@ -737,7 +737,7 @@ const breadcrumbsLd: Record<string, unknown> = {
       }
 
       if (aNum === bNum) {
-        showFormWithError("Введи два різні роки — порівнювати рік сам із собою нецікаво.");
+        showFormWithError("Введи два різні роки: порівнювати рік сам із собою нецікаво.");
         return;
       }
 

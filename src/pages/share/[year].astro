@@ -44,7 +44,7 @@ const messageBase =
   parts.totalCount > 0
     ? `Випустився ${year}-го. З тих пір пропустив ${parts.totalCount} ${updatesLabel} у науці й історії.`
     : `Як змінились наука й історія від випуску ${year}-го?`;
-const message = `${messageBase} ${SITE.tagline} — ${SITE.name}.`;
+const message = `${messageBase} ${SITE.tagline} | ${SITE.name}.`;
 const messageEncoded = encodeURIComponent(message);
 
 const title = `Постер «Випуск ${year}»`;
@@ -275,7 +275,7 @@ const posters = [
       nativeBtn.addEventListener("click", function () {
         track("share_clicked", { target: "native", surface: "poster" });
         navigator.share({ title: document.title, text: text, url: url }).catch(function () {
-          /* user cancelled — no-op */
+          /* user cancelled, no-op */
         });
       });
     }

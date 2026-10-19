@@ -1,5 +1,5 @@
 ---
-// Quiz — 5-question "guess the year" game. Facts are embedded as JSON;
+// Quiz: 5-question "guess the year" game. Facts are embedded as JSON;
 // all quiz logic (shuffle, scoring, transitions) is client-side vanilla JS.
 import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
@@ -7,7 +7,7 @@ import { SITE } from "../config/site";
 
 const allFacts = await getCollection("facts", ({ data }) => !data.draft);
 
-// Embed minimal fact data — only what the quiz needs (no body/sources)
+// Embed minimal fact data - only what the quiz needs (no body/sources)
 const factsData = allFacts.map((f) => ({
   id: f.id,
   title: f.data.title,
@@ -30,10 +30,10 @@ const QUESTIONS_COUNT = 5;
       Вгадай рік<br />відкриття
     </h1>
     <p class="mt-4 max-w-[520px] text-lg text-[color:var(--ink-2)]">
-      Прочитай факт і обери, коли саме це сталось. 5 питань — нові факти щоразу.
+      Прочитай факт і обери, коли саме це сталось. 5 питань, нові факти щоразу.
     </p>
 
-    <!-- Quiz shell — all interactivity handled by <script> below -->
+    <!-- Quiz shell - all interactivity handled by <script> below -->
     <div
       id="quiz-app"
       class="mt-12"
@@ -290,10 +290,10 @@ const QUESTIONS_COUNT = 5;
     };
 
     var RESULT_COPY = [
-      ["0/5", "Ще є куди рости!", "Спробуй свій рік на головній — і заповни прогалини."],
+      ["0/5", "Ще є куди рости!", "Спробуй свій рік на головній і заповни прогалини."],
       ["1/5", "Не погано, але можна краще.", "Введи рік і дізнайся, що пропустив."],
       ["2/5", "Знаєш більше, ніж здається.", "Більше відкриттів чекає в стрічці."],
-      ["3/5", "Непогано!", "Три з п'яти — ти в темі. Дивись далі."],
+      ["3/5", "Непогано!", "Три з п'яти: ти в темі. Дивись далі."],
       ["4/5", "Відмінно!", "Ти добре знаєш, що змінилось у науці."],
       ["5/5", "Бездоганно! Усі правильно.", "Справжній знавець. Поділись результатом."],
     ];
@@ -427,7 +427,7 @@ const QUESTIONS_COUNT = 5;
         feedbackEl.hidden = false;
         feedbackEl.textContent = isCorrect
           ? "Правильно! " + correct + " рік."
-          : "Неправильно. Правильна відповідь — " + correct + " рік.";
+          : "Неправильно. Правильна відповідь: " + correct + " рік.";
       }
 
       setTimeout(function () {
