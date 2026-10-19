@@ -35,7 +35,9 @@ describe("findSlop", () => {
   });
 
   it("keeps the ellipsis character, markdown links and real dates", () => {
-    expect(findSlop("Чекаємо на результат… [Джерело](https://example.com) 2024-05-17.")).toEqual([]);
+    expect(findSlop("Чекаємо на результат… [Джерело](https://example.com) 2024-05-17.")).toEqual(
+      [],
+    );
   });
 
   it("reports each rule once", () => {
