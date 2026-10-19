@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
-import { collectYearStats } from "../lib/compare";
+import { collectYearStats, rankedFactsForYear } from "../lib/compare";
 import { SITE, SUBJECTS } from "../config/site";
 import { factSlug } from "../lib/url";
 
@@ -44,7 +44,8 @@ interface ClientYearStats {
   eraId: 1 | 2 | 3 | 4 | 5;
   eraName: string;
   totalCount: number;
-  topFacts: ClientFact[];
+  /** Slugs of every missed fact, best first; the client picks the top per pair. */
+  ranked: string[];
   subjects: ClientSubject[];
   epoch: { year: number; items: ClientEpochItem[] };
 }
@@ -65,9 +66,24 @@ function nearestEpoch(year: number): { year: number; items: ClientEpochItem[] } 
   };
 }
 
+const factsBySlug: Record<string, ClientFact> = {};
 const yearStats: Record<string, ClientYearStats> = {};
 for (let y = SITE.yearMin; y <= SITE.yearMax; y++) {
-  const stats = collectYearStats(allFacts, y, 3);
+  const stats = collectYearStats(allFacts, y, 0);
+  const ranked = rankedFactsForYear(allFacts, y);
+  for (const f of ranked) {
+    const slug = factSlug(f.id);
+    factsBySlug[slug] ??= {
+      slug,
+      title: f.data.title,
+      short: f.data.short,
+      yearOfEvent: f.data.yearOfEvent,
+      subjectMark: subjectMeta.get(f.data.subject)?.mark ?? "—",
+      subjectLabel: subjectMeta.get(f.data.subject)?.label ?? "",
+      impact: f.data.impact ?? "medium",
+      region: f.data.region ?? "world",
+    };
+  }
   yearStats[String(y)] = {
     year: stats.year,
     eraSlug: stats.era.slug,
@@ -76,16 +92,7 @@ for (let y = SITE.yearMin; y <= SITE.yearMax; y++) {
     eraId: stats.era.id,
     eraName: stats.era.name,
     totalCount: stats.totalCount,
-    topFacts: stats.topFacts.map((f) => ({
-      slug: factSlug(f.id),
-      title: f.data.title,
-      short: f.data.short,
-      yearOfEvent: f.data.yearOfEvent,
-      subjectMark: subjectMeta.get(f.data.subject)?.mark ?? "—",
-      subjectLabel: subjectMeta.get(f.data.subject)?.label ?? "",
-      impact: f.data.impact ?? "medium",
-      region: f.data.region ?? "world",
-    })),
+    ranked: ranked.map((f) => factSlug(f.id)),
     subjects: stats.subjects.map((s) => ({
       subject: s.subject,
       mark: subjectMeta.get(s.subject)?.mark ?? "—",
@@ -256,7 +263,9 @@ const breadcrumbsLd: Record<string, unknown> = {
           </dl>
 
           <section class="compare-col__section" aria-labelledby="top-facts-a">
-            <h4 id="top-facts-a" class="compare-col__section-title">Топ-факти</h4>
+            <h4 id="top-facts-a" class="compare-col__section-title" data-bind="top-facts-title">
+              Топ-факти
+            </h4>
             <ol class="compare-col__facts" data-bind="top-facts">
               <li class="compare-col__empty" data-bind="empty-facts">Поки що тут тихо.</li>
             </ol>
@@ -304,7 +313,9 @@ const breadcrumbsLd: Record<string, unknown> = {
           </dl>
 
           <section class="compare-col__section" aria-labelledby="top-facts-b">
-            <h4 id="top-facts-b" class="compare-col__section-title">Топ-факти</h4>
+            <h4 id="top-facts-b" class="compare-col__section-title" data-bind="top-facts-title">
+              Топ-факти
+            </h4>
             <ol class="compare-col__facts" data-bind="top-facts">
               <li class="compare-col__empty" data-bind="empty-facts">Поки що тут тихо.</li>
             </ol>
@@ -378,11 +389,14 @@ const breadcrumbsLd: Record<string, unknown> = {
   <script
     type="application/json"
     id="compare-data"
-    set:html={JSON.stringify(yearStats).replace(/</g, "\\u003c")}
+    set:html={JSON.stringify({ years: yearStats, facts: factsBySlug }).replace(/</g, "\\u003c")}
   />
 </Base>
 
 <script>
+  import { pickUniqueFirst } from "../lib/compare";
+
+  const TOP_N = 3;
   type Side = "a" | "b";
 
   interface ClientEpochItem {
@@ -413,7 +427,7 @@ const breadcrumbsLd: Record<string, unknown> = {
     eraId: number;
     eraName: string;
     totalCount: number;
-    topFacts: ClientFact[];
+    ranked: string[];
     subjects: ClientSubject[];
     epoch: { year: number; items: ClientEpochItem[] };
   }
@@ -425,7 +439,12 @@ const breadcrumbsLd: Record<string, unknown> = {
   } else {
     const yearMin = Number(root.dataset.yearMin);
     const yearMax = Number(root.dataset.yearMax);
-    const data: Record<string, ClientYearStats> = JSON.parse(dataScript.textContent ?? "{}");
+    const payload: {
+      years: Record<string, ClientYearStats>;
+      facts: Record<string, ClientFact>;
+    } = JSON.parse(dataScript.textContent ?? "{}");
+    const data = payload.years ?? {};
+    const factsBySlug = payload.facts ?? {};
     const formEl = document.getElementById("compare-form") as HTMLElement | null;
     const viewEl = document.getElementById("compare-view") as HTMLElement | null;
     const pickerForm = document.getElementById("compare-picker") as HTMLFormElement | null;
@@ -479,7 +498,23 @@ const breadcrumbsLd: Record<string, unknown> = {
       return root!.querySelector<HTMLElement>(`.compare-col[data-side="${side}"]`);
     }
 
-    function paintColumn(side: Side, stats: ClientYearStats): void {
+    // Earlier year leads with what only it missed, so the columns differ.
+    function topFactsFor(
+      stats: ClientYearStats,
+      other: ClientYearStats,
+    ): { facts: ClientFact[]; onlyThis: boolean } {
+      let slugs = stats.ranked.slice(0, TOP_N);
+      let onlyThis = false;
+      if (stats.year < other.year) {
+        const otherSet = new Set(other.ranked);
+        slugs = pickUniqueFirst(stats.ranked, (slug) => otherSet.has(slug), TOP_N);
+        onlyThis = slugs.length > 0 && !otherSet.has(slugs[0]!);
+      }
+      const facts = slugs.map((slug) => factsBySlug[slug]).filter((f) => f !== undefined);
+      return { facts, onlyThis };
+    }
+
+    function paintColumn(side: Side, stats: ClientYearStats, other: ClientYearStats): void {
       const col = colForSide(side);
       if (!col) return;
 
@@ -501,16 +536,22 @@ const breadcrumbsLd: Record<string, unknown> = {
         countEl.textContent = `${stats.totalCount} ${pluralizeFacts(stats.totalCount)}`;
       }
 
+      const top = topFactsFor(stats, other);
+      const topTitle = col.querySelector<HTMLElement>('[data-bind="top-facts-title"]');
+      if (topTitle) {
+        topTitle.textContent = top.onlyThis ? `Пропустив лише випуск ${stats.year}` : "Топ-факти";
+      }
+
       const factsList = col.querySelector<HTMLElement>('[data-bind="top-facts"]');
       const emptyFacts = col.querySelector<HTMLElement>('[data-bind="empty-facts"]');
       if (factsList) {
         // Clear previous children (but keep empty placeholder reference)
         factsList.querySelectorAll<HTMLElement>("li.compare-fact").forEach((el) => el.remove());
-        if (stats.topFacts.length === 0) {
+        if (top.facts.length === 0) {
           if (emptyFacts) emptyFacts.hidden = false;
         } else {
           if (emptyFacts) emptyFacts.hidden = true;
-          for (const fact of stats.topFacts) {
+          for (const fact of top.facts) {
             const li = document.createElement("li");
             li.className = "compare-fact";
             const isVikha = fact.impact === "high";
@@ -642,8 +683,8 @@ const breadcrumbsLd: Record<string, unknown> = {
         showFormWithError(`Дані для років не знайдено.`);
         return;
       }
-      paintColumn("a", a);
-      paintColumn("b", b);
+      paintColumn("a", a, b);
+      paintColumn("b", b, a);
       renderCommon(a, b);
       updateMeta(yearA, yearB);
       setMode("view");
