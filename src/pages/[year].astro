@@ -102,6 +102,7 @@ const regionsPresent = matched.map((f) => f.data.region);
   ogImage={ogImage}
   jsonLd={[articleLd, breadcrumbsLd]}
   noindex={totalCount === 0}
+  canonicalPath={`/era/${era.slug}/`}
 >
   <ReadingProgress />
   <BackToTop />
