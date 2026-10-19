@@ -104,7 +104,7 @@ PUBLIC_SENTRY_DSN=https://xxxxxxxxxxxxxxxx@oXXXXXX.ingest.sentry.io/XXXXXXXX
 
 ## Spec Kit і правила для агентів
 
-Нові фічі ведуться через [GitHub Spec Kit](https://github.com/github/spec-kit): конституція в `.specify/memory/constitution.md`, спеки в `specs/`. Правила для AI-агентів (гілки, коміти, антислоп) зібрані в [`AGENTS.md`](AGENTS.md).
+Нові фічі ведуться через [GitHub Spec Kit](https://github.com/github/spec-kit): конституція в `.specify/memory/constitution.md`, спеки в `specs/`. Правила для AI-агентів (гілки, коміти, антислоп) зібрані в `AGENTS.md`.
 
 ## Архітектура
 
