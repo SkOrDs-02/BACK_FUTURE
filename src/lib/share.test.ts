@@ -3,10 +3,13 @@ import type { SubjectId } from "../config/site";
 import type { Fact } from "./filterFacts";
 import {
   SHARE_HEIGHT,
+  SHARE_SQUARE_SIZE,
   SHARE_WIDTH,
+  buildSharePosterSquareSvg,
   buildSharePosterSvg,
   computeSharePosterParts,
   pickPosterQuoteFact,
+  pickSquareMilestones,
   wrapText,
 } from "./share";
 
@@ -213,5 +216,99 @@ describe("buildSharePosterSvg", () => {
     const a = buildSharePosterSvg(2010, sampleFacts);
     const b = buildSharePosterSvg(2010, sampleFacts);
     expect(a).toBe(b);
+  });
+});
+
+describe("pickSquareMilestones", () => {
+  const facts = [
+    makeFact({
+      id: "p-old",
+      subject: "physics",
+      yearOfEvent: 2012,
+      relevantForEras: [3],
+      impact: "high",
+    }),
+    makeFact({
+      id: "p-new",
+      subject: "physics",
+      yearOfEvent: 2020,
+      relevantForEras: [3],
+      impact: "high",
+    }),
+    makeFact({
+      id: "b",
+      subject: "biology",
+      yearOfEvent: 2018,
+      relevantForEras: [3],
+      impact: "high",
+    }),
+    makeFact({ id: "t", subject: "tech", yearOfEvent: 2016, relevantForEras: [3], impact: "high" }),
+    makeFact({
+      id: "m",
+      subject: "medicine",
+      yearOfEvent: 2015,
+      relevantForEras: [3],
+      impact: "high",
+    }),
+    makeFact({
+      id: "low",
+      subject: "culture",
+      yearOfEvent: 2024,
+      relevantForEras: [3],
+      impact: "low",
+    }),
+  ];
+
+  it("picks three high-impact facts from different subjects, newest first", () => {
+    expect(pickSquareMilestones(facts).map((f) => f.id)).toEqual(["p-new", "b", "t"]);
+  });
+
+  it("returns fewer than three when there are not enough high-impact facts", () => {
+    expect(pickSquareMilestones(facts.slice(0, 2)).map((f) => f.id)).toEqual(["p-new"]);
+  });
+});
+
+describe("buildSharePosterSquareSvg", () => {
+  const facts = [
+    makeFact({
+      id: "phys",
+      subject: "physics",
+      yearOfEvent: 2012,
+      relevantForEras: [3, 4, 5],
+      impact: "high",
+    }),
+    makeFact({
+      id: "bio",
+      subject: "biology",
+      yearOfEvent: 2015,
+      relevantForEras: [3, 4, 5],
+      impact: "high",
+    }),
+    makeFact({
+      id: "a&b",
+      subject: "tech",
+      yearOfEvent: 2014,
+      relevantForEras: [3, 4, 5],
+      impact: "high",
+    }),
+  ];
+  const svg = buildSharePosterSquareSvg(2010, facts);
+
+  it("declares the 1080×1080 square format", () => {
+    expect(SHARE_SQUARE_SIZE).toBe(1080);
+    expect(svg).toContain('width="1080" height="1080"');
+    expect(svg).toContain('viewBox="0 0 1080 1080"');
+  });
+
+  it("renders the year, the missed counter and three milestones", () => {
+    expect(svg).toContain(">2010<");
+    expect(svg).toContain("Ти пропустив 3 відкриття");
+    expect(svg).toContain("Title phys");
+    expect(svg).toContain("Title bio");
+    expect(svg).toContain("Title a&amp;b");
+  });
+
+  it("falls back gracefully for years with zero facts", () => {
+    expect(buildSharePosterSquareSvg(2010, [])).toContain("Тут поки тихо");
   });
 });

@@ -23,12 +23,11 @@ export interface YearStats {
 }
 
 /**
- * Pick the top-N facts a graduate of `year` missed, biased toward high-impact
- * news. Within an impact bucket we sort by `yearOfEvent` descending (newer
- * first) so the reader sees the freshest milestones; ties break on id for a
- * stable build. The result is a slice - never the live array.
+ * Rank everything a graduate of `year` missed, biased toward high-impact news.
+ * Within an impact bucket we sort by `yearOfEvent` descending (newer first);
+ * ties break on id for a stable build. Returns a fresh array.
  */
-export function topImpactFacts(facts: readonly Fact[], year: number, n = 3): Fact[] {
+export function rankedFactsForYear(facts: readonly Fact[], year: number): Fact[] {
   const impactRank = (f: Fact): number => {
     switch (f.data.impact ?? "medium") {
       case "high":
@@ -50,8 +49,48 @@ export function topImpactFacts(facts: readonly Fact[], year: number, n = 3): Fac
         return b.data.yearOfEvent - a.data.yearOfEvent;
       }
       return a.id.localeCompare(b.id);
-    })
-    .slice(0, Math.max(0, n));
+    });
+}
+
+/** Top-N of `rankedFactsForYear`. */
+export function topImpactFacts(facts: readonly Fact[], year: number, n = 3): Fact[] {
+  return rankedFactsForYear(facts, year).slice(0, Math.max(0, n));
+}
+
+/**
+ * Take the first `n` items of an already ranked list, putting the ones
+ * `isShared` rejects first and only then topping up with shared ones. Order
+ * inside each group follows `ranked`. Generic so the `/compare` client script
+ * can run the same rule over its slug lists.
+ */
+export function pickUniqueFirst<T>(
+  ranked: readonly T[],
+  isShared: (item: T) => boolean,
+  n: number,
+): T[] {
+  const limit = Math.max(0, n);
+  const unique = ranked.filter((item) => !isShared(item));
+  if (unique.length >= limit) return unique.slice(0, limit);
+  const shared = ranked.filter((item) => isShared(item));
+  return unique.concat(shared.slice(0, limit - unique.length));
+}
+
+/**
+ * Top facts for `year` when it is shown next to `otherYear`. The earlier year
+ * leads with what only it missed (facts the later graduate also missed are
+ * pushed to the back), so the two columns differ. The later year, or the same
+ * year, keeps the plain top-N.
+ */
+export function topFactsAgainst(
+  facts: readonly Fact[],
+  year: number,
+  otherYear: number,
+  n = 3,
+): Fact[] {
+  const ranked = rankedFactsForYear(facts, year);
+  if (year >= otherYear) return ranked.slice(0, Math.max(0, n));
+  const otherIds = new Set(factsForYear(facts, otherYear).map((f) => f.id));
+  return pickUniqueFirst(ranked, (f) => otherIds.has(f.id), n);
 }
 
 /**
@@ -74,17 +113,26 @@ export function subjectsForYear(facts: readonly Fact[]): CompareSubjectRef[] {
 
 /**
  * Collect everything `/compare` needs about a single year: matched fact count,
- * era metadata, top-impact picks, and subject breakdown. Returned shape is
+ * era metadata, top-impact picks, and subject breakdown. Pass `otherYear` to
+ * get the pair-aware picks from `topFactsAgainst`. Returned shape is
  * intentionally small - anything heavier (FactCard renderer, FactTimeline)
  * stays in the page layer.
  */
-export function collectYearStats(facts: readonly Fact[], year: number, topN = 3): YearStats {
+export function collectYearStats(
+  facts: readonly Fact[],
+  year: number,
+  topN = 3,
+  otherYear?: number,
+): YearStats {
   const matched = factsForYear(facts, year);
   return {
     year,
     era: eraOf(year),
     totalCount: matched.length,
-    topFacts: topImpactFacts(facts, year, topN),
+    topFacts:
+      otherYear === undefined
+        ? topImpactFacts(facts, year, topN)
+        : topFactsAgainst(facts, year, otherYear, topN),
     subjects: subjectsForYear(matched),
   };
 }

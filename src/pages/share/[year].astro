@@ -26,6 +26,7 @@ const era = eraOf(year);
 const parts = computeSharePosterParts(year, allFacts);
 
 const posterUrl = `/share/${year}.png`;
+const squareUrl = `/share/${year}/square.png`;
 const posterAbsoluteUrl = new URL(posterUrl, SITE.defaultUrl).toString();
 const yearPageUrl = new URL(`/${year}/`, SITE.defaultUrl).toString();
 const yearPageEncoded = encodeURIComponent(yearPageUrl);
@@ -67,7 +68,28 @@ const shareIntents = [
   },
 ];
 
-const downloadFilename = `back-future-${year}.png`;
+const posters = [
+  {
+    id: "story",
+    label: "Сторіз",
+    hint: "1080×1920",
+    url: posterUrl,
+    filename: `back-future-${year}-story.png`,
+    width: 1080,
+    height: 1920,
+    aspect: "aspect-[1080/1920]",
+  },
+  {
+    id: "square",
+    label: "Квадрат",
+    hint: "1080×1080",
+    url: squareUrl,
+    filename: `back-future-${year}-square.png`,
+    width: 1080,
+    height: 1080,
+    aspect: "aspect-square",
+  },
+];
 ---
 
 <Base title={title} description={description} ogImage={posterAbsoluteUrl}>
@@ -84,26 +106,33 @@ const downloadFilename = `back-future-${year}.png`;
       Постер «Випуск {year}»
     </h1>
     <p class="text-ink-600 dark:text-ink-300 mt-3 max-w-prose text-base sm:text-lg">
-      Готовий постер у вертикальному форматі для Stories — {
-        parts.totalCount > 0 ? `${parts.totalCount} ${updatesLabel}` : "контент додається"
+      Два формати: сторіз для Stories і квадрат для стрічки. {
+        parts.totalCount > 0 ? `${parts.totalCount} ${updatesLabel}` : "Контент додається"
       }, {era.label}. Завантаж PNG і поділись.
     </p>
 
     <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <div
-        class="border-ink-100 dark:border-ink-700 dark:bg-ink-900 mx-auto w-full max-w-md overflow-hidden rounded-3xl border bg-white shadow-sm"
-      >
-        <div class="bg-paper-100 dark:bg-ink-800 aspect-[1080/1920] w-full overflow-hidden">
-          <img
-            src={posterUrl}
-            alt={`Постер для випуску ${year}-го: ${era.label}, ${parts.totalCount} ${updatesLabel}`}
-            width="1080"
-            height="1920"
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover"
-          />
-        </div>
+      <div class="grid grid-cols-2 items-start gap-4">
+        {
+          posters.map((p) => (
+            <figure class="border-ink-100 dark:border-ink-700 dark:bg-ink-900 overflow-hidden rounded-3xl border bg-white shadow-sm">
+              <div class={`bg-paper-100 dark:bg-ink-800 w-full overflow-hidden ${p.aspect}`}>
+                <img
+                  src={p.url}
+                  alt={`Постер «${p.label}» для випуску ${year}-го: ${era.label}, ${parts.totalCount} ${updatesLabel}`}
+                  width={p.width}
+                  height={p.height}
+                  loading="lazy"
+                  decoding="async"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <figcaption class="text-ink-600 dark:text-ink-300 px-3 py-2 text-sm">
+                {p.label} <span class="text-ink-500 dark:text-ink-400 font-mono">{p.hint}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
       </div>
 
       <div
@@ -113,15 +142,20 @@ const downloadFilename = `back-future-${year}.png`;
         data-share-text={message}
         data-poster-url={posterAbsoluteUrl}
       >
-        <a
-          href={posterUrl}
-          download={downloadFilename}
-          id="poster-download-btn"
-          class="bg-accent-700 hover:bg-accent-800 text-paper-50 inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
-        >
-          <span aria-hidden="true">⬇</span>
-          Завантажити PNG
-        </a>
+        {
+          posters.map((p) => (
+            <a
+              href={p.url}
+              download={p.filename}
+              data-poster-download={p.id}
+              class="bg-accent-700 hover:bg-accent-800 text-paper-50 inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+            >
+              <span aria-hidden="true">⬇</span>
+              {p.label}
+              <span class="font-mono text-sm font-normal opacity-80">{p.hint}</span>
+            </a>
+          ))
+        }
         <button
           id="poster-native-btn"
           type="button"
@@ -173,8 +207,9 @@ const downloadFilename = `back-future-${year}.png`;
 
     <div class="mt-12 text-sm">
       <p class="text-ink-500 dark:text-ink-400">
-        Формат постера — 1080×1920 (вертикальний, оптимальний для Instagram / Telegram Stories і
-        WhatsApp Status). Для горизонтального превʼю у X / Facebook використовується{" "}
+        Сторіз 1080×1920 підходить для Instagram і Telegram Stories та WhatsApp Status, квадрат
+        1080×1080 для стрічки Instagram і Telegram-каналів. Для горизонтального превʼю у X і
+        Facebook використовується{" "}
         <a
           href={`/og/${year}.png`}
           class="hover:text-accent-700 dark:hover:text-accent-300 underline underline-offset-4"
@@ -192,7 +227,6 @@ const downloadFilename = `back-future-${year}.png`;
     if (!root) return;
     const url = root.dataset.shareUrl ?? "";
     const text = root.dataset.shareText ?? "";
-    const posterUrl = root.dataset.posterUrl ?? "";
 
     function track(event, props) {
       try {
@@ -215,16 +249,15 @@ const downloadFilename = `back-future-${year}.png`;
       }, 2500);
     }
 
-    const downloadBtn = document.getElementById("poster-download-btn");
-    if (downloadBtn) {
-      downloadBtn.addEventListener(
+    root.querySelectorAll("a[data-poster-download]").forEach(function (a) {
+      a.addEventListener(
         "click",
         function () {
-          track("poster_downloaded", { url: posterUrl });
+          track("poster_downloaded", { url: a.href, format: a.dataset.posterDownload });
         },
         { passive: true },
       );
-    }
+    });
 
     root.querySelectorAll("a[data-share-target]").forEach(function (a) {
       a.addEventListener(

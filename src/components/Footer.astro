@@ -1,5 +1,6 @@
 ---
 import { SITE } from "../config/site";
+import { SUPPORT_PATH, hasSupportJar } from "../lib/support";
 const year = new Date().getFullYear();
 ---
 
@@ -135,14 +136,12 @@ const year = new Date().getFullYear();
           Проєкт безкоштовний і без реклами. Якщо подобається, пригости кавою.
         </p>
         {
-          SITE.monobankJarUrl && (
+          hasSupportJar() && (
             <a
-              href={SITE.monobankJarUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={SUPPORT_PATH}
               class="inline-flex items-center gap-2 rounded-sm border border-[color:var(--accent)] bg-transparent px-4 py-2.5 font-mono text-sm font-semibold text-[color:var(--accent)] transition hover:bg-[color:var(--accent)] hover:text-white"
             >
-              monobank · банка →
+              Підтримати проєкт →
             </a>
           )
         }

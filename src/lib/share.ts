@@ -198,3 +198,62 @@ export function buildSharePosterSvg(year: number, allFacts: readonly FactEntry[]
   <text x="540" y="1820" fill="#67675f" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="5" text-anchor="middle">${footerUrl}</text>
 </svg>`;
 }
+
+export const SHARE_SQUARE_SIZE = 1080;
+
+/**
+ * Три віхи для квадратного постера: лише `impact: high`, з різних предметів,
+ * найновіші першими (tie-break за id, щоб постер був детермінованим).
+ */
+export function pickSquareMilestones(facts: readonly FactEntry[], limit = 3): FactEntry[] {
+  const ranked = facts
+    .filter((f) => f.data.impact === "high")
+    .slice()
+    .sort((a, b) => b.data.yearOfEvent - a.data.yearOfEvent || a.id.localeCompare(b.id));
+  const seen = new Set<string>();
+  const picked: FactEntry[] = [];
+  for (const fact of ranked) {
+    if (seen.has(fact.data.subject)) continue;
+    seen.add(fact.data.subject);
+    picked.push(fact);
+    if (picked.length === limit) break;
+  }
+  return picked;
+}
+
+export function buildSharePosterSquareSvg(year: number, allFacts: readonly FactEntry[]): string {
+  const size = SHARE_SQUARE_SIZE;
+  const matched = factsForYear(allFacts, year);
+  const totalCount = matched.length;
+  const milestones = pickSquareMilestones(matched);
+
+  const headline =
+    totalCount > 0
+      ? `Ти пропустив ${totalCount} ${pluralize(totalCount, ["відкриття", "відкриття", "відкриттів"])}`
+      : "Тут поки тихо. Ми поповнюємо.";
+
+  const rows = milestones
+    .map((fact, i) => {
+      const base = 520 + i * 160;
+      const mark = SUBJECTS.find((s) => s.id === fact.data.subject)?.mark ?? "";
+      const titleLines = wrapText(fact.data.title, 38, 2)
+        .map(
+          (line, j) =>
+            `<text x="100" y="${base + 52 + j * 44}" fill="#16161a" font-family="Manrope, Inter, Arial, sans-serif" font-size="36" font-weight="700">${escapeXml(line)}</text>`,
+        )
+        .join("");
+      return `<g><rect x="100" y="${base - 38}" width="112" height="52" rx="26" fill="#eff4ff" stroke="#bfd1fe" stroke-width="2"/><text x="156" y="${base - 2}" fill="#1e3a8a" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="600" text-anchor="middle">${escapeXml(mark)}</text><text x="232" y="${base - 2}" fill="#67675f" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="500">${fact.data.yearOfEvent}</text>${titleLines}</g>`;
+    })
+    .join("");
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+  <rect width="${size}" height="${size}" fill="#f7f7f5"/>
+  <rect x="60" y="60" width="${size - 120}" height="${size - 120}" rx="48" fill="#ffffff" stroke="#d6d6d2" stroke-width="3"/>
+  <text x="540" y="150" fill="#1e3a8a" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="700" letter-spacing="10" text-anchor="middle">BACK_FUTURE</text>
+  <text x="540" y="330" fill="#16161a" font-family="Manrope, Inter, Arial, sans-serif" font-size="200" font-weight="800" text-anchor="middle">${year}</text>
+  <text x="540" y="410" fill="#262624" font-family="Manrope, Inter, Arial, sans-serif" font-size="46" font-weight="700" text-anchor="middle">${escapeXml(headline)}</text>
+  <path d="M100 440h880" stroke="#d6d6d2" stroke-width="2"/>
+  ${rows}
+  <text x="540" y="990" fill="#67675f" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="5" text-anchor="middle">${escapeXml(`back-future · /${year}`)}</text>
+</svg>`;
+}

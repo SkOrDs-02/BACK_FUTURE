@@ -3,3 +3,6 @@ node_modules
 .astro
 package-lock.json
 d/
+.claude/
+.specify/*
+!.specify/memory/

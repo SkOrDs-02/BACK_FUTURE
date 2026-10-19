@@ -132,14 +132,95 @@ function wrapText(text: string, maxCharsPerLine: number): string[] {
   return lines;
 }
 
-export function buildDefaultOgSvg(): string {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_WIDTH}" height="${OG_HEIGHT}" viewBox="0 0 ${OG_WIDTH} ${OG_HEIGHT}">
-  <rect width="${OG_WIDTH}" height="${OG_HEIGHT}" fill="#f7f7f5"/>
+/**
+ * `wrapText` з обмеженням на кількість рядків: зайве обрізається, а останній
+ * рядок отримує «…», щоб текст не виліз за картку. Повертає вже екрановані рядки.
+ */
+function clampLines(text: string, maxCharsPerLine: number, maxLines: number): string[] {
+  const lines = wrapText(text, maxCharsPerLine);
+  if (lines.length > maxLines) {
+    const kept = lines.slice(0, maxLines);
+    const last = kept[maxLines - 1] ?? "";
+    const room = maxCharsPerLine - 1;
+    const cut = last.length > room ? last.slice(0, room).replace(/\s+\S*$/, "") : last;
+    kept[maxLines - 1] = `${cut.replace(/[\s,.;:–-]+$/, "")}…`;
+    return kept.map(escapeXml);
+  }
+  return lines.map(escapeXml);
+}
+
+function textLines(lines: string[], y0: number, lineHeight: number, attrs: string): string {
+  return lines
+    .map((line, i) => `<text x="120" y="${y0 + i * lineHeight}" ${attrs}>${line}</text>`)
+    .join("");
+}
+
+const CARD_FRAME = `<rect width="${OG_WIDTH}" height="${OG_HEIGHT}" fill="#f7f7f5"/>
   <path d="M0 96h1200M0 192h1200M0 288h1200M0 384h1200M0 480h1200M0 576h1200" stroke="#1e3a8a" stroke-opacity=".08" stroke-width="3"/>
-  <rect x="72" y="72" width="1056" height="486" rx="40" fill="#ffffff" stroke="#d6d6d2" stroke-width="2"/>
-  <text x="120" y="180" fill="#1e3a8a" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="6">${escapeXml(SITE.name)}</text>
-  <text x="120" y="320" fill="#16161a" font-family="Manrope, Inter, Arial, sans-serif" font-size="64" font-weight="800">${escapeXml(SITE.tagline)}</text>
-  <text x="120" y="410" fill="#3a3a35" font-family="Inter, Arial, sans-serif" font-size="34">${escapeXml(SITE.description)}</text>
+  <rect x="72" y="72" width="1056" height="486" rx="40" fill="#ffffff" stroke="#d6d6d2" stroke-width="2"/>`;
+
+export function buildDefaultOgSvg(): string {
+  // 64px заголовок в один рядок не влазив у 960px робочої ширини картки.
+  const tagline = textLines(
+    clampLines(SITE.tagline, 22, 2),
+    270,
+    72,
+    'fill="#16161a" font-family="Manrope, Inter, Arial, sans-serif" font-size="60" font-weight="800"',
+  );
+  const description = textLines(
+    clampLines(SITE.description, 56, 2),
+    430,
+    42,
+    'fill="#3a3a35" font-family="Inter, Arial, sans-serif" font-size="30"',
+  );
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_WIDTH}" height="${OG_HEIGHT}" viewBox="0 0 ${OG_WIDTH} ${OG_HEIGHT}">
+  ${CARD_FRAME}
+  <text x="120" y="170" fill="#1e3a8a" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="6">${escapeXml(SITE.name)}</text>
+  ${tagline}
+  ${description}
+</svg>`;
+}
+
+/**
+ * Fact OG card: бренд, позначка предмета й рік події, заголовок до 3 рядків,
+ * `short` до 3 рядків, бейдж «Віха» для impact high.
+ * Викликається з `src/pages/og/fact-[slug].png.ts` під час білда.
+ */
+export function buildFactOgSvg(fact: CollectionEntry<"facts">): string {
+  const subject = SUBJECTS.find((s) => s.id === fact.data.subject);
+  const meta = escapeXml(
+    subject
+      ? `${subject.mark} · ${subject.label} · ${fact.data.yearOfEvent}`
+      : String(fact.data.yearOfEvent),
+  );
+  // Ліміти символів з запасом на ширший DejaVu Sans, яким resvg рендерить
+  // на Linux-білді замість Inter/Manrope.
+  const titleLines = clampLines(fact.data.title, 30, 3);
+  const titleSvg = textLines(
+    titleLines,
+    268,
+    54,
+    'fill="#16161a" font-family="Manrope, Inter, Arial, sans-serif" font-size="42" font-weight="800"',
+  );
+  const shortY = 268 + (titleLines.length - 1) * 54 + 54;
+  const shortSvg = textLines(
+    clampLines(fact.data.short, 66, 3),
+    shortY,
+    33,
+    'fill="#3a3a35" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="500"',
+  );
+  const badge =
+    fact.data.impact === "high"
+      ? `<rect x="948" y="122" width="132" height="48" rx="24" fill="#fff7e6" stroke="#e7b45a" stroke-width="1.5"/><text x="1014" y="155" fill="#7a4b00" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" text-anchor="middle">${escapeXml("Віха")}</text>`
+      : "";
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_WIDTH}" height="${OG_HEIGHT}" viewBox="0 0 ${OG_WIDTH} ${OG_HEIGHT}">
+  ${CARD_FRAME}
+  <text x="120" y="155" fill="#1e3a8a" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="6">${escapeXml(SITE.name)}</text>
+  ${badge}
+  <text x="120" y="205" fill="#67675f" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="2">${meta}</text>
+  ${titleSvg}
+  ${shortSvg}
 </svg>`;
 }
 

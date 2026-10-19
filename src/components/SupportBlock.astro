@@ -1,7 +1,8 @@
 ---
 import { SITE } from "../config/site";
+import { SUPPORT_PATH, hasSupportJar } from "../lib/support";
 
-const hasJar = SITE.monobankJarUrl.length > 0;
+const hasJar = hasSupportJar();
 const hasCoffee = SITE.buyMeACoffeeUrl.length > 0;
 ---
 
@@ -19,14 +20,8 @@ const hasCoffee = SITE.buyMeACoffeeUrl.length > 0;
   <div class="mt-5 flex flex-wrap gap-3" id="support-buttons">
     {
       hasJar ? (
-        <a
-          class="btn"
-          href={SITE.monobankJarUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-support-provider="monobank"
-        >
-          Банка Monobank
+        <a class="btn" href={SUPPORT_PATH} data-support-provider="monobank">
+          Підтримати проєкт
         </a>
       ) : (
         <span class="btn-ghost cursor-default opacity-50" aria-disabled="true">
