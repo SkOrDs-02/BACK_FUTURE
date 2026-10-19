@@ -3,11 +3,13 @@ import Base from "../../layouts/Base.astro";
 import FactCard from "../../components/FactCard.astro";
 import SubjectIcon from "../../components/SubjectIcon.astro";
 import SupportBlock from "../../components/SupportBlock.astro";
+import ThenAside from "../../components/ThenAside.astro";
 import { getCollection } from "astro:content";
-import { factsForEra, groupBySubject } from "../../lib/filterFacts";
+import { factsForEra, factsForYear, groupBySubject } from "../../lib/filterFacts";
+import { eraMilestones } from "../../lib/related";
 import { ERAS } from "../../lib/eras";
 import { SITE } from "../../config/site";
-import { eraUrl, yearUrl } from "../../lib/url";
+import { eraUrl, factUrl, yearUrl } from "../../lib/url";
 import { factsWord, updatesCount } from "../../lib/plurals";
 
 export async function getStaticPaths() {
@@ -28,9 +30,22 @@ const middleYear = Math.round((era.yearStart + Math.min(era.yearEnd, SITE.yearMa
 const otherEras = ERAS.filter((e) => e.id !== era.id);
 
 const yearEndLabel = era.yearEnd > SITE.yearMax ? "сьогодні" : era.yearEnd;
-// Description tuned for ~120–160 chars (Google snippet sweet spot). era.summary
-// is unique per era → SERP listing не дублюється з сусідніми сторінками.
-const description = `${era.summary} ${totalCount} ${factsWord(totalCount)} для випускників ${era.yearStart}–${yearEndLabel}.`;
+const lastYear = Math.min(era.yearEnd, SITE.yearMax);
+const eraYears = Array.from({ length: lastYear - era.yearStart + 1 }, (_, i) => era.yearStart + i);
+const milestones = eraMilestones(items, era, 3);
+// The earliest graduate of the era missed the most; that number is what the
+// intro and the snippet promise.
+const missedCount = factsForYear(allFacts, era.yearStart).length;
+const range = `${era.yearStart}–${yearEndLabel}`;
+const title = `Випуск ${range}: що змінилось у науці й світі`;
+// ~160 chars is the snippet budget: add milestone titles while they fit.
+let description = `${missedCount} ${factsWord(missedCount)}, які пропустили випускники ${range}`;
+for (const [i, m] of milestones.entries()) {
+  const next = `${description}${i === 0 ? ": " : ", "}${m.data.title}`;
+  if (next.length > 158) break;
+  description = next;
+}
+description += ".";
 const ogImage = new URL(`/og/era-${era.slug}.png`, SITE.defaultUrl).toString();
 const homeUrl = `${SITE.defaultUrl}/`;
 const canonical = new URL(Astro.url.pathname, SITE.defaultUrl).toString();
@@ -38,10 +53,20 @@ const canonical = new URL(Astro.url.pathname, SITE.defaultUrl).toString();
 const collectionLd: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: `${era.label} | ${SITE.name}`,
+  name: `${title} | ${SITE.name}`,
   description,
   inLanguage: "uk",
   url: canonical,
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: totalCount,
+    itemListElement: milestones.map((m, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: m.data.title,
+      url: new URL(factUrl(m.id), SITE.defaultUrl).toString(),
+    })),
+  },
   isPartOf: {
     "@type": "WebSite",
     name: SITE.name,
@@ -70,7 +95,7 @@ const breadcrumbsLd: Record<string, unknown> = {
 ---
 
 <Base
-  title={era.label}
+  title={title}
   description={description}
   ogImage={ogImage}
   ogType="article"
@@ -122,12 +147,69 @@ const breadcrumbsLd: Record<string, unknown> = {
       >
         {era.label}
       </h1>
-      <p class="text-ink-700 mt-4 max-w-prose text-lg">{era.summary}</p>
+      <p class="text-ink-700 mt-4 max-w-prose text-lg">
+        Ця ера для тих, хто закінчив школу з {era.yearStart} по{" "}
+        {era.yearEnd > SITE.yearMax ? "сьогодні" : `${era.yearEnd} рік`}. {era.summary}
+      </p>
+      <p class="text-ink-700 mt-3 max-w-prose">
+        Випускник {era.yearStart}-го пропустив {missedCount}
+        {factsWord(missedCount)}.
+        {milestones.length > 0 && " Найбільші віхи:"}
+      </p>
+      {
+        milestones.length > 0 && (
+          <ul class="text-ink-700 mt-2 max-w-prose list-disc space-y-1 pl-5">
+            {milestones.map((m) => (
+              <li>
+                <a
+                  href={factUrl(m.id)}
+                  class="text-accent-700 dark:text-accent-300 inline-flex min-h-11 items-center underline underline-offset-2 sm:min-h-0"
+                >
+                  {m.data.title}
+                </a>
+                <span class="text-ink-500 dark:text-ink-400 font-mono text-sm tabular-nums">
+                  {` ${m.data.yearOfEvent}`}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )
+      }
       <p class="text-ink-500 dark:text-ink-400 mt-3 text-sm">
         {totalCount}
         {factsWord(totalCount)} у цій ері, згруповано за предметами.
       </p>
     </div>
+  </section>
+
+  <nav class="container-prose mt-8" aria-labelledby="era-years-heading">
+    <h2 id="era-years-heading" class="font-display text-ink-900 text-xl font-bold">
+      Обери свій рік
+    </h2>
+    <ul class="mt-4 flex flex-wrap gap-2">
+      {
+        eraYears.map((y) => (
+          <li>
+            <a
+              href={yearUrl(y)}
+              class="border-ink-200 text-ink-700 hover:border-accent-700 hover:text-accent-700 inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border bg-white px-4 font-mono text-sm tabular-nums transition dark:border-[color:var(--card-edge)] dark:bg-[color:var(--card)]"
+            >
+              {y}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <section class="mt-8" aria-labelledby="era-context-heading">
+    <h2
+      id="era-context-heading"
+      class="container-prose font-display text-ink-900 text-xl font-bold"
+    >
+      Контекст епохи
+    </h2>
+    <ThenAside year={middleYear} />
   </section>
 
   {
@@ -171,7 +253,7 @@ const breadcrumbsLd: Record<string, unknown> = {
             </header>
             <div class="grid gap-4">
               {g.items.map((f) => (
-                <div data-reveal>
+                <div data-reveal class="min-w-0">
                   <FactCard fact={f} />
                 </div>
               ))}
