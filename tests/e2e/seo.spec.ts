@@ -83,3 +83,25 @@ test("/era/<slug>/ has og:type=article + BreadcrumbList JSON-LD", async ({ page 
     .find((parsed): parsed is Record<string, unknown> => parsed?.["@type"] === "BreadcrumbList");
   expect(breadcrumbs, "BreadcrumbList JSON-LD missing on /era/<slug>/").toBeTruthy();
 });
+
+test("/llms.txt and /llms-full.txt are served for LLM crawlers", async ({ request }) => {
+  const llms = await request.get("/llms.txt");
+  expect(llms.status()).toBe(200);
+  expect(await llms.text()).toContain("# BACK_FUTURE");
+
+  const full = await request.get("/llms-full.txt");
+  expect(full.status()).toBe(200);
+  expect(await full.text()).toContain("Антиводень");
+});
+
+test("robots.txt allows AI crawlers and sitemap skips noindex pages", async ({ request }) => {
+  const robots = await (await request.get("/robots.txt")).text();
+  for (const bot of ["GPTBot", "ClaudeBot", "PerplexityBot", "Google-Extended"]) {
+    expect(robots).toContain(`User-agent: ${bot}`);
+  }
+
+  const sitemap = await (await request.get("/sitemap-0.xml")).text();
+  expect(sitemap).toContain("/about/");
+  expect(sitemap).not.toContain("/share/");
+  expect(sitemap).not.toContain("/themes/");
+});

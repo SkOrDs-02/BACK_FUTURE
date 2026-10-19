@@ -43,9 +43,20 @@ const websiteLd: Record<string, unknown> = {
     url: SITE.defaultUrl,
   },
 };
+
+// ponytail: без SearchAction. Pagefind відкривається діалогом і не читає
+// запит з URL, тож `urlTemplate` вів би на сторінку без результатів.
+const organizationLd: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE.name,
+  url: SITE.defaultUrl,
+  logo: new URL("/icon-512.png", SITE.defaultUrl).toString(),
+  sameAs: [SITE.repoUrl],
+};
 ---
 
-<Base jsonLd={websiteLd}>
+<Base jsonLd={[websiteLd, organizationLd]}>
   <div class="container-wide">
     <Hero totalFacts={totalFacts} factsFromYear={factsFromYear} defaultYear={DEFAULT_YEAR} />
 
