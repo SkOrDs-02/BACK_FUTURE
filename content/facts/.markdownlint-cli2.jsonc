@@ -12,7 +12,8 @@
 // - голий URL у тілі факту (треба [текст](url)): MD034 → true
 // - **жирний** замість заголовка: MD036 → true
 // - inline HTML, який перетворює факт на лендінг: MD033 → allow-list
-// - неконсистентний стиль emphasis / bold: MD049, MD050 → "asterisk"
+// - неконсистентний стиль emphasis / bold: MD049 → "underscore" (так форматує
+//   Prettier у pre-commit, asterisk тут суперечив би йому), MD050 → "asterisk"
 // - відсутність blank line навколо заголовків і списків: MD022, MD031, MD032
 // - незавершений ! або ? у заголовку (а заголовків у фактах майже немає,
 //   тож якщо вони з'являться — нехай будуть охайні): MD026 → "!?"
@@ -39,7 +40,7 @@
     "MD033": { "allowed_elements": ["sup", "sub", "br"] },
     "MD034": true,
     "MD036": { "punctuation": ".,;:!?" },
-    "MD049": { "style": "asterisk" },
+    "MD049": { "style": "underscore" },
     "MD050": { "style": "asterisk" },
   },
   "globs": ["**/*.md"],
