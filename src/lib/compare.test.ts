@@ -3,8 +3,10 @@ import type { SubjectId } from "../config/site";
 import {
   collectYearStats,
   commonSubjects,
+  pickUniqueFirst,
   randomYearPair,
   subjectsForYear,
+  topFactsAgainst,
   topImpactFacts,
 } from "./compare";
 import type { Fact, Impact } from "./filterFacts";
@@ -184,6 +186,85 @@ describe("collectYearStats", () => {
     expect(stats.totalCount).toBe(2);
     expect(stats.topFacts.map((f) => f.id)).toEqual(["h-2015", "m-2018"]);
     expect(stats.subjects.map((s) => s.subject)).toEqual(["biology", "physics"]);
+  });
+});
+
+describe("pickUniqueFirst", () => {
+  it("puts unshared items first and tops up with shared ones in rank order", () => {
+    const shared = new Set(["b", "d"]);
+    expect(pickUniqueFirst(["a", "b", "c", "d", "e"], (x) => shared.has(x), 3)).toEqual([
+      "a",
+      "c",
+      "e",
+    ]);
+    expect(pickUniqueFirst(["b", "a", "d"], (x) => shared.has(x), 3)).toEqual(["a", "b", "d"]);
+    expect(pickUniqueFirst(["a"], () => false, 0)).toEqual([]);
+  });
+});
+
+describe("topFactsAgainst", () => {
+  const all = [1, 2, 3, 4, 5] as const;
+  // Newest high-impact facts are missed by both 1991 and 2024, so the plain
+  // top-N gives both columns the same list.
+  const facts = [
+    makeFact({
+      id: "new-1",
+      subject: "tech",
+      yearOfEvent: 2025,
+      relevantForEras: all,
+      impact: "high",
+    }),
+    makeFact({
+      id: "new-2",
+      subject: "tech",
+      yearOfEvent: 2024,
+      relevantForEras: all,
+      impact: "high",
+    }),
+    makeFact({
+      id: "new-3",
+      subject: "tech",
+      yearOfEvent: 2024,
+      relevantForEras: all,
+      impact: "high",
+    }),
+    makeFact({
+      id: "old-1",
+      subject: "history",
+      yearOfEvent: 2001,
+      relevantForEras: all,
+      impact: "high",
+    }),
+    makeFact({
+      id: "old-2",
+      subject: "history",
+      yearOfEvent: 1998,
+      relevantForEras: all,
+      impact: "medium",
+    }),
+  ];
+
+  it("gives 1991 and 2024 different lists, unique facts first", () => {
+    const a = topFactsAgainst(facts, 1991, 2024, 3).map((f) => f.id);
+    const b = topFactsAgainst(facts, 2024, 1991, 3).map((f) => f.id);
+    expect(b).toEqual(["new-1", "new-2", "new-3"]);
+    expect(a).toEqual(["old-1", "old-2", "new-1"]);
+    expect(a).not.toEqual(b);
+  });
+
+  it("is symmetric: the earlier year gets the unique picks on either side", () => {
+    expect(topFactsAgainst(facts, 1991, 2024, 3)).toEqual(
+      collectYearStats(facts, 1991, 3, 2024).topFacts,
+    );
+    expect(collectYearStats(facts, 2024, 3, 1991).topFacts.map((f) => f.id)).toEqual([
+      "new-1",
+      "new-2",
+      "new-3",
+    ]);
+  });
+
+  it("falls back to the plain top-N when both years are the same", () => {
+    expect(topFactsAgainst(facts, 2010, 2010, 3)).toEqual(topImpactFacts(facts, 2010, 3));
   });
 });
 

@@ -2,7 +2,7 @@
 
 > Список можливих покращень для BACK_FUTURE. Це **сирі ідеї** — частина з них ще не пройшла через спільне обговорення. Робочий план PR-ів — у [`roadmap.md`](./roadmap.md).
 > 24 пункти, погоджені з власником, — у `project-memory.md`, секція 6.
-> Останнє оновлення: травень 2026 (після PR #133). Ідеї, які вже зроблено, перенесено в розділ «Зроблено» внизу — щоб новий контриб'ютор бачив, що залишилось, але міг звіритися з історією.
+> Останнє оновлення: жовтень 2026 (після перезапуску, PR #161-#180). Ідеї, які вже зроблено, перенесено в розділ «Зроблено» внизу — щоб новий контриб'ютор бачив, що залишилось, але міг звіритися з історією.
 
 ---
 
@@ -15,11 +15,7 @@
 
 ### UX і навігація
 
-- **Збережені факти** (bookmark) — невелика сторінка `/saved` (4.4 у roadmap).
-
-### Нові сторінки
-
-- **`/share/[year]`** — рендер постера PNG для соцмереж (#5 у memory; 6.5 у roadmap).
+- **Збережені факти** (bookmark): невелика сторінка `/saved` (4.4 у roadmap). PR #149 закрито без мержу, ідея без дедлайну.
 
 ### SEO і шеринг
 
@@ -27,13 +23,12 @@
 
 ### PWA
 
-- **Manifest + service-worker** для офлайн-перегляду (5.1 у roadmap).
+- **Service-worker** для офлайн-перегляду (5.1 у roadmap). PR #144 закрито без мержу, ідея без дедлайну. PNG-іконки manifest уже є.
 
 ### Залучення / community
 
-- **GitHub Action**: issue зі шаблону `new-fact.yml` → draft PR з готовим `.md`-фактом (7.1 у roadmap).
-- **`/contributors`** — список авторів фактів (потребує `authors` поля у frontmatter; 7.2 у roadmap).
-- **`/support`** — Monobank / Buy Me a Coffee, коли URL заповняться у `site.ts` (7.3 у roadmap).
+- **GitHub Action**: issue зі шаблону `new-fact.yml` → draft PR з готовим `.md`-фактом (7.1 у roadmap). PR #145 закрито без мержу.
+- **`/contributors`**: список авторів фактів (потребує `authors` поля у frontmatter; 7.2 у roadmap). PR #150 закрито без мержу.
 - **Email-дайджест** — раз на місяць нові факти, Buttondown або self-hosted (7.4 у roadmap).
 
 ### Бренд і дизайн-система
@@ -42,16 +37,16 @@
 
 ### i18n
 
-- **Astro routing**: `/uk/`, `/en/` — структурно, без перекладів спочатку (9.1 у roadmap).
+- **Astro routing**: `/uk/`, `/en/`, структурно, без перекладів спочатку (9.1 у roadmap). PR #146 закрито без мержу.
 - **ICU plurals** у форматерах кількості (9.2 у roadmap) — ✅ зроблено: `src/lib/plurals.ts` із `Intl.PluralRules` + helpers (`factsCount` / `updatesCount` / `yearsAgo`), приймає `locale` → готово до 9.1 i18n routing.
 - **Англомовний UI** — діаспора + органіка (9.3 у roadmap).
 
 ### Інфра / тех-борг
 
-- **Реальний домен + Vercel/Cloudflare** (#18 у memory) — pending після контенту. `defaultUrl` у `site.ts` досі плейсхолдер (`back-future.example.com`).
+- **Запуск `back-future.com`** (#18 у memory): дії власника: DNS, перепідвʼязка Vercel до `SkOrDs-02`, Search Console, `PUBLIC_SITE_URL`.
 - **Sveltia / Decap CMS production auth** (#20 у memory) — конфіг є, налаштування авторизації для прода — pending.
 - **Renovate замість/поверх Dependabot** — кращий контроль над групуваннями оновлень (поки Dependabot з груповими правилами достатній).
-- **`monobankJarUrl` / `buyMeACoffeeUrl` / `twitter`** у `site.ts` — порожні рядки блокують відповідні UI-блоки (`/support`, share-хедер на X).
+- **`monobankJarUrl` / `buyMeACoffeeUrl` / `twitter`** у `site.ts`: порожні рядки приховують відповідні UI-блоки; `/support` готова і лишається `noindex`, поки URL порожній.
 
 ---
 
@@ -118,6 +113,16 @@
 - **JetBrains Mono замінив IBM Plex Mono** — Done у [#106](https://github.com/Skords-01/BACK_FUTURE/pull/106) (cyrillic + latin); деактивовані шрифти (Fraunces/Lora/IBM Plex Mono) прибрані у [#133](https://github.com/Skords-01/BACK_FUTURE/pull/133).
 - **SVG-іконки предметів** — Done: `src/lib/subjectIcons.ts` + `<SubjectIcon>` компонент (як описано в 8.1 roadmap); `emoji` у `SUBJECTS` лишається для OG.
 - **Окремий markdownlint для `content/facts/`** — Done у [#50](https://github.com/Skords-01/BACK_FUTURE/pull/50).
+
+### Перезапуск 2026-10 (зроблено)
+
+- **Квадратний постер і сторіз `/share/[year]`**: Done у [#180](https://github.com/SkOrDs-02/BACK_FUTURE/pull/180).
+- **`/support`**: Done у [#178](https://github.com/SkOrDs-02/BACK_FUTURE/pull/178) (noindex, поки URL банки порожній).
+- **`llms.txt`, `llms-full.txt`, правила для AI-краулерів, PNG-іконки manifest**: Done у [#179](https://github.com/SkOrDs-02/BACK_FUTURE/pull/179).
+- **Порівняння років з різницею, OG-картка кожного факту**: Done у [#175](https://github.com/SkOrDs-02/BACK_FUTURE/pull/175).
+- **Антислоп-перевірка у `validate-content`**: Done у [#176](https://github.com/SkOrDs-02/BACK_FUTURE/pull/176).
+- **Spec Kit і `AGENTS.md`**: Done у [#174](https://github.com/SkOrDs-02/BACK_FUTURE/pull/174).
+- **Факти 2025-2026 (43)**: Done у [#162-#173](https://github.com/SkOrDs-02/BACK_FUTURE/pull/173).
 
 ---
 
