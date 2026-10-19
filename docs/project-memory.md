@@ -1,8 +1,8 @@
 # BACK_FUTURE — пам'ять проєкту
 
-> Цей документ — «жива» довгострокова пам'ять проєкту. Тут зафіксовано все, що було спільно проговорено між власником і Devin: бачення, рішення, відкладені моменти, відкриті питання, поточний стан. Оновлюється з кожним значущим етапом. Усі майбутні сесії повинні почати читання саме з цього документа.
+> Цей документ: «жива» довгострокова пам'ять проєкту. Тут зафіксовано все, що було спільно проговорено між власником і агентами: бачення, рішення, відкладені моменти, відкриті питання, поточний стан. Оновлюється з кожним значущим етапом. Нові сесії починають з `AGENTS.md` і `specs/`, а цей документ читають як довгу пам'ять.
 
-Останнє оновлення: травень 2026 року — закрито roadmap 6.5: `/share/[year]` PNG-постер (1080×1920 для Stories) із preview-сторінкою, download / native share / copy-link / Telegram-X-Facebook intents, лінк «Завантажити постер» у `ShareBlock`, deterministic top-quote (high-impact + id-tie-break), empty-year fallback. До цього: закрите roadmap 9.2 (ICU plurals через `src/lib/plurals.ts` із `Intl.PluralRules`), PR #133 і вся історія нижче.
+Останнє оновлення: жовтень 2026 року, після перезапуску проєкту (PR #161-#180). 218 фактів, домен `back-future.com`, деплой лише Vercel, Spec Kit у репо, `llms.txt`, квадратний постер, `/support`, антислоп-перевірка. Історія до перезапуску нижче лишається без змін.
 
 ---
 
@@ -103,23 +103,25 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 
 ### Цільовий обсяг
 
-**11 предметів підтримуються у схемі/CMS/UI і всі заповнені — 175 фактів сумарно** (15–16 на предмет). Базовий пак 5 предметів у PR-ах #3, #4, #5, #16, #17 (astronomy, biology, geography, history, physics); нові 6 предметів — PR-и #53 (tech), #54 (culture), #56 (ecology), #72 (medicine), #75 (economy), #76 (sport). PR #63 додав `quote` / `before` / `after` / `impact: high` 32 ключовим фактам. PR #116 додав ще 10 фактів у різні предмети (165 → 175).
+**11 предметів у схемі/CMS/UI, 218 фактів сумарно.** 175 фактів до 2024 (базовий пак 5 предметів у PR #3, #4, #5, #16, #17, нові 6 предметів у PR #53, #54, #56, #72, #75, #76, `quote` / `before` / `after` / `impact: high` для 32 фактів у PR #63, ще 10 фактів у PR #116), плюс 43 факти за 2025-2026 (3-4 на предмет, PR #162-#173), плюс 9 фактів для прогалин 1991-2003 у culture, sport і ecology (PR `content/era-gaps`). Покриття дивитись через `npm run coverage:content`.
 
 ### Стан батчів
 
-| Предмет   | Гілка                     | PR                                                      | Статус                                       |
-| --------- | ------------------------- | ------------------------------------------------------- | -------------------------------------------- |
-| Astronomy | `devin/content-astronomy` | [#3](https://github.com/Skords-01/BACK_FUTURE/pull/3)   | MERGED                                       |
-| Biology   | `devin/content-biology`   | [#4](https://github.com/Skords-01/BACK_FUTURE/pull/4)   | MERGED (з виправленнями про війну 2014/2022) |
-| Geography | `devin/content-geography` | [#5](https://github.com/Skords-01/BACK_FUTURE/pull/5)   | MERGED                                       |
-| History   | `devin/content-history`   | [#16](https://github.com/Skords-01/BACK_FUTURE/pull/16) | MERGED                                       |
-| Physics   | `devin/content-physics`   | [#17](https://github.com/Skords-01/BACK_FUTURE/pull/17) | MERGED                                       |
-| Tech      | —                         | [#53](https://github.com/Skords-01/BACK_FUTURE/pull/53) | MERGED                                       |
-| Culture   | —                         | [#54](https://github.com/Skords-01/BACK_FUTURE/pull/54) | MERGED                                       |
-| Ecology   | —                         | [#56](https://github.com/Skords-01/BACK_FUTURE/pull/56) | MERGED                                       |
-| Medicine  | —                         | [#72](https://github.com/Skords-01/BACK_FUTURE/pull/72) | MERGED                                       |
-| Economy   | —                         | [#75](https://github.com/Skords-01/BACK_FUTURE/pull/75) | MERGED                                       |
-| Sport     | —                         | [#76](https://github.com/Skords-01/BACK_FUTURE/pull/76) | MERGED                                       |
+| Предмет   | Гілка                    | PR                                                             | Статус                                       |
+| --------- | ------------------------ | -------------------------------------------------------------- | -------------------------------------------- |
+| Astronomy | —                        | [#3](https://github.com/Skords-01/BACK_FUTURE/pull/3)          | MERGED                                       |
+| Biology   | —                        | [#4](https://github.com/Skords-01/BACK_FUTURE/pull/4)          | MERGED (з виправленнями про війну 2014/2022) |
+| Geography | —                        | [#5](https://github.com/Skords-01/BACK_FUTURE/pull/5)          | MERGED                                       |
+| History   | —                        | [#16](https://github.com/Skords-01/BACK_FUTURE/pull/16)        | MERGED                                       |
+| Physics   | —                        | [#17](https://github.com/Skords-01/BACK_FUTURE/pull/17)        | MERGED                                       |
+| Tech      | —                        | [#53](https://github.com/Skords-01/BACK_FUTURE/pull/53)        | MERGED                                       |
+| Culture   | —                        | [#54](https://github.com/Skords-01/BACK_FUTURE/pull/54)        | MERGED                                       |
+| Ecology   | —                        | [#56](https://github.com/Skords-01/BACK_FUTURE/pull/56)        | MERGED                                       |
+| Medicine  | —                        | [#72](https://github.com/Skords-01/BACK_FUTURE/pull/72)        | MERGED                                       |
+| Economy   | —                        | [#75](https://github.com/Skords-01/BACK_FUTURE/pull/75)        | MERGED                                       |
+| Sport     | —                        | [#76](https://github.com/Skords-01/BACK_FUTURE/pull/76)        | MERGED                                       |
+| 2025-2026 | `content/<subject>-2025` | [#162-#173](https://github.com/SkOrDs-02/BACK_FUTURE/pull/173) | MERGED, 43 факти                             |
+| Прогалини | `content/era-gaps`       | відкритий PR                                                   | 9 фактів для 1991-2003                       |
 
 ### Український внесок (ціль: 3+ фактів на предмет)
 
@@ -162,13 +164,13 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 | 2   | Шер-кнопки + копіювання посилання     | ✓     | Done у [#21](https://github.com/Skords-01/BACK_FUTURE/pull/21).                                                                                                                                                                                                                                               |
 | 3   | Лічильник «База: N фактів» у хедері   | ✓     | Done у [#22](https://github.com/Skords-01/BACK_FUTURE/pull/22).                                                                                                                                                                                                                                               |
 | 4   | Анімовані тізери на лендингу          | ✓     | Done у [#107](https://github.com/Skords-01/BACK_FUTURE/pull/107) і [#115](https://github.com/Skords-01/BACK_FUTURE/pull/115): staggered entrance для timeline rows, magnetic 3D tilt на fact cards, slot-machine GO, glitch reveal року, DensityStrip tooltip. Усі ефекти поважають `prefers-reduced-motion`. |
-| 5   | Сторінка `/share/[year]` (PNG-постер) | ✓     | Pending (залежить від #1.3)                                                                                                                                                                                                                                                                                   |
+| 5   | Сторінка `/share/[year]` (PNG-постер) | ✓     | Done: сторіз 1080×1920 і квадрат 1080×1080 ([#180](https://github.com/SkOrDs-02/BACK_FUTURE/pull/180)).                                                                                                                                                                                                       |
 
 ### 🧠 Контент
 
 | #   | Пункт                              | Згода      | Статус                                                                                                                                                                                      |
 | --- | ---------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 6   | 75 фактів (15 на предмет)          | ✓ (більше) | Done. 11/11 батчів готові — 175 фактів сумарно (15–16 на предмет після +10 у [#116](https://github.com/Skords-01/BACK_FUTURE/pull/116)).                                                    |
+| 6   | 75 фактів (15 на предмет)          | ✓ (більше) | Done. 11/11 батчів готові, 218 фактів сумарно (175 до 2024, 43 за 2025-2026).                                                                                                               |
 | 7   | Прив'язка до тем шкільної програми | ✓          | Pending                                                                                                                                                                                     |
 | 8   | Розділ «Підручники» з обкладинками | ⊘ (можемо) | Pending                                                                                                                                                                                     |
 | 9   | `/timeline` — хронологія           | ✓          | Done у [#93](https://github.com/Skords-01/BACK_FUTURE/pull/93) і [#97](https://github.com/Skords-01/BACK_FUTURE/pull/97): Variant A (вертикальна вісь, era jump-strip, dark-mode contrast). |
@@ -191,13 +193,13 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 | 16  | Замовний контент для бізнесу  | ⊘ (як план)   | Pending (post-launch)       |
 | 17  | Подяки на about-сторінці      | ⊘ (можна)     | Pending                     |
 
-> Monobank-банка наразі **не вказана** в `src/config/site.ts` — користувач створить пізніше і дасть URL.
+> Monobank-банка наразі **не вказана** в `src/config/site.ts`. Сторінка `/support` готова ([#178](https://github.com/SkOrDs-02/BACK_FUTURE/pull/178)) і лишається `noindex`, поки URL порожній.
 
 ### 🔧 Інфраструктура
 
 | #   | Пункт                                 | Згода | Статус                                                                                                                                                                                                                                                                                                                                                                                                  |
 | --- | ------------------------------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 18  | Реальний домен + Vercel/Cloudflare    | ✓     | Pending — після контенту                                                                                                                                                                                                                                                                                                                                                                                |
+| 18  | Реальний домен + Vercel/Cloudflare    | ✓     | Домен `back-future.com`, деплой Vercel; лишилось підтвердити DNS і перепідвʼязати Vercel до `SkOrDs-02`                                                                                                                                                                                                                                                                                                 |
 | 19  | Plausible / simpleanalytics           | ✓     | Done у [#44](https://github.com/Skords-01/BACK_FUTURE/pull/44) (Plausible / Umami); розширено у [#117](https://github.com/Skords-01/BACK_FUTURE/pull/117) (PostHog + Sentry + GSC, env-gated), [#131](https://github.com/Skords-01/BACK_FUTURE/pull/131) (інструментація PostHog подій і фунелів) і [#132](https://github.com/Skords-01/BACK_FUTURE/pull/132) (modern query API для dashboard-as-code). |
 | 20  | Decap / Sveltia CMS поверх `content/` | ✓     | Частково: Sveltia CMS config є, production auth ще потребує налаштування.                                                                                                                                                                                                                                                                                                                               |
 | 21  | GitHub Actions: link checker і ширше  | ✓     | Done. CI у `.github/workflows/ci.yml` + `link-check.yml`; internal docs/build links блокують, зовнішні `sources[].url` — warning-only.                                                                                                                                                                                                                                                                  |
@@ -214,64 +216,64 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 
 ## 7. Хронологія прийнятих рішень
 
-### Сесія 1 (PR #1) — MVP
+### Етап 1 (PR #1) — MVP
 
 - Поскрафлений каркас Astro+TS+Tailwind.
 - 5 sample-фактів для перевірки логіки.
 - 39 сторінок (1991–2026 + index, about, metodologia).
-- **Багфікс:** на статичному хостингу devinapps (S3) роути `/2007/` не резолвились → перейшли на формат `.html` (`/2007.html`). На реальному прод-хосту (Vercel/Netlify/Cloudflare Pages) `.html` ховається в clean URL автоматично.
+- **Багфікс:** на тодішньому статичному S3-хостингу прев'ю роути `/2007/` не резолвились, тож перейшли на формат `.html` (`/2007.html`). На Vercel `.html` ховається в clean URL автоматично.
 - CI workflow початково в `docs/proposed-ci/` (токен сесії не мав `workflow`-скоупу). Пізніше мігрований у `.github/workflows/ci.yml`.
 
-### Сесія 2 (PR #2) — Дизайн
+### Етап 2 (PR #2) — Дизайн
 
 - Створено `/themes.html` — дизайн-лабораторія з 4 муудами.
 - Користувач обрав **«3+1»**: Mineral база + Schoolbook акценти.
 - Темно-синій акцент, моно для років, легка паперова фактура.
 
-### Сесія 3 (PR #3) — Астрономія
+### Етап 3 (PR #3) — Астрономія
 
 - 14 нових фактів + Pluto (з MVP) = 15.
 - 3 українські: Каденюк, Чурюмов, Січ-2-30.
 
-### Сесія 4 (PR #4) — Біологія
+### Етап 4 (PR #4) — Біологія
 
 - 14 нових + CRISPR (з MVP) = 15.
 - 3 українські: коні Пржевальського, Юр'євський генбанк, Superhumans.
 - **Виправлення термінології війни** (за фідбеком користувача): війна з 2014, повномасштабна фаза з 2022. Виправлено в 4 фактах + Голодомор. Доданий розділ «Чутливі формулювання» в `docs/content-guidelines.md`.
 
-### Сесія 5 (PR #5) — Географія
+### Етап 5 (PR #5) — Географія
 
 - 14 нових + South Sudan (з MVP) = 15.
 - 4 українські: Крим (2014), дерусифікація топонімів, Каховська ГЕС, Чорнобильський заповідник.
 - Світ: Türkiye, Eswatini, North Macedonia, Czechia, East Timor, Bougainville, Hong Kong, Brexit, Aral, Greenland.
 
-### Сесія 6 (PR #16) — Історія
+### Етап 6 (PR #16) — Історія
 
 - 14 нових + Голодомор (з MVP/попередніх правок) = 15.
 - 9 українських: Помаранчева революція, Революція Гідності, відкриття архівів радянських репресивних органів, борці за незалежність, Томос ПЦУ, мовний закон, корінні народи Криму, борщ і писанка в ЮНЕСКО.
 - Світ: Римський статут і МКС, Göbekli Tepe, Річард III через ДНК, ямна культура й давня ДНК, Нобель за палеогеноміку.
 
-### Сесія 7 (PR #17) — Фізика
+### Етап 7 (PR #17) — Фізика
 
 - 14 нових + бозон Хіггса (існуючий факт) = 15.
 - 3 українські: Україна як асоційований член CERN, харківські сцинтилятори для CERN, харківське підкритичне «Джерело нейтронів».
 - Світ: топ-кварк, бозе-ейнштейнівський конденсат, нейтринні осциляції, графен, антиводень у пастці, гравітаційні хвилі, перевизначення SI, термоядерне запалювання NIF, квантова заплутаність, атосекундні імпульси, гравітація антиматерії.
 
-### Сесія 8 (PR #20–#23) — Швидкі вау-фішки
+### Етап 8 (PR #20–#23) — Швидкі вау-фішки
 
 - [#20](https://github.com/Skords-01/BACK_FUTURE/pull/20) — динамічна SVG-OG картка по року (`/og/[year].svg`, `/og/default.svg`).
 - [#21](https://github.com/Skords-01/BACK_FUTURE/pull/21) — шер-кнопки + native share (`navigator.share`) + копіювання посилання.
 - [#22](https://github.com/Skords-01/BACK_FUTURE/pull/22) — глобальний `Header`/`Footer`, лічильник «N фактів», breadcrumb на `/[year]`. Закриває пункти #3 і #1.5 з roadmap.
 - [#23](https://github.com/Skords-01/BACK_FUTURE/pull/23) — fallback для років без фактів (декадні чіпи з кращими навігаційними намісцями).
 
-### Сесія 9 (PR #25–#28) — Фундамент і контент-схема
+### Етап 9 (PR #25–#28) — Фундамент і контент-схема
 
 - [#25](https://github.com/Skords-01/BACK_FUTURE/pull/25) — додано `docs/roadmap.md` і `docs/ideas.md`. Розбиття на 9 фаз і ~40 PR-ів.
 - [#26](https://github.com/Skords-01/BACK_FUTURE/pull/26) — фаза 0.1: видалено `docs/proposed-ci/`, фікс Prettier на `roadmap.md`, фікс e2e після #22 (новий aria-label у breadcrumb).
 - [#27](https://github.com/Skords-01/BACK_FUTURE/pull/27) — фаза 0.2: Vitest + 25 юніт-тестів для `src/lib/` (`eras.ts`, `filterFacts.ts`, `url.ts`). Покриття `src/lib/` ≥ 80%. Додано `npm run test:unit` крок у CI.
 - [#28](https://github.com/Skords-01/BACK_FUTURE/pull/28) — фаза 2.1: опційні поля `before` / `after` у `content.config.ts` + рендер блоку «Тоді / Зараз» у `FactCard`. Заповнено для трьох якірних фактів MVP (Pluto, CRISPR, Аральське море).
 
-### Сесія 10 (PR #29–#33) — Фаза 1: UX-швидкі перемоги
+### Етап 10 (PR #29–#33) — Фаза 1: UX-швидкі перемоги
 
 - [#29](https://github.com/Skords-01/BACK_FUTURE/pull/29) — фаза 1.7: кастомний 404 з полем року й посиланням на головну.
 - [#30](https://github.com/Skords-01/BACK_FUTURE/pull/30) — фаза 1.8: кнопка «Сюрприз» на лендингу (рандомний рік у діапазоні `SITE.yearMin..yearMax`).
@@ -279,7 +281,7 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 - [#32](https://github.com/Skords-01/BACK_FUTURE/pull/32) — фаза 1.6: sticky-підсумок з якорями-чіпами на предмети, з обробником прокрутки для активного chip'а.
 - [#33](https://github.com/Skords-01/BACK_FUTURE/pull/33) — фаза 1.2: темна тема. Class-based (через `<html class="dark">`), pre-paint скрипт у `Base.astro` запобігає FOUC. `ThemeToggle` компонент: light → dark із 3-м станом «system» (відсутність ключа в `localStorage`). Усі компоненти й сторінки оновлені з `dark:` варіантами; `global.css` має `@variant dark` і CSS vars під темну тему.
 
-### Сесія 11 (PR #35–#39) — Фаза 2 закрита, відкриваємо фазу 3
+### Етап 11 (PR #35–#39) — Фаза 2 закрита, відкриваємо фазу 3
 
 - [#35](https://github.com/Skords-01/BACK_FUTURE/pull/35) — фаза 3.3: розширений fallback на `[year].astro`. До декадних чіпів із #23 додали теги фактів-«сусідів» з тієї ж ери. `pickFallbackYears(forYear, facts)` + `sampleFacts(facts, n)` в `src/lib/filterFacts.ts`, обидві детерміністичні (юніт-покриття в `filterFacts.test.ts`).
 - [#36](https://github.com/Skords-01/BACK_FUTURE/pull/36) — фаза 2.2: опц. поле `region: "world" | "ukraine"` у `content.config.ts`. На FactCard для `ukraine` малюється прапор і капс-підпис «УКРАЇНСЬКИЙ ВНЕСОК» (`title` для hover, `aria-label`); `world` — нічого не рендериться. Гайд по content `region` в `docs/content-guidelines.md`.
@@ -287,7 +289,7 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 - [#38](https://github.com/Skords-01/BACK_FUTURE/pull/38) — фаза 2.4: опц. поле `impact: "low" | "medium" | "high"`. Дефолт «undefined» ≡ medium. Для `"high"` на FactCard появляється бейдж «★ Віха» і м'яка акцентна рамка. Критерії прописані: high — «переломний» факт (~10–15% бібліотеки), якщо вагаєшся — medium.
 - [#39](https://github.com/Skords-01/BACK_FUTURE/pull/39) — фаза 3.1: `/subject/[id]` (5 сторінок через `getStaticPaths`). Hero + breadcrumbs + sticky-навігація по ерах (лінки на репрезентативний рік) + грід FactCard´ів + footer з посиланнями на інші предмети. JSON-LD `CollectionPage` + `BreadcrumbList`. Нові хелпери `factsForSubject` і `eraCountsForSubject` у `src/lib/filterFacts.ts` (з юніт-тестами).
 
-### Сесія 12 (PR #41–#51) — Інфра, Astro 6 і перші 5 backlog-задач
+### Етап 12 (PR #41–#51) — Інфра, Astro 6 і перші 5 backlog-задач
 
 - [#41](https://github.com/Skords-01/BACK_FUTURE/pull/41) — розширене групування Dependabot.
 - [#42](https://github.com/Skords-01/BACK_FUTURE/pull/42) — Husky + lint-staged pre-commit.
@@ -297,7 +299,7 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 - [#50](https://github.com/Skords-01/BACK_FUTURE/pull/50) — окремий markdownlint-конфіг для `content/facts/`.
 - [#51](https://github.com/Skords-01/BACK_FUTURE/pull/51) — перші 5 задач: `/era/[slug]`, `/fact/[slug]`, фільтри року (`subject`, `era`, `region`, `impact`), розширення `SUBJECTS` до 11 і warning-only Lychee-крок для зовнішніх fact source URL.
 
-### Сесія 13 — Фаза 8.1: SVG-іконки предметів
+### Етап 13 — Фаза 8.1: SVG-іконки предметів
 
 - Додано `src/lib/subjectIcons.ts` — реєстр з 11 inline-SVG path-сетами (24×24, stroke-only, `currentColor`). Гліфи: Saturn, ДНК-спіраль, глобус, скрол, атом, мікрочіп, ЕКГ-крива, барчарт, відкрита книга, кубок, лист.
 - Додано `<SubjectIcon>` (`src/components/SubjectIcon.astro`) — обгортка над реєстром: робить `<svg viewBox="0 0 24 24">`, виставляє `aria-hidden` за замовчуванням і `role="img"` + `<title>` коли передано `label`. Розмір — `1em`, тож наслідує `text-*`.
@@ -305,7 +307,7 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 - `SUBJECTS[].emoji` лишається для `src/lib/og.ts` (resvg рендерить його зі системних шрифтів) і потенційного дегрейду; `groupBySubject` теж не чіпали — поле в публічному API.
 - Юніт-тести: `src/lib/subjectIcons.test.ts` перевіряє, що 1) реєстр співпадає з `SUBJECTS` 1:1, 2) кожен запис містить хоча б одну SVG-фігуру, 3) ніхто не вкладає `<svg>` усередину, 4) `subjectIconPaths()` — тонка обгортка над реєстром.
 
-### Сесія 14 (PR #53–#76) — Наповнення нових предметів і quote-upgrade
+### Етап 14 (PR #53–#76) — Наповнення нових предметів і quote-upgrade
 
 - [#53](https://github.com/Skords-01/BACK_FUTURE/pull/53) — 15 фактів у `tech` (12 world + 3 ukraine).
 - [#54](https://github.com/Skords-01/BACK_FUTURE/pull/54) — 15 фактів у `culture`.
@@ -315,7 +317,7 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 - [#75](https://github.com/Skords-01/BACK_FUTURE/pull/75) — 15 фактів у `economy`.
 - [#76](https://github.com/Skords-01/BACK_FUTURE/pull/76) — 15 фактів у `sport`. Після цих PR-ів усі 11 предметів мають 15 фактів, разом 165. PR [#116](https://github.com/Skords-01/BACK_FUTURE/pull/116) додав ще 10 фактів у різні предмети (165 → 175).
 
-### Сесія 15 (PR #82–#97) — Мобільна оптимізація, фонти, badge, `/timeline`, `/fact` UX
+### Етап 15 (PR #82–#97) — Мобільна оптимізація, фонти, badge, `/timeline`, `/fact` UX
 
 - [#82](https://github.com/Skords-01/BACK_FUTURE/pull/82) — Playwright `mobile-chrome` проєкт (Pixel 7) + 375px smoke pack.
 - [#83](https://github.com/Skords-01/BACK_FUTURE/pull/83) — справжнє burger-меню у `Header.astro` (закриває #1.1) з a11y-зв'язкою (`aria-controls`, `aria-expanded`, `Esc` для закриття).
@@ -334,7 +336,7 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 - [#96](https://github.com/Skords-01/BACK_FUTURE/pull/96) — винесено `[data-reveal]`-observer у `RevealObserver.astro`, підключено у `Base.astro`, розширено на `/subject/[id]`, `/era/[slug]`, `/timeline`.
 - [#97](https://github.com/Skords-01/BACK_FUTURE/pull/97) — dark-mode contrast: header bg, ThemeToggle (`aria-label`), `Footer`, `metodologia` cards.
 
-### Сесія 16 (PR #99–#117) — Pagefind, `/quiz`, observability, Big Mac index, редизайн епох
+### Етап 16 (PR #99–#117) — Pagefind, `/quiz`, observability, Big Mac index, редизайн епох
 
 - [#99](https://github.com/Skords-01/BACK_FUTURE/pull/99) — docs-drift refresh: roadmap і project-memory після PR-ів #82–#97.
 - [#100](https://github.com/Skords-01/BACK_FUTURE/pull/100) — bulk replace `dark:bg-ink-{700,800,900}` → `--card` у 14 файлах (footer, year quick-pills, тематичні блоки, фільтри, ShareBlock, SupportBlock, FactCard/FeatureFactCard, btn-ghost, 404, metodologia, timeline). `dark:hover:text-ink-100` → `dark:hover:text-ink-900`.
@@ -356,7 +358,7 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 - [#116](https://github.com/Skords-01/BACK_FUTURE/pull/116) — project evaluation recommendations: `/themes` redirect → 404 у production (dev-only лабораторія), `Analytics.astro` warns у dev коли provider не налаштований, NetlifyCMS admin files прибрано, **`src/lib/userState.ts`** (localStorage: last visited year + read-tracking через IntersectionObserver), lazy fade-in карток на `/all`, **+10 нових фактів** (165 → 175).
 - [#117](https://github.com/Skords-01/BACK_FUTURE/pull/117) — **observability**: Sentry (error tracking з error/replay sample-rate), PostHog (privacy-friendly product analytics), Google Search Console verification meta tag. Усе env-gated: без DSN/KEY жоден SDK не вантажиться (нульовий runtime). PostHog розширено в [#131](https://github.com/Skords-01/BACK_FUTURE/pull/131) і [#132](https://github.com/Skords-01/BACK_FUTURE/pull/132).
 
-### Сесія 17 (PR #118–#125) — Top-N quick wins, мобільні фікси, редизайн карток
+### Етап 17 (PR #118–#125) — Top-N quick wins, мобільні фікси, редизайн карток
 
 - [#118](https://github.com/Skords-01/BACK_FUTURE/pull/118) — mobile UX: freeze 3D tilt коли `<details>` відкритий (щоб розгорнутий текст не качався); `min-h-[44px]` на «Постійна сторінка»; auto-scroll розгорнутих details у viewport на touch; джерела `block + py-1.5` для більших tap-areas.
 - [#119](https://github.com/Skords-01/BACK_FUTURE/pull/119) — top-5 UX: thin reading-progress bar на year pages, BackToTop floating button (з'являється після 300px), Hero «Випадковий рік» + «Повернутись до N» pill з localStorage (закриває **#4.3 «Мій рік» persist**), keyboard nav `←`/`→` між роками на `[year]`, kbd-hint у YearNav.
@@ -367,7 +369,7 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 - [#124](https://github.com/Skords-01/BACK_FUTURE/pull/124) — e2e тести вирівняно з поточним UI: home-сторінка тепер `YearMachine` (stepper + odometer + GoButton anchor + decade QuickPicks), фільтри року перейшли з `<select>` → chip bar (`#subject-filter-bar`), Header має «Квіз»-link, methodology heading «П'ять ер шкільних програм».
 - [#125](https://github.com/Skords-01/BACK_FUTURE/pull/125) — об'єднано «Постійна сторінка» + «Докладніше» у один CTA на картках; restore scroll on back navigation.
 
-### Сесія 18 (PR #126–#133) — `ScrollRestore` стійкість, fact-page polish, PostHog інструментація, dead code cleanup
+### Етап 18 (PR #126–#133) — `ScrollRestore` стійкість, fact-page polish, PostHog інструментація, dead code cleanup
 
 - [#126](https://github.com/Skords-01/BACK_FUTURE/pull/126) — `ScrollRestore` стійкий на iOS Safari та reflow-сценаріях (запис позиції на `scrollend` через debounce, retry на `pageshow`).
 - [#127](https://github.com/Skords-01/BACK_FUTURE/pull/127) — `?debug=scroll` діагностичний overlay у `ScrollRestore` (показує state машину у фіксованому overlay).
@@ -377,6 +379,18 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 - [#131](https://github.com/Skords-01/BACK_FUTURE/pull/131) — **PostHog інструментація**: `src/lib/analytics.ts` (typed wrapper з `EVENTS`-константами + тести), `Analytics.astro` (persistence=localStorage без cookies, respect_dnt, web_vitals, autocapture, rageclick, dns-prefetch, global outbound link handler `fact_source_clicked` / `outbound_link_clicked`). Інструментовано: `year_submitted` (manual/preset), quick/random pick, era click, subject filter, fact card click, share (target + succeeded), support, **quiz funnel** (start/answer/finish/restart), search (open/query length only/result), theme toggle, back-to-top.
 - [#132](https://github.com/Skords-01/BACK_FUTURE/pull/132) — `scripts/posthog-setup.ts`: legacy `filters` API повертав 403 «Creating or updating insights with legacy filters is not available for this user» для нових PostHog акаунтів. Перехід на **modern query API** (`InsightVizNode + TrendsQuery/FunnelsQuery`). Перевірено на реальному B|F project (175241): dashboard + 4 funnels + 7 trends створено успішно.
 - [#133](https://github.com/Skords-01/BACK_FUTURE/pull/133) — cleanup: видалено `d/` (дизайн-референс, 4 файли), 3 мертві компоненти (`FeatureFactCard`, `LowFactRow`, `SubjectSection`), Fraunces + Lora woff2 (5 файлів, ~256 KB), IBM Plex Mono woff2 (6 файлів, ~72 KB), `@fontsource/jetbrains-mono` і `@fontsource-variable/unbounded` з dependencies (шрифти self-hosted). У `tailwind.config.mjs` прибрано DM Mono (відсутній) з mono stack. Часткова синхронізація docs (165→175, Manrope/Inter→Unbounded/Geist).
+
+### Етап 19 (PR #161-#180): Перезапуск 2026-10
+
+- [#161](https://github.com/SkOrDs-02/BACK_FUTURE/pull/161): зелений CI: полагоджено Lint, оновлено залежності, прибрано `deploy.yml` (GitHub Pages), закрито PR #144-#150 (PWA, issue → PR, i18n, `/saved`, `/contributors`) без мержу, `repoUrl` на `SkOrDs-02`.
+- [#162-#173](https://github.com/SkOrDs-02/BACK_FUTURE/pull/173): 43 факти 2025-2026 по 11 предметах, пройшли факт-чек.
+- [#174](https://github.com/SkOrDs-02/BACK_FUTURE/pull/174): Spec Kit: `.specify/`, конституція, `specs/001-relaunch/spec.md`, `AGENTS.md`.
+- [#175](https://github.com/SkOrDs-02/BACK_FUTURE/pull/175): `/compare` показує різницю між роками; OG-картка для кожного факту; тейглайн у default OG більше не обрізається.
+- [#176](https://github.com/SkOrDs-02/BACK_FUTURE/pull/176): антислоп: UI-копі, тони ер, `src/lib/antislop.ts` і перевірка в `validate-content` (error для фактів 2025+, warning для старіших).
+- [#177](https://github.com/SkOrDs-02/BACK_FUTURE/pull/177): markdownlint MD049 узгоджено з Prettier (курсив `_текст_`).
+- [#178](https://github.com/SkOrDs-02/BACK_FUTURE/pull/178): сторінка `/support` (noindex, поки URL банки порожній).
+- [#179](https://github.com/SkOrDs-02/BACK_FUTURE/pull/179): SEO/GEO: `llms.txt`, `llms-full.txt`, правила для AI-краулерів, PNG-іконки manifest, файл верифікації GSC, CSP, noindex-гігієна.
+- [#180](https://github.com/SkOrDs-02/BACK_FUTURE/pull/180): квадратний постер `/share/[year]/square.png` 1080×1080 поруч зі сторіз.
 
 ---
 
@@ -389,10 +403,11 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 | «Школа в режимі реального часу» (#13)     | «Можливо» — низький пріоритет.                                       |
 | Партнерство з видавництвами (#14)         | «Можемо розглянути» — після запуску.                                 |
 | Замовний контент для бізнесу (#16)        | «Як план» — після запуску.                                           |
-| Реальний домен                            | Pending — користувач визначиться після запуску публічної версії.     |
-| Monobank URL                              | Pending — користувач створить банку.                                 |
+| Запуск `back-future.com`                  | Домен обрано; чекаємо реактивації DNS, перепідвʼязки Vercel і GSC.   |
+| Monobank URL                              | Pending — `/support` готова, чекає URL банки.                        |
 | Серія схожих сайтів (template extraction) | Далека перспектива; зараз закладена архітектура, екстракція пізніше. |
 | Історичний батч                           | Завершено; PR #16 merged.                                            |
+| PWA, i18n, `/saved`, `/contributors`      | Ідеї без дедлайну; PR #144-#150 закриті без мержу.                   |
 
 ---
 
@@ -402,7 +417,7 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 
 - Кожен факт — frontmatter за Zod-схемою; build має пройти.
 - Тон і термінологія — за `docs/content-guidelines.md`.
-- Кожен PR — feature branch (`devin/content-<тема>` або інше), не push в main.
+- Кожен PR: окрема гілка `claude/<topic>` або `content/<topic>`, спершу draft, не push в main.
 - Кожен PR — описує зміни в шаблоні `.github/PULL_REQUEST_TEMPLATE.md`.
 - Перед PR — `npm run build && npm run lint`.
 
@@ -411,6 +426,7 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 - Не перезаписуємо існуючі sample-факти з MVP без явного дозволу.
 - Не пишемо одразу всі 75 фактів в одному PR — батчимо по предметах.
 - Не робимо Russia-centric framing (явна заборона користувача).
+- Не використовуємо довге тире «—» і AI-конструкції (`docs/content-guidelines.md`, розділ «Антислоп»).
 - Не використовуємо «війна 2022» — завжди уточнюємо «з 2014» + «повномасштабна з 24 лютого 2022».
 - Не пушимо файли з секретами; не комітимо `.env`.
 - Не обмежуємось вікі-джерелами; кожен факт — мінімум 1 першоджерело.
@@ -420,41 +436,37 @@ tailwind.config.mjs             ← дизайн-токени (єдине дже
 
 ## 10. Інфраструктурні факти
 
-### Прев'ю
+### Хостинг і домен
 
-- URL: https://dist-ddwneahj.devinapps.com
-- Хостинг: devinapps.com (Devin static deploy)
-- Формат файлів: `.html` (через специфіку S3-хосту)
-- На реальному прод-домені (Vercel/Netlify/Cloudflare Pages) очікуємо clean URLs.
+- Прод: Vercel, проєкт `back-future`, Git-інтеграція від `SkOrDs-02/BACK_FUTURE`, гілка `main`. GitHub Pages прибрано, `deploy.yml` видалено.
+- Домен `back-future.com` (канон без `www`, `www` редиректить на apex). Env `PUBLIC_SITE_URL=https://back-future.com` задає власник у Vercel.
+- Аналітика і помилки: PostHog і Sentry через env (див. [`analytics.md`](./analytics.md)); без ключів сайт працює без трекерів.
 
 ### Репозиторій
 
-- URL: https://github.com/Skords-01/BACK_FUTURE
-- Гілка `main` — релізна
-- Гілки `devin/{timestamp}-{slug}` — дефолтна конвенція для Devin-сесій; `devin/content-<тема>` використовувалися раніше для контентних батчів (сесія 1–12).
+- URL: https://github.com/SkOrDs-02/BACK_FUTURE
+- Гілка `main` релізна. Робочі гілки: `claude/<topic>` для коду, `content/<topic>` для фактів.
+- Коміти і PR від identity `SkOrDs-02`.
 
 ### Workflow GitHub
 
-- CI YAML у `.github/workflows/ci.yml` (lint, typecheck, validate-content, build, Playwright, Lighthouse).
-- Окремий workflow для link-check (`.github/workflows/link-check.yml`): Markdown/docs/build links блокують CI; `dist/.fact-source-urls.md` перевіряється Lychee з `continue-on-error: true`.
-- `docs/proposed-ci/` видалено після міграції.
+- CI у `.github/workflows/ci.yml` (lint, typecheck, unit, validate-content, build, Playwright з axe, Lighthouse).
+- `link-check.yml`: Markdown/docs/build links блокують CI; `dist/.fact-source-urls.md` перевіряється Lychee з `continue-on-error: true`.
 
-### Token-handling
+### Spec Kit
 
-- Користувач час від часу передає короткоживучий GitHub PAT через secure channel — коли git-проксі / built-in інструменти не справляються (бачили 403 на git-manager.devin.ai, «Internal error» / «Bad credentials» від `git_create_pr` і `git_pr_checks`).
-- PAT використовується тільки для git push і curl-викликів GitHub REST API; ніколи не зберігається в коді або історії commit-ів.
-- Якщо `git_create_pr` фейлиться, fallback — `POST /repos/{owner}/{repo}/pulls` через curl. Аналогічно для CI-чеків — `GET /repos/{owner}/{repo}/commits/{sha}/check-runs`.
-- Рекомендація: створювати PAT на 30 днів зі scope `repo` + `workflow` і відкликати після завершення сесії на https://github.com/settings/tokens.
+- `.specify/` (шаблони, конституція в `.specify/memory/constitution.md`), `specs/001-relaunch/spec.md` (спека перезапуску), `AGENTS.md` у корені (правила для агентів).
 
 ---
 
 ## 11. Що треба знати майбутній сесії — короткий чекліст
 
-1. Прочитати цей документ повністю.
-2. Прочитати `docs/content-guidelines.md` (особливо секцію «Чутливі формулювання»).
+1. Почати з `AGENTS.md` і `specs/`, потім цей документ.
+2. Прочитати `docs/content-guidelines.md` (секції «Чутливі формулювання» та «Антислоп»).
 3. Прочитати `docs/architecture.md` (для розуміння template-генерації).
-4. Перевірити `git status` і відкриті PR-и: можливо, частина батчів вже змерджена.
-5. Перевірити поточний `main` на стан контенту: `ls content/facts/<subject>/`.
-6. Підтвердити з користувачем поточний пріоритет (після PR #133 найімовірніше: `/compare?a=…&b=…`, `/share/[year]` PNG-постер, `/saved` bookmark-факти, issue → draft PR action, `/contributors` (потребує `authors` поля) і `/support`-сторінка (потребує `monobankJarUrl` у `site.ts`), PWA manifest + service-worker, i18n routing `/uk/`/`/en/`).
-7. Працювати на feature branch, не пушити в main.
-8. Моноширинний шрифт для років, темно-синій для акцентів — НЕ змінювати без явної згоди.
+4. Перевірити `git status` і відкриті PR-и: `gh pr list -R SkOrDs-02/BACK_FUTURE`.
+5. Перевірити поточний `main` на стан контенту: `npm run coverage:content`.
+6. Працювати в гілці `claude/<topic>` (код) або `content/<topic>` (факти), PR відкривати як draft. Identity комітів: `SkOrDs-02` (noreply-адреса GitHub).
+7. Перед PR: `npm run ci` і `npm run build`. Pre-commit не обходити.
+8. Моноширинний шрифт для років, темно-синій для акцентів: НЕ змінювати без явної згоди.
+9. Пріоритети після перезапуску: дії власника (Vercel, DNS, Search Console, Monobank), далі контент за coverage. Ідеї без дедлайну: PWA, issue → draft PR, i18n, `/saved`, `/contributors`.
