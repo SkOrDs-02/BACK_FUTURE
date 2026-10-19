@@ -45,7 +45,7 @@ function save(state: UserState): void {
   try {
     localStorage.setItem(KEY, JSON.stringify(state));
   } catch {
-    // localStorage unavailable (private mode, quota exceeded) — fail silently
+    // localStorage unavailable (private mode, quota exceeded) - fail silently
   }
 }
 

@@ -11,7 +11,7 @@ interface Props {
    * Year of the surrounding "Випуск {year}" page. When provided, a `+Δ р.`
    * chip is rendered in the mobile meta row so the year context survives
    * the thinner mobile timeline rail (which hides its own year/delta).
-   * Optional — leave undefined when FactCard is rendered outside the
+   * Optional: leave undefined when FactCard is rendered outside the
    * year-page timeline (e.g. /all, /era/[slug], /subject/[id]).
    */
   fromYear?: number;
@@ -35,7 +35,7 @@ function serialFromId(id: string): string {
 }
 const serial = serialFromId(fact.id);
 const subject = SUBJECTS.find((s) => s.id === fact.data.subject);
-const mark = subject?.mark ?? "—";
+const mark = subject?.mark ?? "–";
 const quote = fact.data.quote;
 const isVikha = fact.data.impact === "high";
 const region = parseRegion(fact.data.region);
@@ -112,7 +112,7 @@ const countryFlag = region.kind === "country" ? getFlag(region.code) : null;
         isVikha && (
           <span
             class="bg-accent-500 inline-flex items-center rounded-full px-2.5 py-0.5 font-mono text-[10px] font-semibold tracking-[0.16em] text-white uppercase"
-            title="Переломний факт — змінив ширшу картину"
+            title="Переломний факт: змінив ширшу картину"
           >
             ★ Віха
           </span>
@@ -150,7 +150,7 @@ const countryFlag = region.kind === "country" ? getFlag(region.code) : null;
             «{quote.text}»
           </p>
           <footer class="text-ink-500 dark:text-ink-400 mt-1.5 font-mono text-[10px] tracking-wider uppercase">
-            — {quote.author}
+            – {quote.author}
           </footer>
         </blockquote>
       )
@@ -277,7 +277,7 @@ const countryFlag = region.kind === "country" ? getFlag(region.code) : null;
     );
   }
 
-  /* Magnetic 3D tilt — cursor-following perspective tilt (hover devices only).
+  /* Magnetic 3D tilt - cursor-following perspective tilt (hover devices only).
      JS sets --tilt-x / --tilt-y / --idle-rot / --lift via inline style.
      Degrades gracefully: touch-only devices and reduced-motion see no effect. */
   @media (hover: hover) {

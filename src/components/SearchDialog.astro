@@ -1,7 +1,7 @@
 ---
-// SearchDialog — lazy-loading pagefind search modal (Cmd/Ctrl+K or button).
+// SearchDialog: lazy-loading pagefind search modal (Cmd/Ctrl+K or button).
 // /pagefind/ assets are generated at build time by `pagefind --site dist`.
-// Assets are dynamically injected only on first open — zero impact on initial load.
+// Assets are dynamically injected only on first open - zero impact on initial load.
 ---
 
 <button
@@ -128,7 +128,7 @@
     color: var(--accent);
   }
 
-  /* Pagefind UI theme — maps onto existing design tokens */
+  /* Pagefind UI theme - maps onto existing design tokens */
   #search-ui-mount {
     --pagefind-ui-scale: 0.9;
     --pagefind-ui-primary: var(--accent);
@@ -208,7 +208,7 @@
     }
 
     // Track search query *length* only (no PII, no terms). Throttle so we
-    // don't fire on every keystroke — only after typing settles for 700ms.
+    // don't fire on every keystroke - only after typing settles for 700ms.
     var queryTimer = null;
     function watchSearchInput() {
       if (!(dialog instanceof HTMLDialogElement)) return;

@@ -1,5 +1,5 @@
 ---
-// YearHero — top section of the year page: breadcrumb back, kicker, giant year,
+// YearHero: top section of the year page: breadcrumb back, kicker, giant year,
 // Stamp badge, and the era-based summary sentence.
 import Stamp from "./Stamp.astro";
 import type { Era } from "../lib/eras";
@@ -45,7 +45,7 @@ const updatesLabel = updatesCount(totalCount);
           ВИПУСК #{year - 1990} · {era.short}
         </p>
 
-        <!-- Giant year — h1 wraps the decorative span; aria-label provides clean accessible name -->
+        <!-- Giant year - h1 wraps the decorative span; aria-label provides clean accessible name -->
         <div class="relative inline-block">
           <h1
             class="year-glitch font-display leading-none font-extrabold tracking-[-0.04em] text-[color:var(--ink)] select-none"
@@ -76,7 +76,7 @@ const updatesLabel = updatesCount(totalCount);
           }
         </p>
 
-        <!-- Reading progress counter — hydrated client-side from localStorage -->
+        <!-- Reading progress counter - hydrated client-side from localStorage -->
         {
           totalCount > 0 && (
             <p
@@ -187,7 +187,7 @@ const updatesLabel = updatesCount(totalCount);
         el.textContent = "Прочитано: " + readOnPage + " з " + total;
       }
     } catch {
-      // localStorage unavailable — skip counter
+      // localStorage unavailable - skip counter
     }
   })();
 </script>

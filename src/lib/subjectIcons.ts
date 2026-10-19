@@ -9,7 +9,7 @@ import type { SubjectId } from "../config/site";
  * inherits the surrounding text colour (accent у пігулках, ink у списках).
  *
  * Зберігаємо рядки замість JSX, щоб реєстр можна було юніт-тестувати без
- * Astro runtime — а заодно простіше форкнути проєкт під інший набір
+ * Astro runtime - а заодно простіше форкнути проєкт під інший набір
  * предметів: міняєш `SUBJECTS` у site.ts і ось цей файл.
  */
 export const SUBJECT_ICON_PATHS: Readonly<Record<SubjectId, string>> = {

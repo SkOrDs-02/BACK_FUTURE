@@ -1,5 +1,5 @@
 ---
-// YearNav — three-card year navigator: ← prev | змінити рік | next →
+// YearNav: three-card year navigator: ← prev | змінити рік | next →
 import { SITE } from "../config/site";
 
 interface Props {
@@ -23,7 +23,7 @@ const next = year < SITE.yearMax ? year + 1 : null;
       <div class="ynav__b ynav__b--disabled" aria-hidden="true">
         <span class="ynav__sub">← Попередній</span>
         <span class="ynav__y" style="opacity:0.2">
-          —
+          –
         </span>
       </div>
     )
@@ -46,7 +46,7 @@ const next = year < SITE.yearMax ? year + 1 : null;
       <div class="ynav__b ynav__b--r ynav__b--disabled" aria-hidden="true">
         <span class="ynav__sub">Наступний →</span>
         <span class="ynav__y" style="opacity:0.2">
-          —
+          –
         </span>
       </div>
     )

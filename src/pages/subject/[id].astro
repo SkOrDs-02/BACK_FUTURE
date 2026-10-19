@@ -38,7 +38,7 @@ const issueUrl = `${SITE.repoUrl}/issues/new?title=${encodeURIComponent(
 const collectionLd: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: `${subject.label} — ${SITE.name}`,
+  name: `${subject.label} | ${SITE.name}`,
   description,
   inLanguage: "uk",
   url: canonical,
@@ -117,7 +117,7 @@ const breadcrumbsLd: Record<string, unknown> = {
       </h1>
       <p class="text-ink-700 mt-4 max-w-prose text-lg">
         Усе, що ми зібрали по предмету «{subject.label.toLowerCase()}», у одній стрічці. Сортовано
-        за роком події — від найновішого до найстаршого.
+        за роком події, від найновішого до найстаршого.
       </p>
     </div>
   </section>

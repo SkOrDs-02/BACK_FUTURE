@@ -33,7 +33,7 @@ export function eraById(id: EraId): Era {
   return era;
 }
 
-/** Shorthand alias — returns the full Era object for a graduation year. */
+/** Shorthand alias - returns the full Era object for a graduation year. */
 export function eraOf(year: number): Era {
   return eraById(eraForGraduationYear(year));
 }
@@ -42,7 +42,7 @@ export function eraOf(year: number): Era {
  * Parse a value as a graduation year inside the supported `[yearMin, yearMax]`
  * window. Accepts strings (e.g. URL search params) and numbers; trims, coerces,
  * and rejects non-integers, NaN, and out-of-range values. Returns `null` on
- * invalid input — callers decide how to surface the error.
+ * invalid input - callers decide how to surface the error.
  *
  * Used by `/compare?a=…&b=…` to validate query params before rendering the
  * side-by-side view; lives in `eras.ts` because the supported window is

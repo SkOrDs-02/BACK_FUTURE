@@ -38,7 +38,7 @@ const canonical = new URL(Astro.url.pathname, SITE.defaultUrl).toString();
 const collectionLd: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: `${era.label} — ${SITE.name}`,
+  name: `${era.label} | ${SITE.name}`,
   description,
   inLanguage: "uk",
   url: canonical,

@@ -1,5 +1,5 @@
 ---
-// GoButton — anchor that navigates to /{year}/ and updates its href on year:change.
+// GoButton: anchor that navigates to /{year}/ and updates its href on year:change.
 interface Props {
   defaultYear?: number;
 }
@@ -25,7 +25,7 @@ const { defaultYear = 2012 } = Astro.props;
     if (!(btn instanceof HTMLAnchorElement)) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // Skip slot animation on touch-only devices (no hover) — navigate instantly
+    // Skip slot animation on touch-only devices (no hover) - navigate instantly
     const hasHover = window.matchMedia("(hover: hover)").matches;
     if (reducedMotion || !hasHover) return;
 

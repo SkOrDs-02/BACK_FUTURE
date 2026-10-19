@@ -13,7 +13,7 @@ describe("SUBJECT_ICON_PATHS", () => {
     const markup = SUBJECT_ICON_PATHS[id];
     expect(markup, `${id} icon is missing`).toBeTruthy();
     // Найслабший контракт: гліф містить хоча б одну SVG-фігуру. Якщо хтось
-    // випадково очистить запис — тест впаде.
+    // випадково очистить запис - тест впаде.
     expect(/<(path|circle|ellipse|rect|polygon|polyline)\b/.test(markup)).toBe(true);
   });
 

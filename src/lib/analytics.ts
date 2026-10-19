@@ -4,7 +4,7 @@
  * PostHog не підключений (немає `PUBLIC_POSTHOG_KEY` або провайдер інший).
  *
  * Жодних PII у пропсах. Використовуй `EVENTS.*` константи замість
- * стрінгових літералів — щоб імена не розходились між місцями виклику.
+ * стрінгових літералів - щоб імена не розходились між місцями виклику.
  */
 export const EVENTS = {
   // Year picker / hero
@@ -49,7 +49,7 @@ export const EVENTS = {
 
 export type EventName = (typeof EVENTS)[keyof typeof EVENTS];
 
-/** Allowed prop value types — keeps payloads JSON-safe and PostHog-friendly. */
+/** Allowed prop value types - keeps payloads JSON-safe and PostHog-friendly. */
 type PropValue = string | number | boolean | null | undefined;
 export type EventProps = Record<string, PropValue>;
 
@@ -77,7 +77,7 @@ function getClient(): PostHogClient | null {
 
 /**
  * Capture a custom event. No-op якщо PostHog не завантажений.
- * Безпечно викликати на SSR — там просто нічого не станеться.
+ * Безпечно викликати на SSR - там просто нічого не станеться.
  */
 export function track(event: EventName, props?: EventProps): void {
   const ph = getClient();
@@ -90,7 +90,7 @@ export function track(event: EventName, props?: EventProps): void {
 }
 
 /**
- * Set super-properties — додаються до КОЖНОГО подальшого івенту в сесії.
+ * Set super-properties - додаються до КОЖНОГО подальшого івенту в сесії.
  * Корисно для контекстних значень типу `year_filter` після того як юзер
  * обрав рік на головній.
  */
