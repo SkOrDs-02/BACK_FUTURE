@@ -25,6 +25,11 @@ export const SLOP_RULES: ReadonlyArray<{ id: string; re: RegExp }> = [
   { id: "«варто зазначити»", re: /варто\s+(?:зазначити|відзначити|наголосити)/iu },
   { id: "«у сучасному світі»", re: /(?:^|\s)[ув]\s+сучасному\s+світі/iu },
   { id: "канцелярит «здійснюється/забезпечується»", re: /(?:здійсню|забезпечу)[єю]ть?ся/iu },
+  { id: "три крапки «...» замість «…»", re: /\.{3}/u },
+  {
+    id: "незаповнений плейсхолдер шаблону",
+    re: /\[(?:your|insert|add|enter|describe|specify|choose|pick)[^\]]{1,80}\]|20[0-9]{2}-XX-XX/iu,
+  },
 ];
 
 export function findSlop(text: string): string[] {
