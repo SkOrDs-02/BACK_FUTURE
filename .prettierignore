@@ -3,3 +3,4 @@ node_modules
 .astro
 package-lock.json
 d/
+public/google*.html

@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import sentry from "@sentry/astro";
 import tailwindcss from "@tailwindcss/vite";
+import { existsSync, readFileSync } from "node:fs";
 
 // Source of truth for the canonical production URL. `site.ts`
 // re-uses this via Astro's injected `import.meta.env.SITE` —
@@ -50,9 +51,19 @@ const sentryIntegration = sentryDsn
     ]
   : [];
 
+// Sitemap бере лише сторінки, які можна індексувати. Фільтр читає вже
+// зібраний HTML (sitemap запускається після запису dist), тож будь-яка
+// сторінка з `noindex` (404, /share/*, /themes, порожні роки) випадає сама.
+const NOINDEX_RE = /<meta name="robots" content="noindex/;
+/** @param {string} page */
+function isIndexable(page) {
+  const file = new URL(`./dist${new URL(page).pathname}index.html`, import.meta.url);
+  return !existsSync(file) || !NOINDEX_RE.test(readFileSync(file, "utf8"));
+}
+
 export default defineConfig({
   site,
-  integrations: [sitemap(), ...sentryIntegration],
+  integrations: [sitemap({ filter: isIndexable }), ...sentryIntegration],
   output: "static",
   build: {
     inlineStylesheets: "auto",
