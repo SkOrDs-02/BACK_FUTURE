@@ -2,7 +2,14 @@ import { describe, expect, it } from "vitest";
 import type { SubjectId } from "../config/site";
 import { ERAS } from "./eras";
 import type { Fact } from "./filterFacts";
-import { OG_HEIGHT, OG_WIDTH, buildEraOgSvg, buildYearOgSvg, buildDefaultOgSvg } from "./og";
+import {
+  OG_HEIGHT,
+  OG_WIDTH,
+  buildDefaultOgSvg,
+  buildEraOgSvg,
+  buildFactOgSvg,
+  buildYearOgSvg,
+} from "./og";
 
 interface FactStub {
   id: string;
@@ -33,6 +40,45 @@ describe("buildDefaultOgSvg", () => {
     expect(svg).toContain(`width="${OG_WIDTH}"`);
     expect(svg).toContain(`height="${OG_HEIGHT}"`);
     expect(svg).toContain("BACK_FUTURE");
+  });
+
+  it("wraps the tagline over two lines so it fits the card", () => {
+    const svg = buildDefaultOgSvg();
+    expect(svg).toContain(">Що ти пропустив після</text>");
+    expect(svg).toContain(">випускного</text>");
+  });
+});
+
+describe("buildFactOgSvg", () => {
+  function fact(data: Record<string, unknown>): Fact {
+    return {
+      id: "economy/test",
+      data: { subject: "economy", yearOfEvent: 2008, title: "T", short: "S", ...data },
+    } as unknown as Fact;
+  }
+
+  it("shows subject mark, year and the Віха badge for high impact", () => {
+    const svg = buildFactOgSvg(fact({ impact: "high" }));
+    expect(svg).toContain(`width="${OG_WIDTH}"`);
+    expect(svg).toContain("ЕКН · Економіка · 2008");
+    expect(svg).toContain(">Віха</text>");
+    expect(buildFactOgSvg(fact({ impact: "medium" }))).not.toContain("Віха");
+  });
+
+  it("caps title and short at three lines with an ellipsis", () => {
+    const long = "слово ".repeat(60).trim();
+    const svg = buildFactOgSvg(fact({ title: long, short: long }));
+    const lines = svg.match(/<text x="120" y="\d+"[^>]*>[^<]*<\/text>/g) ?? [];
+    // brand + meta + 3 title + 3 short
+    expect(lines).toHaveLength(8);
+    expect(svg.match(/…<\/text>/g)).toHaveLength(2);
+  });
+
+  it("escapes XML in every text field", () => {
+    const svg = buildFactOgSvg(fact({ title: "A & B <x>", short: 'say "hi" & <b>' }));
+    expect(svg).toContain("A &amp; B &lt;x&gt;");
+    expect(svg).toContain("say &quot;hi&quot; &amp; &lt;b&gt;");
+    expect(svg).not.toContain("<x>");
   });
 });
 
