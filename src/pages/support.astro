@@ -1,0 +1,74 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE } from "../config/site";
+import { hasSupportJar } from "../lib/support";
+
+const hasJar = hasSupportJar();
+const description = `Як підтримати ${SITE.name}: хто робить проєкт і на що йдуть донати.`;
+---
+
+<Base title="Підтримати проєкт" description={description} noindex={!hasJar}>
+  <div class="container-prose pt-16 pb-8">
+    <span class="font-mono text-[11px] tracking-[0.14em] text-[color:var(--muted)] uppercase">
+      {SITE.name} · підтримка
+    </span>
+
+    <h1
+      class="font-display mt-3 text-[clamp(2rem,5vw,3.5rem)] leading-tight font-extrabold tracking-[-0.03em] text-[color:var(--ink)]"
+    >
+      Підтримати проєкт
+    </h1>
+
+    <div class="mt-8 space-y-4 text-base leading-relaxed text-[color:var(--ink-2)]">
+      <p>
+        {SITE.name} робить одна людина, ветеран, у вільний від роботи час. Редакції, інвестора чи гранту
+        немає.
+      </p>
+      <p>
+        Донати йдуть на домен і сервіси, без яких сайт не працює, а ще на час: кожен факт треба
+        знайти, звірити з першоджерелом і переписати простою українською.
+      </p>
+      <p>
+        Сайт лишиться безкоштовним незалежно від донатів. Реклами тут немає, cookie-банерів теж:
+        аналітика працює без cookies і не рахує тих, хто ввімкнув Do Not Track.
+      </p>
+    </div>
+
+    <div class="mt-10" id="support-buttons">
+      {
+        hasJar ? (
+          <a
+            class="btn"
+            href={SITE.monobankJarUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-support-provider="monobank"
+          >
+            Задонатити на банку Monobank ↗
+          </a>
+        ) : (
+          <p
+            class="inline-block rounded-sm border border-[color:var(--card-edge)] bg-[color:var(--card)] px-4 py-3 font-mono text-sm text-[color:var(--muted)]"
+            data-support-soon
+          >
+            Банка скоро зʼявиться
+          </p>
+        )
+      }
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { EVENTS, track } from "../lib/analytics";
+
+  document
+    .querySelectorAll<HTMLAnchorElement>("#support-buttons [data-support-provider]")
+    .forEach((a) => {
+      a.addEventListener(
+        "click",
+        () => track(EVENTS.supportClicked, { provider: a.dataset.supportProvider ?? null }),
+        { passive: true },
+      );
+    });
+</script>
