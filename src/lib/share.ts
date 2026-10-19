@@ -64,7 +64,7 @@ export function wrapText(text: string, maxChars: number, maxLines: number): stri
   }
   if (current && lines.length < maxLines) lines.push(current);
   if (lines.length === maxLines) {
-    // Check if there's leftover text — append ellipsis to last line if so.
+    // Check if there's leftover text, append ellipsis to last line if so.
     const consumed = lines.join(" ").length;
     if (consumed < text.replace(/\s+/g, " ").trim().length) {
       const last = lines[lines.length - 1] ?? "";
@@ -142,7 +142,7 @@ export function buildSharePosterSvg(year: number, allFacts: readonly FactEntry[]
       )
       .join("");
     const authorY = startY + lines.length * lineHeight + 60;
-    const author = escapeXml(`— ${top.data.quote.author}`);
+    const author = escapeXml(`- ${top.data.quote.author}`);
     quoteBlock = `
   <text x="540" y="1000" fill="#1e3a8a" font-family="Manrope, Inter, Arial, sans-serif" font-size="120" font-weight="800" text-anchor="middle" opacity="0.18">"</text>
   ${quoteLines}
@@ -150,11 +150,11 @@ export function buildSharePosterSvg(year: number, allFacts: readonly FactEntry[]
   } else if (totalCount === 0) {
     quoteBlock = `
   <text x="540" y="1140" fill="#3a3a35" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="500" text-anchor="middle">Шкода, фактів для цього року поки немає.</text>
-  <text x="540" y="1200" fill="#67675f" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle">Загляни до сусідніх років — там є чим здивуватись.</text>`;
+  <text x="540" y="1200" fill="#67675f" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle">Загляни до сусідніх років: там є чим здивуватись.</text>`;
   }
 
   // Subject pills along the bottom. Use the typographic Cyrillic `mark`
-  // (АСТ / БІО / …) instead of emoji — resvg + system fonts on CI cannot
+  // (АСТ / БІО / …) instead of emoji, because resvg + system fonts on CI cannot
   // shape colour-emoji glyphs reliably, so emoji would render as empty
   // squares. The mark is more legible at poster scale anyway.
   const pillCovered = SUBJECTS.map((s) => {
