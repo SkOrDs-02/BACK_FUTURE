@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import { collectYearStats, rankedFactsForYear } from "../lib/compare";
 import { SITE, SUBJECTS } from "../config/site";
 import { factSlug } from "../lib/url";
+import { epochLabel, pickEpoch } from "../lib/epoch";
 
 // `/compare` is fully static (Astro `output: "static"`), so query params are
 // read client-side only. Server-side we embed a per-year stats table for the
@@ -47,22 +48,19 @@ interface ClientYearStats {
   /** Slugs of every missed fact, best first; the client picks the top per pair. */
   ranked: string[];
   subjects: ClientSubject[];
-  epoch: { year: number; items: ClientEpochItem[] };
+  epoch: { label: string; items: ClientEpochItem[] };
 }
 
 const subjectMeta = new Map(SUBJECTS.map((s) => [s.id, s] as const));
 
-function nearestEpoch(year: number): { year: number; items: ClientEpochItem[] } {
-  const sorted = epochEntries.slice().sort((a, b) => {
-    const da = Math.abs(a.data.year - year);
-    const db = Math.abs(b.data.year - year);
-    return da - db || a.data.year - b.data.year;
-  });
-  const entry = sorted[0];
-  if (!entry) return { year, items: [] };
+const epochSnapshots = epochEntries.map((e) => e.data);
+
+function nearestEpoch(year: number): { label: string; items: ClientEpochItem[] } {
+  const entry = pickEpoch(epochSnapshots, year);
+  if (!entry) return { label: "", items: [] };
   return {
-    year: entry.data.year,
-    items: entry.data.items.map((it) => ({ k: it.k, v: it.v })),
+    label: epochLabel(entry.year, year),
+    items: entry.items.map((it) => ({ k: it.k, v: it.v })),
   };
 }
 
@@ -429,7 +427,7 @@ const breadcrumbsLd: Record<string, unknown> = {
     totalCount: number;
     ranked: string[];
     subjects: ClientSubject[];
-    epoch: { year: number; items: ClientEpochItem[] };
+    epoch: { label: string; items: ClientEpochItem[] };
   }
 
   const root = document.getElementById("compare-root");
@@ -600,7 +598,7 @@ const breadcrumbsLd: Record<string, unknown> = {
       const epochList = col.querySelector<HTMLElement>('[data-bind="epoch-items"]');
       const emptyEpoch = col.querySelector<HTMLElement>('[data-bind="empty-epoch"]');
       if (epochYearEl) {
-        epochYearEl.textContent = stats.epoch.items.length > 0 ? `(${stats.epoch.year}-й)` : "";
+        epochYearEl.textContent = stats.epoch.items.length > 0 ? `(${stats.epoch.label})` : "";
       }
       if (epochList) {
         epochList

@@ -1,39 +1,37 @@
 ---
 // ThenAside: paper snapshot of the graduation year: president, exchange rate,
 // hit song, gadget, etc. Styled like a torn calendar page.
-// Falls back to the nearest available epoch year if the exact year is absent -
-// the data is epoch-scoped, not year-pinned, so the same snapshot is meaningful
-// for adjacent years inside the same era.
+// The snapshot is the closest one not later than the year (see `pickEpoch`);
+// when it is a different year the caption says so instead of passing it off
+// as the graduation year.
 import { getCollection } from "astro:content";
+import { pickEpoch } from "../lib/epoch";
 
 interface Props {
   year: number;
 }
 const { year } = Astro.props;
 
-const epochEntries = await getCollection("epoch");
-
-const sorted = epochEntries.slice().sort((a, b) => {
-  const da = Math.abs(a.data.year - year);
-  const db = Math.abs(b.data.year - year);
-  return da - db || a.data.year - b.data.year;
-});
-const entry = sorted[0];
-const items = entry?.data.items ?? [];
-
-// Ukrainian ordinal suffix for display year (2012 → «2012-й»)
-function ordinal(y: number): string {
-  return `${y}-й`;
-}
+const entry = pickEpoch(
+  (await getCollection("epoch")).map((e) => e.data),
+  year,
+);
+const snapYear = entry?.year ?? year;
+const items = entry?.items ?? [];
+const sub =
+  snapYear === year ? "контекст · тодішній світ" : `контекст епохи · зріз для випуску ${year}`;
 ---
 
 {
   items.length > 0 && (
-    <aside class="then container-wide mt-0 mb-0 py-8" aria-label={`Контекст ${year} року`}>
+    <aside
+      class="then container-wide mt-0 mb-0 py-8"
+      aria-label={`Контекст епохи, зріз ${snapYear}-го`}
+    >
       <div class="then__inner">
         <div class="then__head">
-          <span class="then__year">{ordinal(year)}</span>
-          <span class="then__sub">контекст · тодішній світ</span>
+          <span class="then__year">{snapYear}-й</span>
+          <span class="then__sub">{sub}</span>
         </div>
         <dl class="then__grid">
           {items.map((item) => (
@@ -85,6 +83,7 @@ function ordinal(y: number): string {
     color: var(--accent);
     letter-spacing: -0.02em;
     line-height: 1;
+    white-space: nowrap;
   }
 
   .then__sub {

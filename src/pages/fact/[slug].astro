@@ -4,6 +4,8 @@ import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import SubjectIcon from "../../components/SubjectIcon.astro";
 import SupportBlock from "../../components/SupportBlock.astro";
+import TimelineFactCard from "../../components/TimelineFactCard.astro";
+import { relatedFacts } from "../../lib/related";
 import { SITE, SUBJECTS } from "../../config/site";
 import { eraById } from "../../lib/eras";
 import { formatUkShortDate, isoDate } from "../../lib/format";
@@ -24,6 +26,7 @@ export async function getStaticPaths() {
 
 const { fact } = Astro.props;
 const { Content } = await render(fact);
+const related = relatedFacts(await getCollection("facts"), fact);
 const subject = SUBJECTS.find((s) => s.id === fact.data.subject);
 if (!subject) {
   return Astro.redirect("/");
@@ -363,6 +366,24 @@ const breadcrumbsLd: Record<string, unknown> = {
       </div>
     </section>
   </div>
+
+  {
+    related.length > 0 && (
+      <section class="container-prose mt-12 px-7 sm:px-6" aria-labelledby="related-heading">
+        <h2
+          id="related-heading"
+          class="font-display text-ink-900 text-lg font-bold tracking-tight sm:text-xl"
+        >
+          Схожі факти
+        </h2>
+        <div class="mt-5 grid gap-4 sm:grid-cols-2">
+          {related.map((f) => (
+            <TimelineFactCard fact={f} />
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   <SupportBlock />
 
