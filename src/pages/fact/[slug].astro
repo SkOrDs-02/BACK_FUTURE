@@ -32,7 +32,7 @@ if (!subject) {
 const canonical = new URL(Astro.url.pathname, SITE.defaultUrl).toString();
 const ogImage = fact.data.image
   ? new URL(fact.data.image.src, SITE.defaultUrl).toString()
-  : new URL("/og/default.png", SITE.defaultUrl).toString();
+  : new URL(`/og/fact-${factSlug(fact.id)}.png`, SITE.defaultUrl).toString();
 const description = fact.data.short;
 const homeUrl = `${SITE.defaultUrl}/`;
 const updatedAt = fact.data.updatedAt;
