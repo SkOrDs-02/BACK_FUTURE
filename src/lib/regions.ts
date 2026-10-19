@@ -7,7 +7,7 @@
  * the content set grows.
  *
  * Flag emoji are derived from the ISO code via Regional Indicator Symbols
- * (`getFlag`) — keeping the table tighter and impossible to typo.
+ * (`getFlag`) - keeping the table tighter and impossible to typo.
  */
 
 export interface RegionEntry {
@@ -86,7 +86,7 @@ const ISO2_RE = /^[a-z]{2}$/;
 /**
  * Convert a 2-letter ISO code into the corresponding flag emoji using
  * Regional Indicator Symbols. Returns the canonical "white flag" U+1F3F3
- * for invalid input — so callers can render unconditionally without an extra
+ * for invalid input - so callers can render unconditionally without an extra
  * `if`.
  *
  * Examples: getFlag("cz") → "🇨🇿"; getFlag("UA") → "🇺🇦"; getFlag("zz") → "🇿🇿"
@@ -102,7 +102,7 @@ export function getFlag(code: string): string {
 
 /**
  * Look up the Ukrainian display name for an ISO-3166-1 alpha-2 code. Returns
- * `null` if the code is unknown — UI code should fall back to the code itself
+ * `null` if the code is unknown - UI code should fall back to the code itself
  * in uppercase (e.g. for `xx` → `XX`) and validation code should warn.
  */
 export function getRegionLabel(code: string): string | null {
@@ -130,7 +130,7 @@ export type ParsedRegion =
  * always normalises the code to lowercase so downstream code can compare
  * against `REGIONS` keys directly.
  *
- * For unknown / malformed input falls back to `{ kind: "world" }` — same
+ * For unknown / malformed input falls back to `{ kind: "world" }` - same
  * default as the legacy schema's `.optional()` (no region ⇒ "world"). The
  * Zod refinement is the source of truth for rejecting bad values at build
  * time; this helper is a runtime convenience for templates.
@@ -158,7 +158,7 @@ export function formatRegion(region: ParsedRegion): string {
 /**
  * Sorted list of known country regions. Sorted by Ukrainian label using
  * the `uk` locale so the dropdown reads in alphabetical order to a Ukrainian
- * visitor. `Україна` is excluded from this list — Ukraine has its own legacy
+ * visitor. `Україна` is excluded from this list - Ukraine has its own legacy
  * `ukraine` region (which is also the implicit value for facts before the
  * country-region schema landed), and surfacing it twice would be confusing.
  */

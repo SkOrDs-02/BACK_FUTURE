@@ -1,6 +1,6 @@
 ---
-// DensityStrip — horizontal bar chart: bar height = number of facts for that year.
-// Bar color = era color for that year. SSR-rendered — no JS needed for display.
+// DensityStrip: horizontal bar chart: bar height = number of facts for that year.
+// Bar color = era color for that year. SSR-rendered - no JS needed for display.
 // Clicking a bar navigates to /{year}/
 import { getCollection } from "astro:content";
 import { ERAS, eraOf } from "../lib/eras";
@@ -9,7 +9,7 @@ import { factsWord } from "../lib/plurals";
 
 const allFacts = await getCollection("facts", ({ data }) => !data.draft);
 
-// Count facts by yearOfEvent — single pass O(facts)
+// Count facts by yearOfEvent - single pass O(facts)
 const counts: Record<number, number> = {};
 for (let y = SITE.yearMin; y <= SITE.yearMax; y++) counts[y] = 0;
 for (const f of allFacts) {
@@ -156,7 +156,7 @@ const { activeYear, featuredByYear = {} } = Astro.props;
 </script>
 
 <style>
-  /* Tooltip — only for fine-pointer (mouse) devices, hidden on touch.
+  /* Tooltip: only for fine-pointer (mouse) devices, hidden on touch.
      Uses fixed positioning so it isn't clipped by overflow:visible on the strip. */
   .ds-tooltip {
     position: fixed;

@@ -35,7 +35,7 @@ const description = `Усі ${totalFacts} ${factsWord(totalFacts)} про нау
       </h1>
       <p class="mt-3 text-lg text-[color:var(--ink-2)]">
         {totalFacts}
-        {updatesCount(totalFacts)} від {SITE.yearMin} року — наука, історія, технології.
+        {updatesCount(totalFacts)} від {SITE.yearMin} року: наука, історія, технології.
       </p>
     </div>
 
@@ -102,7 +102,7 @@ const description = `Усі ${totalFacts} ${factsWord(totalFacts)} про нау
       {factsWord(totalFacts)}
     </p>
 
-    <!-- Facts grid — cards start hidden and fade in when scrolled into view -->
+    <!-- Facts grid - cards start hidden and fade in when scrolled into view -->
     <div id="all-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         sorted.map((f, i) => (

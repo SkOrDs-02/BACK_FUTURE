@@ -26,7 +26,7 @@ export interface YearStats {
  * Pick the top-N facts a graduate of `year` missed, biased toward high-impact
  * news. Within an impact bucket we sort by `yearOfEvent` descending (newer
  * first) so the reader sees the freshest milestones; ties break on id for a
- * stable build. The result is a slice — never the live array.
+ * stable build. The result is a slice - never the live array.
  */
 export function topImpactFacts(facts: readonly Fact[], year: number, n = 3): Fact[] {
   const impactRank = (f: Fact): number => {
@@ -75,7 +75,7 @@ export function subjectsForYear(facts: readonly Fact[]): CompareSubjectRef[] {
 /**
  * Collect everything `/compare` needs about a single year: matched fact count,
  * era metadata, top-impact picks, and subject breakdown. Returned shape is
- * intentionally small — anything heavier (FactCard renderer, FactTimeline)
+ * intentionally small - anything heavier (FactCard renderer, FactTimeline)
  * stays in the page layer.
  */
 export function collectYearStats(facts: readonly Fact[], year: number, topN = 3): YearStats {
@@ -111,7 +111,7 @@ export function randomYearPair(
 ): { a: number; b: number } {
   const span = yearMax - yearMin + 1;
   if (span < 2) {
-    // Degenerate range — only one valid year. Return it twice; callers should
+    // Degenerate range - only one valid year. Return it twice; callers should
     // guard against `a === b` themselves.
     return { a: yearMin, b: yearMin };
   }

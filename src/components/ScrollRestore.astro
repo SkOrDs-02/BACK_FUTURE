@@ -1,15 +1,15 @@
 ---
 /*
- * ScrollRestore — повертає користувача саме на ту картку факту, з якої він
+ * ScrollRestore: повертає користувача саме на ту картку факту, з якої він
  * перейшов на постійну сторінку (`/fact/[slug]`), коли він тисне «назад» у
- * браузері. Без цього скрипта браузер інколи скролить у верх сторінки —
+ * браузері. Без цього скрипта браузер інколи скролить у верх сторінки -
  * особливо на iOS Safari, коли bfcache відсутній, або коли вихідна сторінка
  * має lazy-reveal анімації, що змінюють розміри під час renavigate.
  *
  * Логіка:
  *   1. Перед самим навігаційним переходом по `a[href^="/fact/"]` зберігаємо
  *      у sessionStorage пару `{ slug, y }` під ключем поточного URL і
- *      одразу виставляємо `history.scrollRestoration = "manual"` — щоб
+ *      одразу виставляємо `history.scrollRestoration = "manual"` - щоб
  *      браузер на back-навігацію не намагався сам відновити scroll
  *      (його авто-restore конфліктує з нашим scrollIntoView).
  *   2. На back/forward завантаженні (Navigation Timing type === "back_forward")
@@ -17,8 +17,8 @@
  *      повторюємо ще раз на `load`, щоб компенсувати reflow від шрифтів /
  *      lazy-resources.
  *   3. На bfcache-restore (`pageshow.persisted === true`) браузер сам
- *      зберіг scroll — лише прибираємо запис із sessionStorage.
- *   4. Якщо запису немає (cold-load, прийшли по URL bar тощо) — нічого не
+ *      зберіг scroll - лише прибираємо запис із sessionStorage.
+ *   4. Якщо запису немає (cold-load, прийшли по URL bar тощо) - нічого не
  *      чіпаємо.
  *
  * Діагностика: при `?debug=scroll` (або `localStorage["bf:debug:scroll"] === "1"`)
@@ -28,8 +28,8 @@
  * "click" зі сторінки звідки прийшли. Прибрати: `localStorage.removeItem`
  * і відкрити URL без `?debug=scroll`.
  *
- * Уся логіка усередині try/catch — sessionStorage / Navigation Timing можуть
- * бути недоступні (приватний режим, старі браузери). Тоді — degrade silently.
+ * Уся логіка усередині try/catch - sessionStorage / Navigation Timing можуть
+ * бути недоступні (приватний режим, старі браузери). Тоді - degrade silently.
  */
 ---
 
@@ -140,7 +140,7 @@
     }
 
     function getReturnKey() {
-      // Не включаємо ?debug=scroll у ключ — бо тоді записи не співпадають
+      // Не включаємо ?debug=scroll у ключ - бо тоді записи не співпадають
       // між сторінкою-джерелом без query і сторінкою з ним.
       var search = window.location.search.replace(/[?&]debug=scroll(&|$)/, function (_m, end) {
         return end === "&" ? "?" : "";
@@ -236,11 +236,11 @@
           return;
         }
 
-        // ❗ НЕ виставляємо history.scrollRestoration = "manual" — це ламає
+        // ❗ НЕ виставляємо history.scrollRestoration = "manual" - це ламає
         // bfcache-restore у iOS Safari: коли Safari дістає сторінку з
         // bfcache, при manual він НЕ відновлює scroll position сам, а
         // наш DCL-handler не запускається (DCL не fires на bfcache restore).
-        // Результат — користувач опиняється у scrollY=0. На auto бра́узер
+        // Результат - користувач опиняється у scrollY=0. На auto бра́узер
         // сам поверне scroll із bfcache, а pageshow-handler нижче слугує
         // safety-net якщо браузер цього не зробив (наприклад, інший reflow).
         dlog("click → leaving scrollRestoration as auto (bfcache-friendly)");
@@ -310,12 +310,12 @@
       tryRestoreOnNav();
     }
 
-    // pageshow з persisted=true — це bfcache-restore. На цьому шляху DCL
+    // pageshow з persisted=true - це bfcache-restore. На цьому шляху DCL
     // не fires, тож тут робимо власний restore як safety-net. У 99%
     // випадків Safari вже сам поставив scroll із bfcache, тоді ми просто
     // повторно центруємо картку (no-op для користувача). Але якщо чомусь
-    // не поставив (історично — з manual scrollRestoration, або edge-case
-    // з пам'яттю) — тут ми виправляємо.
+    // не поставив (історично - з manual scrollRestoration, або edge-case
+    // з пам'яттю) - тут ми виправляємо.
     window.addEventListener("pageshow", function (e) {
       dlog("pageshow persisted=" + !!e.persisted + " scrollY=" + Math.round(window.scrollY));
       if (!e.persisted) return;

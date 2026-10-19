@@ -2,9 +2,12 @@ import path from "node:path";
 import process from "node:process";
 
 import { eras, loadFacts, subjects } from "./content-utils";
+import { findSlop } from "../src/lib/antislop";
 import { isKnownRegionCode } from "../src/lib/regions";
 
 const minFactsPerSubject = 1;
+// Факти до 2025 року написані до правила антислопу, тож для них лише попередження.
+const antislopStrictFromYear = 2025;
 const minFactsPerEra = 5;
 const bannedTerms = [
   "спецоперац",
@@ -54,7 +57,7 @@ for (const fact of facts) {
     const code = fact.region.slice("country:".length);
     if (!isKnownRegionCode(code)) {
       warnings.push(
-        `${relativePath}: region "country:${code}" not in known REGIONS map (src/lib/regions.ts) — flag/label will fall back to the raw code`,
+        `${relativePath}: region "country:${code}" not in known REGIONS map (src/lib/regions.ts); flag/label will fall back to the raw code`,
       );
     }
   }
@@ -67,7 +70,14 @@ for (const fact of facts) {
     sourceUrls.set(source.url, relativePath);
   }
 
-  const normalizedText = `${fact.title}\n${fact.short}\n${fact.body}`.toLowerCase();
+  const rawText = `${fact.title}\n${fact.short}\n${fact.body}`;
+  const slop = findSlop(rawText);
+  if (slop.length > 0) {
+    const message = `${relativePath}: antislop: ${slop.join(", ")}`;
+    (fact.yearOfEvent >= antislopStrictFromYear ? errors : warnings).push(message);
+  }
+
+  const normalizedText = rawText.toLowerCase();
   for (const term of bannedTerms) {
     if (normalizedText.includes(term)) {
       errors.push(`${relativePath}: avoid sensitive or non-Ukrainian framing "${term}"`);

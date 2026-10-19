@@ -1,5 +1,5 @@
 ---
-// MissedCounter — shows how many discoveries the user missed + era name.
+// MissedCounter: shows how many discoveries the user missed + era name.
 // Updated reactively via year:change event.
 import { ERAS } from "../lib/eras";
 import { yearsWord } from "../lib/plurals";
@@ -137,7 +137,7 @@ const erasForClient = ERAS.map((e) => ({
     const era = eraOf(year);
 
     if (!seenOnce) {
-      // Counter not yet revealed — update silently to track current target.
+      // Counter not yet revealed - update silently to track current target.
       displayedCount = count;
       if (numEl) numEl.textContent = String(count);
     } else {

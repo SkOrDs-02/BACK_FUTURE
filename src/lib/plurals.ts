@@ -4,7 +4,7 @@
  * Replaces hand-rolled `n % 10 === 1 && n % 100 !== 11 ...` ladders scattered
  * across the codebase. The category selection is delegated to the CLDR plural
  * tables shipped with the JS engine, so adding a new locale only requires
- * supplying the appropriate forms — no rule logic to maintain.
+ * supplying the appropriate forms - no rule logic to maintain.
  *
  * Locale argument is required for forward-compatibility with the upcoming
  * `/uk/` and `/en/` i18n routing (roadmap 9.1); defaults to `"uk"`.
@@ -117,7 +117,7 @@ export function factsCount(n: number, locale: string = "uk"): string {
 }
 
 /**
- * `factsWord(5, "uk")` → `"фактів"`. Returns the noun form only — useful when
+ * `factsWord(5, "uk")` → `"фактів"`. Returns the noun form only - useful when
  * the number is rendered with separate styling (e.g. a giant counter):
  * `<strong>${n}</strong> ${factsWord(n)}`.
  */
@@ -173,7 +173,7 @@ export function yearsAgo(n: number, locale: string = "uk"): string {
 }
 
 /**
- * `yearsWord(5, "uk")` → `"років"`. Returns the noun form of "year" only —
+ * `yearsWord(5, "uk")` → `"років"`. Returns the noun form of "year" only -
  * useful for "minus 5 / years passed" style displays where "тому" doesn't fit.
  */
 export function yearsWord(n: number, locale: string = "uk"): string {

@@ -1,5 +1,5 @@
 ---
-// RegionFilter — chip group for filtering the fact timeline by `region`.
+// RegionFilter: chip group for filtering the fact timeline by `region`.
 //
 // UI: "🌍 Усе" / "🇺🇦 Україна" / "Країна ▾" dropdown of ISO-3166-1 alpha-2
 // country regions present in the current page. State is mirrored to the
@@ -211,15 +211,15 @@ const hasAny = ukraineCount > 0 || presentCountries.length > 0;
 </style>
 
 <script>
-  // Region filter — toggles visibility of `.timeline__row[data-fact-region]`
+  // Region filter - toggles visibility of `.timeline__row[data-fact-region]`
   // and `.fact-card[data-fact-region]` based on the active filter. State is
   // mirrored to the `?region=` URL search param.
   //
   // Supported param values:
-  //   `world`          — only world-region facts
-  //   `ukraine`        — only Ukraine-region facts
-  //   `<iso2>`         — only one country (e.g. `cz`)
-  //   `<iso2>,<iso2>…` — multiple countries
+  //   `world`          - only world-region facts
+  //   `ukraine`        - only Ukraine-region facts
+  //   `<iso2>`         - only one country (e.g. `cz`)
+  //   `<iso2>,<iso2>…` - multiple countries
   //
   // Subject-section visibility is also recomputed so empty sections collapse.
 
@@ -339,7 +339,7 @@ const hasAny = ukraineCount > 0 || presentCountries.length > 0;
           setFilter({ kind: "ukraine" }, true);
         } else if (value.startsWith("country:")) {
           const code = value.slice("country:".length);
-          // Single-country selection from dropdown — replace any previous filter
+          // Single-country selection from dropdown - replace any previous filter
           setFilter({ kind: "countries", codes: [code] }, true);
           const details = barEl.querySelector<HTMLDetailsElement>("details.region-dropdown");
           if (details) details.open = false;

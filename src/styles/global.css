@@ -6,12 +6,12 @@
 @variant dark (&:where(.dark, .dark *));
 
 /* -----------------------------------------------------------------------
-   Self-hosted fonts (replaces fonts.googleapis.com — privacy + LCP).
+   Self-hosted fonts (replaces fonts.googleapis.com - privacy + LCP).
    Файли лежать у `public/fonts/` (subset з пакетів @fontsource[-variable]).
    `unicode-range` дозволяє браузеру тягнути тільки той subset, який реально
    потрібен на сторінці (наприклад, без Cyrillic коли весь текст латиницею).
 
-   Latin-extended subsets (Geist, Unbounded) свідомо НЕ підключені — у
+   Latin-extended subsets (Geist, Unbounded) свідомо НЕ підключені - у
    контенті немає чеського/польського/балтійського латинського наповнення
    (перевірено grep-ом діапазонів U+0100-024F та U+1E00-1EFF). Це -133 KB
    у `public/fonts/` і коротший build-артефакт. `unbounded-cyrillic-ext`
@@ -19,7 +19,7 @@
    контентних файлах.
    ----------------------------------------------------------------------- */
 
-/* Geist (тіло) — variable wght 100..900. Cyrillic + Latin для UA-контенту. */
+/* Geist (тіло) - variable wght 100..900. Cyrillic + Latin для UA-контенту. */
 @font-face {
   font-family: "Geist";
   src: url("/fonts/geist-cyrillic-wght-normal.woff2") format("woff2-variations");
@@ -39,7 +39,7 @@
     U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Unbounded (display) — variable wght 100..900. Повна кирилиця + латиниця —
+/* Unbounded (display) - variable wght 100..900. Повна кирилиця + латиниця -
    UA-заголовки нарешті рендеряться самим display-шрифтом без жодного fallback. */
 @font-face {
   font-family: Unbounded;
@@ -68,8 +68,8 @@
     U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* JetBrains Mono — non-variable, окремі файли на 400/500/600.
-   Cyrillic покриває всі три ваги — без цього браузер робив fake-bold/fake-medium. */
+/* JetBrains Mono - non-variable, окремі файли на 400/500/600.
+   Cyrillic покриває всі три ваги - без цього браузер робив fake-bold/fake-medium. */
 @font-face {
   font-family: "JetBrains Mono";
   src: url("/fonts/jetbrains-mono-cyrillic-400-normal.woff2") format("woff2");
@@ -127,10 +127,10 @@
 
 /* -----------------------------------------------------------------------
    Cream palette tokens. Single source of truth for colors / shadows /
-   surfaces / typography. Dark mode swaps tokens on `html.dark` — we
+   surfaces / typography. Dark mode swaps tokens on `html.dark` - we
    keep WARM cream tints in dark mode (not cold whites/greys) per mockup.
    ----------------------------------------------------------------------- */
-/* Tailwind 4 token aliases — single source of truth for colour utilities.
+/* Tailwind 4 token aliases - single source of truth for colour utilities.
    Each `--color-*` references the cream-palette CSS variable below so that
    `bg-ink-50`, `text-accent-700`, … resolve at runtime via the same vars
    that swap in `html.dark`. The fallback pipeline stays:
@@ -210,7 +210,7 @@
     --ink-800: #2a261d;
     --ink-900: #1a1813;
 
-    /* Accents — помідорний/калиновий */
+    /* Accents: помідорний/калиновий */
     --accent: #b9381a;
     --accent-50: #fdf2ed;
     --accent-100: #f7d8cc;
@@ -269,9 +269,9 @@
     --color-fg: var(--ink);
   }
 
-  /* Dark mode — теплі кремові, не сині сталеві. */
+  /* Dark mode - теплі кремові, не сині сталеві. */
   html.dark {
-    /* Surfaces — темніший фон щоб картки (#2c2418) чітко відокремлювались */
+    /* Surfaces: темніший фон щоб картки (#2c2418) чітко відокремлювались */
     --paper: #1c1812;
     --paper-2: #28211a;
     --paper-3: #342b1e;
@@ -304,7 +304,7 @@
 
     --hl: #f59e0b;
 
-    /* Cards — на ~10 одиниць L* світліші за фон */
+    /* Cards: на ~10 одиниць L* світліші за фон */
     --card: #2c2418;
     --card-edge: rgba(240, 232, 210, 0.1);
 
@@ -362,9 +362,9 @@
      вісь body має non-visible overflow, інша автоматично стає `auto`
      (CSS Overflow L3). У Chromium це робить body окремим scroll
      container-ом, і `position: sticky` на хедері (його прямому нащадку)
-     ламається на мобільних — sticky-елемент скролиться разом зі сторінкою
+     ламається на мобільних - sticky-елемент скролиться разом зі сторінкою
      замість прилипати до viewport-у. Горизонтальний overflow вже клейпає
-     `html { overflow-x: clip }` вище — цього достатньо для всієї сторінки. */
+     `html { overflow-x: clip }` вище - цього достатньо для всієї сторінки. */
   body {
     max-width: 100%;
     min-height: 100dvh;
@@ -449,7 +449,7 @@
   .btn-ghost {
     @apply border-ink-200 text-ink-800 hover:border-ink-400 dark:text-ink-900 dark:hover:border-ink-500 inline-flex items-center justify-center gap-2 rounded-full border bg-[color:var(--card)] px-5 py-2.5 text-sm font-medium transition dark:border-[color:var(--card-edge)] dark:bg-[color:var(--card)];
   }
-  /* Subtle ruled-paper background — only on hero section. */
+  /* Subtle ruled-paper background - only on hero section. */
   .ruled-hero {
     background-image: linear-gradient(to bottom, transparent calc(2rem - 1px), var(--rule) 2rem);
     background-size: 100% 32px;
@@ -457,7 +457,7 @@
   }
   /* -----------------------------------------------------------------------
      Smooth details/summary open animation via CSS grid trick.
-     No JS needed — works in all modern browsers.
+     No JS needed - works in all modern browsers.
      Respects prefers-reduced-motion via the global rule above.
      ----------------------------------------------------------------------- */
   details > :not(summary) {
@@ -474,7 +474,7 @@
   }
 
   /* -----------------------------------------------------------------------
-     Reading progress bar — рендериться лише на /fact/[slug]. Тонка лінія
+     Reading progress bar - рендериться лише на /fact/[slug]. Тонка лінія
      зверху, що розтягується через scaleX(0..1) у requestAnimationFrame.
      z-index 41, щоб бути ВИЩЕ за sticky-header (z-40 у Header.astro).
      pointer-events: none, щоб не блокувати кліки по логотипу.
@@ -505,7 +505,7 @@
   }
 
   /* -----------------------------------------------------------------------
-     Back-to-year floating pill — лише на /fact/[slug]. Десктоп: ліворуч
+     Back-to-year floating pill - лише на /fact/[slug]. Десктоп: ліворуч
      внизу. Mobile: по центру внизу + safe-area-inset (iPhone notch).
      Видимість керує IntersectionObserver через клас .is-visible. Reduced
      motion прибирає transform-перехід (бар з'являється миттєво).
@@ -599,7 +599,7 @@
   }
 
   /* -----------------------------------------------------------------------
-     Year Machine — odometer housing with 3-column grid layout.
+     Year Machine - odometer housing with 3-column grid layout.
      Collapses to single column on narrow viewports.
      ---------------------------------------------------------------------- */
   .machine {
@@ -679,7 +679,7 @@
   }
 
   /* -----------------------------------------------------------------------
-     Odometer — 4-digit year picker with animated digit columns.
+     Odometer - 4-digit year picker with animated digit columns.
      JS sets `transform: translateY(−digit * 10%)` on .odo__strip.
      ---------------------------------------------------------------------- */
   .odo {
@@ -755,7 +755,7 @@
     }
   }
 
-  /* Stamp — mono border badge with optional rotation via --stamp-rotate. */
+  /* Stamp: mono border badge with optional rotation via --stamp-rotate. */
   .stamp {
     display: inline-block;
     font-family: var(--font-mono);
@@ -774,7 +774,7 @@
     pointer-events: none;
   }
 
-  /* DensityStrip bar — height and color driven by CSS custom props. */
+  /* DensityStrip bar - height and color driven by CSS custom props. */
   .density__cap {
     display: block;
     width: 100%;
@@ -798,7 +798,7 @@
   }
 
   /* -----------------------------------------------------------------------
-     Subject chip — rounded pill with colored code badge.
+     Subject chip - rounded pill with colored code badge.
      --chip-color set inline via style="--chip-color: var(--subject-X)"
      ---------------------------------------------------------------------- */
   .chip {

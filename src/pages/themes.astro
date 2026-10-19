@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
 
-// Design lab is dev-only — redirect to 404 in production builds
+// Design lab is dev-only - redirect to 404 in production builds
 if (import.meta.env.PROD) {
   return Astro.redirect("/404", 302);
 }
@@ -18,7 +18,7 @@ const teasers = [
     subject: "🧬 Біологія",
     title: "CRISPR/Cas9: редагування генів стало рутиною",
     short:
-      "Технологія, яку відкрили в 2012-му, у 2020-му отримала Нобелівську премію, у 2023-му — перший FDA-схвалений препарат.",
+      "Технологія, яку відкрили в 2012-му, у 2020-му отримала Нобелівську премію, а у 2023-му зʼявився перший FDA-схвалений препарат.",
     year: 2020,
   },
 ];
@@ -29,7 +29,7 @@ const teasers = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Дизайн-варіанти — BACK_FUTURE</title>
+    <title>Дизайн-варіанти | BACK_FUTURE</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -360,7 +360,7 @@ const teasers = [
           >
         </div>
 
-        <p class="eyebrow">Українською — без підписки</p>
+        <p class="eyebrow">Українською, без підписки</p>
         <h1 class="display mt-3 max-w-3xl text-5xl leading-[1.02] tracking-tight sm:text-6xl">
           Що ти <em class="accent">пропустив</em> після випускного?
         </h1>
@@ -411,8 +411,8 @@ const teasers = [
           Що ти пропустив <span class="accent">після випускного</span>?
         </h1>
         <p class="text-ink-700 mt-5 max-w-2xl text-lg">
-          Перегорни сторінку до теми "Що нового з {new Date().getFullYear()}" — твій підручник до
-          неї не дійшов.
+          Перегорни сторінку до теми "Що нового з {new Date().getFullYear()}": твій підручник до неї
+          не дійшов.
         </p>
 
         <div class="mt-10 flex flex-col gap-3 sm:max-w-xl sm:flex-row">

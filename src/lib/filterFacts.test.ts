@@ -21,7 +21,7 @@ interface FactStub {
 
 /**
  * Build a structurally compatible Fact for tests. We only populate the fields
- * the lib functions actually read — the rest of `CollectionEntry<"facts">` is
+ * the lib functions actually read - the rest of `CollectionEntry<"facts">` is
  * irrelevant here, so we cast to the public Fact type.
  */
 function makeFact(stub: FactStub): Fact {

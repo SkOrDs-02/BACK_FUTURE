@@ -1,5 +1,5 @@
 /**
- * Site-level configuration. Single source of truth for branding/strings —
+ * Site-level configuration. Single source of truth for branding/strings -
  * to fork this template into a new content site, this file (plus content/)
  * is the main thing you change.
  */
@@ -8,11 +8,11 @@ export const SITE = {
   name: "BACK_FUTURE",
   tagline: "Що ти пропустив після випускного",
   description:
-    "Введи рік випуску й дізнайся, що змінилось у науці, історії й світі від тих часів — українською мовою.",
+    "Введи рік випуску й дізнайся, що змінилось у науці, історії й світі від тих часів. Українською мовою.",
   locale: "uk-UA",
   // `import.meta.env.SITE` is injected by Astro from the `site:` config in
   // `astro.config.mjs` (which already applies the PUBLIC_SITE_URL fallback
-  // chain). Single source of truth — do NOT duplicate the placeholder here.
+  // chain). Single source of truth - do NOT duplicate the placeholder here.
   defaultUrl: import.meta.env.SITE,
   author: "BACK_FUTURE team",
   twitter: "",

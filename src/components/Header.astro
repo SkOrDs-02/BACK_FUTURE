@@ -37,7 +37,7 @@ const navLinks = [
   <div class="container-wide relative flex items-center justify-between gap-3 py-4">
     <a
       href="/"
-      aria-label={`${SITE.name} — на головну`}
+      aria-label={`${SITE.name}, на головну`}
       class="font-display text-ink-900 flex items-center gap-2 text-lg font-bold tracking-tight"
     >
       {SITE.name}
@@ -231,7 +231,7 @@ const navLinks = [
       setState(nav.dataset.state !== "open");
     });
 
-    // Закриваємо при кліку поза хедером — крім кліків на сам toggle (його
+    // Закриваємо при кліку поза хедером - крім кліків на сам toggle (його
     // ми вже опрацювали вище). Перевіряємо, чи клік стався в межах хедера.
     document.addEventListener("click", function (e) {
       if (nav.dataset.state !== "open") return;

@@ -146,10 +146,10 @@ export function buildDefaultOgSvg(): string {
 /**
  * Конвертує SVG (як рядок) у PNG-буфер. Викликається тільки під час build-у
  * (для статичних `.png.ts` ендпоінтів), тому динамічний `import()` мінімізує
- * враження на dev-server / SSR — resvg підтягується тільки коли потрібно.
+ * враження на dev-server / SSR - resvg підтягується тільки коли потрібно.
  *
  * `font.loadSystemFonts: true` змушує resvg сканити локальні шрифти. На
- * GitHub Actions це шрифти Ubuntu (DejaVu / Noto) — вони покривають кирилицю.
+ * GitHub Actions це шрифти Ubuntu (DejaVu / Noto) - вони покривають кирилицю.
  *
  * Resvg може мовчки не рендерити дуже великі `text`-елементи, якщо
  * `defaultFontFamily` потрапляє на serif-fallback (Inter / Manrope не

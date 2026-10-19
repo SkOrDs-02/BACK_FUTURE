@@ -6,7 +6,7 @@ interface Props {
 }
 const { factsCount } = Astro.props;
 
-// Use the verb "new fact / new facts / new facts" form here — the noun phrase
+// Use the verb "new fact / new facts / new facts" form here - the noun phrase
 // is grammatically tied to the adjective "новий" / "нові" / "нових".
 const learnedLabel = plural(factsCount, "uk", {
   one: "новий факт",
@@ -30,7 +30,7 @@ const learnedLabel = plural(factsCount, "uk", {
     </h2>
     <p class="max-w-md text-base text-[color:var(--ink-2)]">
       Ти щойно дізнався {factsCount}
-      {learnedLabel}. Тепер перевір, чи зможеш вгадати рік кожної події — 5 питань, нові факти
+      {learnedLabel}. Тепер перевір, чи зможеш вгадати рік кожної події: 5 питань, нові факти
       щоразу.
     </p>
     <a

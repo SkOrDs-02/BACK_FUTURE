@@ -2,7 +2,7 @@
 /**
  * Privacy-friendly analytics. Без cookies, без PII.
  *
- * Опціональний — якщо env-змінні не задані, нічого не рендеримо.
+ * Опціональний - якщо env-змінні не задані, нічого не рендеримо.
  *
  * Підтримуються три провайдери (вибрати один через PUBLIC_ANALYTICS_PROVIDER):
  *
@@ -20,9 +20,9 @@
  * - "posthog":
  *     PUBLIC_ANALYTICS_PROVIDER=posthog
  *     PUBLIC_POSTHOG_KEY=phc_...                                    (обов'язково)
- *     PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com                  (опційно, default — eu.i)
+ *     PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com                  (опційно, default - eu.i)
  *
- * Для PostHog використовуємо `persistence: "localStorage"` — без cookies, але
+ * Для PostHog використовуємо `persistence: "localStorage"` - без cookies, але
  * розпізнаємо сесію в межах одного браузера. Якщо `respect_dnt` enabled, юзери з
  * Do-Not-Track автоматично виключені з трекінгу.
  *
@@ -64,12 +64,12 @@ function resolveConfig(): AnalyticsConfig {
 const config = resolveConfig();
 
 // Конфіг ініціалізації PostHog. Вибрані опції:
-//   persistence: "localStorage"      — без cookies (як обіцяє коментар вище)
-//   respect_dnt: true                — юзери з Do-Not-Track не трекаються взагалі
-//   person_profiles: "identified_only" — анонімні не створюють person profile
-//   capture_pageview / pageleave     — стандартний funnel-стартер
-//   capture_performance.web_vitals   — Core Web Vitals як `$web_vitals` events
-//   autocapture / rageclick          — безкоштовні heatmaps + dead-click інсайти
+//   persistence: "localStorage"      - без cookies (як обіцяє коментар вище)
+//   respect_dnt: true                - юзери з Do-Not-Track не трекаються взагалі
+//   person_profiles: "identified_only" - анонімні не створюють person profile
+//   capture_pageview / pageleave     - стандартний funnel-стартер
+//   capture_performance.web_vitals   - Core Web Vitals як `$web_vitals` events
+//   autocapture / rageclick          - безкоштовні heatmaps + dead-click інсайти
 const posthogInitOptions =
   config?.kind === "posthog"
     ? {
@@ -95,7 +95,7 @@ const posthogSnippet =
 
 // Глобальний хендлер для outbound-кліків. Один раз вішається на document і
 // перехоплює <a href> на зовнішні домени. Якщо юзер тримає Ctrl/Cmd або
-// клацає середньою кнопкою — теж рахуємо (новa вкладка). Жодних PII —
+// клацає середньою кнопкою - теж рахуємо (новa вкладка). Жодних PII -
 // тільки `host` і `path`.
 const outboundSnippet = config
   ? `(function(){function f(){var l=location.host;document.addEventListener('click',function(e){var t=e.target;if(!(t instanceof Element))return;var a=t.closest('a[href]');if(!(a instanceof HTMLAnchorElement))return;var h=a.href;if(!h)return;try{var u=new URL(h,location.href);if(!/^https?:$/.test(u.protocol))return;if(u.host===l)return;var p=window.posthog;if(!p||typeof p.capture!=='function')return;var fc=a.closest('article[id^="fact-card-"]');var fid=fc?fc.id.replace(/^fact-card-/,''):null;p.capture(fid?'fact_source_clicked':'outbound_link_clicked',{host:u.host,path:u.pathname,fact_id:fid});}catch(_){}},{capture:true,passive:true});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',f,{once:true});}else{f();}})();`
