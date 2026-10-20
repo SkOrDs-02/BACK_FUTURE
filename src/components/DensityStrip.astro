@@ -46,7 +46,7 @@ const { activeYear, featuredByYear = {} } = Astro.props;
           <div role="listitem" class="contents">
             <a
               href={`/${year}/`}
-              class={`density__bar group relative flex flex-1 items-end${isActive ? " is-on" : ""}`}
+              class={`density__bar group relative flex flex-1 items-end self-stretch${isActive ? " is-on" : ""}`}
               data-ds-year={year}
               data-ds-count={count}
               data-ds-color={era.color}
