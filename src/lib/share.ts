@@ -8,7 +8,7 @@ export const SHARE_HEIGHT = 1920;
 
 type FactEntry = CollectionEntry<"facts">;
 
-function escapeXml(value: string): string {
+export function escapeXml(value: string): string {
   return value
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -181,7 +181,7 @@ export function buildSharePosterSvg(year: number, allFacts: readonly FactEntry[]
   }
   const pillsSvg = pills.join("");
 
-  const footerUrl = escapeXml(`back-future · /${year}`);
+  const footerUrl = escapeXml(`back-future.com/${year}`);
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${SHARE_WIDTH}" height="${SHARE_HEIGHT}" viewBox="0 0 ${SHARE_WIDTH} ${SHARE_HEIGHT}">
   <rect width="${SHARE_WIDTH}" height="${SHARE_HEIGHT}" fill="#f7f7f5"/>
@@ -254,6 +254,6 @@ export function buildSharePosterSquareSvg(year: number, allFacts: readonly FactE
   <text x="540" y="410" fill="#262624" font-family="Manrope, Inter, Arial, sans-serif" font-size="46" font-weight="700" text-anchor="middle">${escapeXml(headline)}</text>
   <path d="M100 440h880" stroke="#d6d6d2" stroke-width="2"/>
   ${rows}
-  <text x="540" y="990" fill="#67675f" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="5" text-anchor="middle">${escapeXml(`back-future · /${year}`)}</text>
+  <text x="540" y="990" fill="#67675f" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="5" text-anchor="middle">${escapeXml(`back-future.com/${year}`)}</text>
 </svg>`;
 }
