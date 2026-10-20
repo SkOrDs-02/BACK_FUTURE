@@ -69,7 +69,8 @@ const config = resolveConfig();
 //   person_profiles: "identified_only" - анонімні не створюють person profile
 //   capture_pageview / pageleave     - стандартний funnel-стартер
 //   capture_performance.web_vitals   - Core Web Vitals як `$web_vitals` events
-//   autocapture / rageclick          - безкоштовні heatmaps + dead-click інсайти
+//   autocapture / rageclick          - безкоштовні heatmaps
+//   disable_surveys / dead clicks    - не використовуємо, а surveys.js це ще ~25 КБ
 const posthogInitOptions =
   config?.kind === "posthog"
     ? {
@@ -83,14 +84,43 @@ const posthogInitOptions =
         rageclick: true,
         capture_performance: { web_vitals: true },
         disable_session_recording: true,
+        disable_surveys: true,
+        capture_dead_clicks: false,
       }
     : null;
+
+// Офіційний сніпет одразу вставляє array.js (~155 КБ), і його розбір забирав
+// головний потік у першого рендеру. Тому дві правки сніпета:
+//   1. вставку array.js відкладено, доки є і `load`, і запис first-contentful-paint
+//      (страховка 5 с), а потім idle (`window.__phLoad`). rAF не вистачало: кадр
+//      ще не показано, а скрипт уже вантажиться, і Lighthouse пише його в LCP;
+//   2. у список методів-стабів додано capture/register/register_once/identify/reset:
+//      їхні виклики до завантаження стають у чергу, і array.js їх програє.
+//      Без цього `track()` до завантаження мовчки губився (у стабі не було capture).
+const POSTHOG_INSERT = '(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r)';
+const POSTHOG_DEFERRED_INSERT = "window.__phLoad=function(){t.head.appendChild(p)}";
+const POSTHOG_STUBS = 'o="init ';
+const POSTHOG_STUBS_PUBLIC = 'o="init capture register register_once identify reset ';
+const posthogLoadLater = `(function(){var loaded=document.readyState==="complete",painted=false;function go(){var f=window.__phLoad;if(!f)return;window.__phLoad=null;f();}function maybe(){if(!loaded||!painted)return;if("requestIdleCallback" in window){requestIdleCallback(go,{timeout:3000});}else{setTimeout(go,1500);}}function paint(){painted=true;maybe();}try{new PerformanceObserver(function(l){if(l.getEntriesByName("first-contentful-paint").length)paint();}).observe({type:"paint",buffered:true});}catch(_){painted=true;}setTimeout(paint,5000);if(loaded){maybe();}else{addEventListener("load",function(){loaded=true;maybe();},{once:true});}})();`;
+
+function patchPosthogSnippet(snippet: string): string {
+  if (!snippet.includes(POSTHOG_INSERT) || !snippet.includes(POSTHOG_STUBS)) {
+    throw new Error("[Analytics] PostHog snippet changed: update the deferred-load patch");
+  }
+  return (
+    snippet
+      .replace(POSTHOG_INSERT, POSTHOG_DEFERRED_INSERT)
+      .replace(POSTHOG_STUBS, POSTHOG_STUBS_PUBLIC) + posthogLoadLater
+  );
+}
 
 // Снipet екрануємо JSON.stringify-ом щоб уникнути ін'єкцій
 // з env-значень (host може бути self-hosted) і подвійних лапок.
 const posthogSnippet =
   config?.kind === "posthog" && posthogInitOptions
-    ? `!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}p=t.createElement("script"),p.type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init Te us le we Ne ke De Ce Le ke Pe Me Re ue Ee xe Ie Os ws Ts Es Cs Ls Rs Ps Ms je Ae He Be Fe ze Ye Je Ve $e Xe Qe et tt rt nt st".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);posthog.init(${JSON.stringify(config.key)},${JSON.stringify(posthogInitOptions)});`
+    ? patchPosthogSnippet(
+        `!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}p=t.createElement("script"),p.type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init Te us le we Ne ke De Ce Le ke Pe Me Re ue Ee xe Ie Os ws Ts Es Cs Ls Rs Ps Ms je Ae He Be Fe ze Ye Je Ve $e Xe Qe et tt rt nt st".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);posthog.init(${JSON.stringify(config.key)},${JSON.stringify(posthogInitOptions)});`,
+      )
     : "";
 
 // Глобальний хендлер для outbound-кліків. Один раз вішається на document і
