@@ -1,44 +1,49 @@
 ---
 /*
- * RevealObserver: глобальний IntersectionObserver, що шукає всі `[data-reveal]`
- * на сторінці і додає їм клас `.is-visible`, як тільки вони перетинають viewport.
- * Стилі для `[data-reveal]` лежать у `src/styles/global.css` (opacity 0 →
- * translateY(8px) → fade-in). prefers-reduced-motion обробляється там же.
+ * RevealObserver: глобальний IntersectionObserver для `[data-reveal]`.
+ * Стилі лежать у `src/styles/global.css` (opacity 0 → translateY(16px) →
+ * fade-in). prefers-reduced-motion обробляється там же.
+ *
+ * Прогресивне покращення: за замовчуванням усі `[data-reveal]` видимі.
+ * Перший прохід observer-а лише сортує: що вже у viewport, лишається як є;
+ * що нижче, отримує `.reveal-pending` (ховається поза екраном, тож без
+ * мерехтіння) і проявляється, коли доїжджає до viewport. Перший екран ніколи
+ * не стартує з opacity:0, тож Chrome рахує LCP з першого кадру, а без JS
+ * сторінка просто видима. getBoundingClientRect свідомо не використовуємо:
+ * він змушує синхронний layout усієї сторінки ще до першого кадру.
  *
  * Чому окремий компонент: щоб логіка не дублювалась між сторінками
  * (`/[year]`, `/subject/[id]`, `/era/[slug]`, `/timeline`). Підключений у
- * Base.astro, тож автоматично працює всюди - нові сторінки нічого не потребують.
- *
- * No-op гілка: якщо на сторінці немає `[data-reveal]`, observer створюється,
- * нічого не спостерігає і одразу збирається GC. Якщо `IntersectionObserver`
- * недоступний (старий Safari, MSEdge), всім елементам одразу додається
- * `.is-visible` - без анімації, але видимі.
+ * Base.astro, тож автоматично працює всюди.
  */
 ---
 
 <script is:inline>
   (function () {
+    if (!("IntersectionObserver" in window)) return;
     var nodes = document.querySelectorAll("[data-reveal]");
     if (nodes.length === 0) return;
-    if (!("IntersectionObserver" in window)) {
-      nodes.forEach(function (el) {
-        el.classList.add("is-visible");
-      });
-      return;
-    }
-    var observer = new IntersectionObserver(
+    var reveal = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
+            entry.target.classList.remove("reveal-pending");
+            reveal.unobserve(entry.target);
           }
         });
       },
       { threshold: 0.08, rootMargin: "0px 0px -32px 0px" },
     );
+    var sort = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        sort.unobserve(entry.target);
+        if (entry.isIntersecting) return;
+        entry.target.classList.add("reveal-pending");
+        reveal.observe(entry.target);
+      });
+    });
     nodes.forEach(function (el) {
-      observer.observe(el);
+      sort.observe(el);
     });
   })();
 </script>

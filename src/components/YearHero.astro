@@ -102,8 +102,8 @@ const updatesLabel = updatesCount(totalCount);
 
 <style>
   @keyframes year-glitch {
+    /* Без opacity:0 на старті: h1 це LCP-елемент, а прозорий кадр Chrome не рахує. */
     0% {
-      opacity: 0;
       text-shadow:
         -6px 0 var(--accent),
         6px 0 #3b6e8f;
@@ -111,7 +111,6 @@ const updatesLabel = updatesCount(totalCount);
       filter: blur(3px);
     }
     12% {
-      opacity: 1;
       text-shadow:
         4px 0 var(--accent),
         -4px 0 #5e3a7a;
@@ -146,7 +145,6 @@ const updatesLabel = updatesCount(totalCount);
     100% {
       text-shadow: none;
       letter-spacing: -0.04em;
-      opacity: 1;
     }
   }
 
