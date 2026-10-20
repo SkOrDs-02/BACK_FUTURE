@@ -69,6 +69,6 @@ export function buildQuizResultSvg(score: number, total = QUIZ_TOTAL): string {
   <path d="M100 590h880" stroke="#d6d6d2" stroke-width="2"/>
   ${titleLines}
   ${subLines}
-  <text x="540" y="990" fill="#67675f" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="5" text-anchor="middle">${escapeXml("А ти? back-future · /quiz")}</text>
+  <text x="540" y="990" fill="#67675f" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="5" text-anchor="middle">${escapeXml("А ти? back-future.com/quiz")}</text>
 </svg>`;
 }
