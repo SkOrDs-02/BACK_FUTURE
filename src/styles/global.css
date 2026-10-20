@@ -211,7 +211,8 @@
     --ink-900: #1a1813;
 
     /* Accents: помідорний/калиновий */
-    --accent: #b9381a;
+    /* #b9381a давав 4.47:1 на --paper-2, трохи темніше для AA на дрібному тексті. */
+    --accent: #b2351a;
     --accent-50: #fdf2ed;
     --accent-100: #f7d8cc;
     --accent-200: #efb6a1;
@@ -239,7 +240,8 @@
     --shadow-hi: 0 1px 0 rgba(26, 24, 19, 0.05), 0 22px 40px -18px rgba(26, 24, 19, 0.32);
 
     /* Shorthand aliases (compatible with prototype component classes) */
-    --muted: #7a7158;
+    /* AA 4.5:1 на --paper, --paper-2 і --card (#7a7158 давав 3.75 на --paper-2). */
+    --muted: #6b6249;
     --ink-4: #8a8166;
     --accent-2: #8f2a13;
     --accent-soft: #f7d8cc;
@@ -261,8 +263,11 @@
     --subject-medicine: #a83a5e;
     --subject-culture: #c89034;
     --subject-ecology: #3a7a5e;
-    --subject-sport: #2a8f5e;
+    --subject-sport: #237a50; /* #2a8f5e давав 3.8:1 під світлою міткою чипа */
     --subject-economy: #c8862a;
+    /* Бурштинові предмети: світлий текст на них дає <3:1, тож мітка темна. */
+    --subject-culture-ink: #1a1813;
+    --subject-economy-ink: #1a1813;
 
     /* Compatibility with old --color-bg/--color-fg */
     --color-bg: var(--paper);
@@ -331,8 +336,11 @@
     --subject-medicine: #a83a5e;
     --subject-culture: #c89034;
     --subject-ecology: #3a7a5e;
-    --subject-sport: #2a8f5e;
+    --subject-sport: #237a50; /* #2a8f5e давав 3.8:1 під світлою міткою чипа */
     --subject-economy: #c8862a;
+    /* Бурштинові предмети: світлий текст на них дає <3:1, тож мітка темна. */
+    --subject-culture-ink: #1a1813;
+    --subject-economy-ink: #1a1813;
 
     --shadow: 0 1px 0 rgba(0, 0, 0, 0.25), 0 14px 28px -16px rgba(0, 0, 0, 0.5);
     --shadow-hi: 0 1px 0 rgba(0, 0, 0, 0.25), 0 22px 40px -18px rgba(0, 0, 0, 0.6);
@@ -575,23 +583,26 @@
 
   /* -----------------------------------------------------------------------
      Scroll-triggered fade-in for [data-reveal] elements.
-     JS adds .is-visible via IntersectionObserver.
-     Reduced-motion: skip animation entirely (elements start visible).
+     Ховаємо лише те, що RevealObserver позначив .reveal-pending: елементи
+     нижче першого екрана. Перший екран і сторінка без JS видимі одразу,
+     інакше Chrome не рахує LCP, поки елемент прозорий.
+     Reduced-motion: skip animation entirely (elements stay visible).
      ----------------------------------------------------------------------- */
-  [data-reveal] {
-    opacity: 0;
-    transform: translateY(16px);
+  /* Перехід лише при знятті .reveal-pending: ховання поза екраном миттєве,
+     інакше сотні карток ери анімували б зникнення одночасно. */
+  [data-reveal]:not(.reveal-pending) {
     transition:
       opacity 0.45s ease,
       transform 0.45s ease;
     transition-delay: var(--reveal-delay, 0ms);
   }
-  [data-reveal].is-visible {
-    opacity: 1;
-    transform: translateY(0);
+  [data-reveal].reveal-pending {
+    opacity: 0;
+    transform: translateY(16px);
   }
   @media (prefers-reduced-motion: reduce) {
-    [data-reveal] {
+    [data-reveal],
+    [data-reveal].reveal-pending {
       opacity: 1;
       transform: none;
       transition: none;
@@ -824,7 +835,7 @@
     font-size: 11px;
     letter-spacing: 0.12em;
     background: var(--chip-color, var(--accent));
-    color: #fff7ec;
+    color: var(--chip-ink, #fff7ec);
     padding: 4px 7px;
     border-radius: 3px;
     text-transform: uppercase;

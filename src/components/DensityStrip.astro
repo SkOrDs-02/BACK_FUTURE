@@ -40,25 +40,28 @@ const { activeYear, featuredByYear = {} } = Astro.props;
         const hPct = Math.max(count > 0 ? 8 : 2, (count / maxCount) * 100);
         const isActive = year === activeYear;
         const showTick = year % 5 === 0;
+        // role="listitem" на <a> заборонений (aria-allowed-role), тож обгортка
+        // з display:contents: семантика списку є, а геометрія смужок та сама.
         return (
-          <a
-            href={`/${year}/`}
-            role="listitem"
-            class={`density__bar group relative flex flex-1 items-end${isActive ? " is-on" : ""}`}
-            data-ds-year={year}
-            data-ds-count={count}
-            data-ds-color={era.color}
-            aria-label={`${year} рік, ${count} ${factsWord(count)}`}
-          >
-            <span class="density__cap" style={`--h: ${hPct}%; --c: ${era.color}`} />
-            {showTick && (
-              <span
-                class={`pointer-events-none absolute bottom-[-22px] left-1/2 -translate-x-1/2 font-mono text-[11px]${isActive ? " font-semibold text-[color:var(--accent)]" : " text-[color:var(--muted)]"}`}
-              >
-                {year}
-              </span>
-            )}
-          </a>
+          <div role="listitem" class="contents">
+            <a
+              href={`/${year}/`}
+              class={`density__bar group relative flex flex-1 items-end${isActive ? " is-on" : ""}`}
+              data-ds-year={year}
+              data-ds-count={count}
+              data-ds-color={era.color}
+              aria-label={`${year} рік, ${count} ${factsWord(count)}`}
+            >
+              <span class="density__cap" style={`--h: ${hPct}%; --c: ${era.color}`} />
+              {showTick && (
+                <span
+                  class={`pointer-events-none absolute bottom-[-22px] left-1/2 -translate-x-1/2 font-mono text-[11px]${isActive ? " font-semibold text-[color:var(--accent)]" : " text-[color:var(--muted)]"}`}
+                >
+                  {year}
+                </span>
+              )}
+            </a>
+          </div>
         );
       })
     }

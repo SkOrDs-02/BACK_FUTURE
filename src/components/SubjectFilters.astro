@@ -44,7 +44,7 @@ const available = SUBJECTS.filter((s) => {
                 type="button"
                 class="filter-chip font-mono text-xs"
                 data-filter-subject={s.id}
-                style={`--chip-color: var(--subject-${s.id})`}
+                style={`--chip-color: var(--subject-${s.id}); --chip-ink: var(--subject-${s.id}-ink, #fff7ec)`}
               >
                 <span class="chip__code">{s.mark}</span>
                 <span class="chip__name hidden sm:inline">{s.label}</span>
