@@ -4,6 +4,7 @@
 import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
 import { SITE } from "../config/site";
+import { QUIZ_TOTAL, quizShareText, quizVerdict } from "../lib/quizShare";
 
 const allFacts = await getCollection("facts", ({ data }) => !data.draft);
 
@@ -16,7 +17,12 @@ const factsData = allFacts.map((f) => ({
   subject: f.data.subject,
 }));
 
-const QUESTIONS_COUNT = 5;
+const QUESTIONS_COUNT = QUIZ_TOTAL;
+// Підписи й текст шерингу на кожен можливий бал, щоб клієнт не дублював логіку з quizShare.ts.
+const resultsData = Array.from({ length: QUIZ_TOTAL + 1 }, (_, score) => ({
+  ...quizVerdict(score),
+  share: quizShareText(score),
+}));
 ---
 
 <Base title="Квіз: вгадай рік">
@@ -39,6 +45,7 @@ const QUESTIONS_COUNT = 5;
       class="mt-12"
       data-facts={JSON.stringify(factsData)}
       data-count={QUESTIONS_COUNT}
+      data-results={JSON.stringify(resultsData)}
       data-year-min={SITE.yearMin}
       data-year-max={SITE.yearMax}
     >
@@ -113,7 +120,12 @@ const QUESTIONS_COUNT = 5;
           <p id="result-sub" class="mt-2 text-base text-[color:var(--ink-2)]"></p>
 
           <div class="mt-8 flex flex-wrap gap-3">
-            <button id="quiz-retry-btn" type="button" class="quiz-cta-btn"> Спробувати ще </button>
+            <button id="quiz-share-btn" type="button" class="quiz-cta-btn">
+              Поділитись результатом
+            </button>
+            <button id="quiz-retry-btn" type="button" class="quiz-ghost-btn">
+              Спробувати ще
+            </button>
             <a
               href="/"
               class="inline-flex items-center rounded-sm border-2 border-[color:var(--card-edge)] px-6 py-3 font-mono text-sm font-semibold text-[color:var(--ink-2)] transition hover:border-[color:var(--accent)] hover:text-[color:var(--accent)]"
@@ -121,6 +133,21 @@ const QUESTIONS_COUNT = 5;
               На головну →
             </a>
           </div>
+          <p
+            id="quiz-share-status"
+            class="mt-4 text-sm text-[color:var(--ink-2)]"
+            role="status"
+            aria-live="polite"
+          >
+          </p>
+          <a
+            id="quiz-share-download"
+            hidden
+            download
+            class="mt-2 inline-flex min-h-11 items-center font-mono text-sm font-semibold text-[color:var(--accent)] underline underline-offset-4"
+          >
+            Завантажити картинку
+          </a>
         </div>
       </div>
     </div>
@@ -163,6 +190,28 @@ const QUESTIONS_COUNT = 5;
   }
   .quiz-cta-btn:hover {
     background: var(--accent-2);
+  }
+
+  .quiz-ghost-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 12px 24px;
+    border: 2px solid var(--card-edge);
+    border-radius: 4px;
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition:
+      border-color 0.15s,
+      color 0.15s;
+  }
+  .quiz-ghost-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   .quiz-progress-wrap {
@@ -254,6 +303,15 @@ const QUESTIONS_COUNT = 5;
     border-radius: 4px;
     box-shadow: var(--shadow-hi);
   }
+  @media (max-width: 480px) {
+    .quiz-result-card {
+      padding: 28px 20px;
+    }
+    .quiz-result-card .quiz-cta-btn {
+      padding-inline: 16px;
+      font-size: 16px;
+    }
+  }
 </style>
 
 <script is:inline>
@@ -289,14 +347,7 @@ const QUESTIONS_COUNT = 5;
       ecology: "ЕКЛ",
     };
 
-    var RESULT_COPY = [
-      ["0/5", "Ще є куди рости!", "Спробуй свій рік на головній і заповни прогалини."],
-      ["1/5", "Не погано, але можна краще.", "Введи рік і дізнайся, що пропустив."],
-      ["2/5", "Знаєш більше, ніж здається.", "Більше відкриттів чекає в стрічці."],
-      ["3/5", "Непогано!", "Три з п'яти: ти в темі. Дивись далі."],
-      ["4/5", "Відмінно!", "Ти добре знаєш, що змінилось у науці."],
-      ["5/5", "Бездоганно! Усі правильно.", "Справжній знавець. Поділись результатом."],
-    ];
+    var RESULTS = JSON.parse(app.dataset.results ?? "[]");
 
     var questions = [];
     var currentQ = 0;
@@ -450,10 +501,19 @@ const QUESTIONS_COUNT = 5;
       var labelEl = document.getElementById("result-label");
       var subEl = document.getElementById("result-sub");
 
-      var copy = RESULT_COPY[score] ?? RESULT_COPY[0];
-      if (scoreEl) scoreEl.textContent = copy[0];
-      if (labelEl) labelEl.textContent = copy[1];
-      if (subEl) subEl.textContent = copy[2];
+      var copy = RESULTS[score] ?? RESULTS[0];
+      if (scoreEl) scoreEl.textContent = score + "/" + QUESTIONS_COUNT;
+      if (labelEl) labelEl.textContent = copy.title;
+      if (subEl) subEl.textContent = copy.sub;
+
+      var statusEl = document.getElementById("quiz-share-status");
+      var downloadEl = document.getElementById("quiz-share-download");
+      if (statusEl) statusEl.textContent = "";
+      if (downloadEl) {
+        downloadEl.hidden = true;
+        downloadEl.setAttribute("href", "/quiz/result/" + score + ".png");
+        downloadEl.setAttribute("download", "back-future-quiz-" + score + ".png");
+      }
 
       track("quiz_finished", { score: score, total: QUESTIONS_COUNT });
 
@@ -464,6 +524,47 @@ const QUESTIONS_COUNT = 5;
       track("quiz_started", null);
       initQuiz();
       showQuestion();
+    });
+
+    function shareResult() {
+      var copy = RESULTS[score] ?? RESULTS[0];
+      var url = location.origin + "/quiz/result/" + score + "/";
+      var statusEl = document.getElementById("quiz-share-status");
+      var downloadEl = document.getElementById("quiz-share-download");
+
+      if (typeof navigator.share === "function") {
+        navigator
+          .share({ title: document.title, text: copy.share, url: url })
+          .then(function () {
+            track("quiz_result_shared", { score: score, method: "native" });
+          })
+          .catch(function () {
+            /* user cancelled */
+          });
+        return;
+      }
+
+      if (downloadEl) downloadEl.hidden = false;
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        if (statusEl) statusEl.textContent = "Скопіюй посилання вручну: " + url;
+        return;
+      }
+      navigator.clipboard
+        .writeText(copy.share + " " + url)
+        .then(function () {
+          track("quiz_result_shared", { score: score, method: "copy" });
+          if (statusEl)
+            statusEl.textContent = "Посилання скопійовано. Можна ще завантажити картинку.";
+        })
+        .catch(function () {
+          if (statusEl) statusEl.textContent = "Не вдалося скопіювати. Посилання: " + url;
+        });
+    }
+
+    document.getElementById("quiz-share-btn")?.addEventListener("click", shareResult);
+
+    document.getElementById("quiz-share-download")?.addEventListener("click", function () {
+      track("quiz_result_shared", { score: score, method: "download" });
     });
 
     document.getElementById("quiz-retry-btn")?.addEventListener("click", function () {
