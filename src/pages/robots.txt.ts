@@ -4,12 +4,21 @@ import { SITE } from "../config/site";
 // Просвітницький сайт: трафік з AI-відповідей бажаний, тому AI-краулерам
 // дозволяємо все явно, а не лише через загальне правило `*`.
 export const AI_CRAWLERS = [
+  // OpenAI: навчання, пошук ChatGPT і переходи за посиланням користувача.
   "GPTBot",
   "OAI-SearchBot",
+  "ChatGPT-User",
+  // Anthropic.
   "ClaudeBot",
+  "Claude-SearchBot",
+  "Claude-User",
   "Claude-Web",
+  // Perplexity.
   "PerplexityBot",
+  "Perplexity-User",
+  // Gemini / AI Overviews і Apple Intelligence.
   "Google-Extended",
+  "Applebot-Extended",
 ] as const;
 
 export function GET(context: APIContext) {

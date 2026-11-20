@@ -1,10 +1,10 @@
 ---
 import { SITE } from "../config/site";
-import { SUPPORT_PATH, hasSupport, hasSupportJar } from "../lib/support";
+import { SUPPORT_PATH, hasSupportJar } from "../lib/support";
 
-const show = hasSupport();
-const hasJar = hasSupportJar();
-const hasCoffee = SITE.buyMeACoffeeUrl.length > 0;
+// Без банки блок не рендериться зовсім: сіра кнопка «незабаром» на кожній
+// сторінці виглядала б як недороблена.
+const show = hasSupportJar();
 ---
 
 {
@@ -14,27 +14,14 @@ const hasCoffee = SITE.buyMeACoffeeUrl.length > 0;
         Сподобалось? Підтримай проєкт
       </h2>
       <p class="text-ink-700 mt-2">
-        {SITE.name} це некомерційний просвітницький проєкт. Без підписок і paywall. Якщо хочеш, щоб
-        з'являлось більше фактів, кинь на каву.
+        {SITE.name} робить одна людина у вільний час. Якщо хочеш, щоб з'являлось більше фактів,
+        пригости автора кавою.
       </p>
 
       <div class="mt-5 flex flex-wrap gap-3" id="support-buttons">
-        {hasJar && (
-          <a class="btn" href={SUPPORT_PATH} data-support-provider="monobank">
-            Підтримати проєкт
-          </a>
-        )}
-        {hasCoffee && (
-          <a
-            class={hasJar ? "btn-ghost" : "btn"}
-            href={SITE.buyMeACoffeeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-support-provider="buymeacoffee"
-          >
-            Пригостити кавою ☕
-          </a>
-        )}
+        <a class="btn" href={SUPPORT_PATH} data-support-provider="monobank">
+          Підтримати проєкт
+        </a>
       </div>
     </aside>
   )

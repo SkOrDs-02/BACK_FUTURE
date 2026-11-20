@@ -19,7 +19,13 @@ export const SITE = {
   yearMin: 1991,
   yearMax: new Date().getFullYear(),
   monobankJarUrl: "",
-  buyMeACoffeeUrl: "",
+  // Контакти для пропозицій фактів і повідомлень про помилки. Порожні поля
+  // не показуються; якщо обидва порожні, блоку «Зв'язатися» немає.
+  contact: {
+    email: "",
+    // Повне посилання, напр. https://t.me/username
+    telegram: "",
+  },
 } as const;
 
 export const SUBJECTS = [

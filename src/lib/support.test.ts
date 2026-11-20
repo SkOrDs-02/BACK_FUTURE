@@ -18,16 +18,3 @@ describe("hasSupportJar", () => {
     expect(hasSupportJar()).toBe(true);
   });
 });
-
-describe("hasSupport", () => {
-  it("is true when either the jar or the coffee link is set", async () => {
-    vi.resetModules();
-    vi.doMock("../config/site", () => ({
-      SITE: { monobankJarUrl: "", buyMeACoffeeUrl: "" },
-    }));
-    const { hasSupport } = await import("./support");
-    expect(hasSupport()).toBe(false);
-    expect(hasSupport("", "https://buymeacoffee.com/example")).toBe(true);
-    expect(hasSupport("https://send.monobank.ua/jar/example", "")).toBe(true);
-  });
-});

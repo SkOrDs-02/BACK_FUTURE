@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Fact } from "./filterFacts";
-import { buildLlmsFull } from "./llms";
+import { buildLlmsFull, buildLlmsIndex } from "./llms";
 
 function makeFact(id: string, year: number, extra: Record<string, unknown> = {}): Fact {
   return {
@@ -47,5 +47,29 @@ describe("buildLlmsFull", () => {
 
   it("demotes body headings below the fact heading", () => {
     expect(out).toContain("### Деталі");
+  });
+});
+
+describe("buildLlmsIndex", () => {
+  const eras = [
+    { slug: "1991-1995", label: "Перехідна", yearStart: 1991, yearEnd: 1995 },
+    { slug: "2018-2025", label: "НУШ", yearStart: 2018, yearEnd: 2099 },
+  ];
+  const out = buildLlmsIndex(
+    [makeFact("physics/a", 1995), makeFact("physics/hidden", 2000, { draft: true })],
+    eras,
+    "https://www.back-future.com",
+  );
+
+  it("uses absolute URLs on the given site", () => {
+    expect(out).toContain("(https://www.back-future.com/era/1991-1995/)");
+    expect(out).toContain("(https://www.back-future.com/llms-full.txt)");
+    expect(out).not.toMatch(/\]\(\//);
+  });
+
+  it("counts only published facts and caps open-ended eras at today", () => {
+    expect(out).toContain("1 факт про зміни");
+    expect(out).toContain("[Фізика](https://www.back-future.com/subject/physics/): 1 факт.");
+    expect(out).toContain("2018–сьогодні");
   });
 });

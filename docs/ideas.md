@@ -46,7 +46,7 @@
 - **Запуск `back-future.com`** (#18 у memory): дії власника: DNS, перепідвʼязка Vercel до `SkOrDs-02`, Search Console, `PUBLIC_SITE_URL`.
 - **Sveltia / Decap CMS production auth** (#20 у memory) — конфіг є, налаштування авторизації для прода — pending.
 - **Renovate замість/поверх Dependabot** — кращий контроль над групуваннями оновлень (поки Dependabot з груповими правилами достатній).
-- **`monobankJarUrl` / `buyMeACoffeeUrl` / `twitter`** у `site.ts`: порожні рядки приховують відповідні UI-блоки; `/support` готова і лишається `noindex`, поки URL порожній.
+- **`monobankJarUrl` / `contact` / `twitter`** у `site.ts`: порожні рядки приховують відповідні UI-блоки; `/support` готова і лишається `noindex`, поки URL порожній.
 
 ---
 

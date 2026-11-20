@@ -1,6 +1,9 @@
 ---
 import { SITE } from "../config/site";
-import { SUPPORT_PATH, hasSupport } from "../lib/support";
+import { SUPPORT_PATH, hasSupportJar } from "../lib/support";
+import { contactLinks } from "../lib/contact";
+
+const hasContact = contactLinks().length > 0;
 const year = new Date().getFullYear();
 ---
 
@@ -92,6 +95,18 @@ const year = new Date().getFullYear();
               Про проєкт
             </a>
           </li>
+          {
+            hasContact && (
+              <li>
+                <a
+                  href="/about/#contact"
+                  class="text-[color:var(--ink-2)] underline-offset-2 transition hover:text-[color:var(--accent)] hover:underline"
+                >
+                  Контакти
+                </a>
+              </li>
+            )
+          }
           <li>
             <a
               href="/rss.xml"
@@ -125,7 +140,7 @@ const year = new Date().getFullYear();
           Якщо проєкт тобі корисний, пригости автора кавою.
         </p>
         {
-          hasSupport() && (
+          hasSupportJar() && (
             <a
               href={SUPPORT_PATH}
               class="inline-flex items-center gap-2 rounded-sm border border-[color:var(--accent)] bg-transparent px-4 py-2.5 font-mono text-sm font-semibold text-[color:var(--accent)] transition hover:bg-[color:var(--accent)] hover:text-white"

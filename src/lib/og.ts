@@ -39,19 +39,21 @@ export function buildYearOgSvg(year: number, allFacts: CollectionEntry<"facts">[
 
   const pillStartX = 120;
   const pillY = 480;
-  const pillHeight = 56;
-  const pillGap = 14;
+  const pillHeight = 52;
+  const pillGap = 10;
   let cursor = pillStartX;
   const pills: string[] = [];
+  // Емодзі resvg не малює (на білд-машині немає emoji-шрифту), тож у чипі
+  // короткий шифр предмета: «ФІЗ 16». Чипи, що не влазять у картку, відкидаємо.
+  const pillRightEdge = 1080;
   for (const p of pillCovered) {
-    const text = `${p.emoji} ${p.count}`;
-    const charCount = String(p.count).length;
-    const pillWidth = 76 + charCount * 14;
+    const text = `${p.mark} ${p.count}`;
+    const pillWidth = 44 + p.mark.length * 17 + String(p.count).length * 15;
+    if (cursor + pillWidth > pillRightEdge) break;
     pills.push(
-      `<g><rect x="${cursor}" y="${pillY}" width="${pillWidth}" height="${pillHeight}" rx="${pillHeight / 2}" fill="#eff4ff" stroke="#bfd1fe" stroke-width="1.5"/><text x="${cursor + pillWidth / 2}" y="${pillY + 38}" fill="#1e3a8a" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600" text-anchor="middle">${escapeXml(text)}</text></g>`,
+      `<g><rect x="${cursor}" y="${pillY}" width="${pillWidth}" height="${pillHeight}" rx="${pillHeight / 2}" fill="#eff4ff" stroke="#bfd1fe" stroke-width="1.5"/><text x="${cursor + pillWidth / 2}" y="${pillY + 36}" fill="#1e3a8a" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="1" text-anchor="middle">${escapeXml(text)}</text></g>`,
     );
     cursor += pillWidth + pillGap;
-    if (cursor > 1080) break;
   }
   const pillsSvg = pills.join("");
 

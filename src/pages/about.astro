@@ -4,11 +4,13 @@ import { SITE, SUBJECTS } from "../config/site";
 import { getCollection } from "astro:content";
 import { FAQ_ITEMS, buildFaqJsonLd } from "../lib/faq";
 import { factsWord } from "../lib/plurals";
-import { SUPPORT_PATH, hasSupport } from "../lib/support";
+import { SUPPORT_PATH, hasSupportJar } from "../lib/support";
+import { contactLinks } from "../lib/contact";
 
 const allFacts = await getCollection("facts", ({ data }) => !data.draft);
 const factsCount = allFacts.length;
 const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
+const contacts = contactLinks();
 ---
 
 <Base
@@ -171,9 +173,43 @@ const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
       </a>
     </div>
 
-    <!-- Support block (visible only when a support link is set) -->
+    <!-- Contact (visible only when SITE.contact is set) -->
     {
-      hasSupport() && (
+      contacts.length > 0 && (
+        <section
+          id="contact"
+          aria-labelledby="contact-heading"
+          class="mt-12 scroll-mt-24 rounded-sm border border-[color:var(--card-edge)] bg-[color:var(--card)] p-6 sm:p-8"
+          data-reveal
+        >
+          <h2 id="contact-heading" class="font-display text-xl font-bold text-[color:var(--ink)]">
+            Зв'язатися
+          </h2>
+          <p class="mt-2 text-[color:var(--ink-2)]">
+            Знайшов помилку, маєш джерело для нового факту чи ідею? Напиши.
+          </p>
+          <ul class="mt-4 flex flex-wrap gap-3">
+            {contacts.map((c) => (
+              <li>
+                <a
+                  href={c.href}
+                  {...(c.href.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  class="inline-flex items-center gap-2 rounded-sm border border-[color:var(--accent)] px-5 py-2.5 font-mono text-sm font-semibold text-[color:var(--accent)] transition hover:bg-[color:var(--accent)] hover:text-white"
+                >
+                  {c.label}: {c.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- Support block (visible only when the monobank jar is set) -->
+    {
+      hasSupportJar() && (
         <div
           class="mt-12 rounded-sm border border-[color:var(--card-edge)] bg-[color:var(--paper-2)] p-6 sm:p-8"
           data-reveal

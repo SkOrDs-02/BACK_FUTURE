@@ -74,8 +74,9 @@ const articleLd: Record<string, unknown> = {
   headline: fact.data.title,
   description,
   image: ogImage,
-  datePublished: `${fact.data.yearOfEvent}-01-01`,
-  dateModified,
+  // Дата публікації статті невідома, а рік події нею не є: без updatedAt
+  // Google показав би у видачі «1 січ. 1987». Тож дати лише коли вони справжні.
+  ...(updatedAt ? { datePublished: dateModified, dateModified } : {}),
   inLanguage: "uk",
   author: {
     "@type": "Organization",

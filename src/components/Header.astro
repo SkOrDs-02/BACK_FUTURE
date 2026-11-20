@@ -4,7 +4,7 @@ import { SITE } from "../config/site";
 import ThemeToggle from "./ThemeToggle.astro";
 import SearchDialog from "./SearchDialog.astro";
 import { factsWord } from "../lib/plurals";
-import { SUPPORT_PATH, hasSupport } from "../lib/support";
+import { SUPPORT_PATH, hasSupportJar } from "../lib/support";
 
 const allFacts = await getCollection("facts", ({ data }) => !data.draft);
 const factsCount = allFacts.length;
@@ -28,7 +28,7 @@ const navLinks = [
   { href: "/quiz/", label: "Квіз" },
   { href: "/metodologia/", label: "Методологія" },
   { href: "/about/", label: "Про проєкт" },
-  ...(hasSupport() ? [{ href: SUPPORT_PATH, label: "Підтримати" }] : []),
+  ...(hasSupportJar() ? [{ href: SUPPORT_PATH, label: "Підтримати" }] : []),
 ];
 ---
 

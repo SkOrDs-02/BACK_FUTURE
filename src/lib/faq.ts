@@ -1,4 +1,5 @@
 import { SITE } from "../config/site";
+import { contactLinks, contactSentence } from "./contact";
 
 /**
  * Single Q/A pair. `q` and `a` are plain text - рендеримо їх і у видимий
@@ -16,7 +17,7 @@ export interface FaqItem {
  * видима секція з `<details>` + інлайн `schema.org/FAQPage` JSON-LD.
  * Тримаємо тут (а не в `content/`), бо це UX-копія, а не контент-факт.
  */
-export const FAQ_ITEMS: readonly FaqItem[] = [
+const BASE_FAQ: readonly FaqItem[] = [
   {
     q: "Що таке BACK_FUTURE?",
     a: `${SITE.name} це безкоштовний просвітницький сайт. Введи рік свого випуску й отримай стрічку оновлень у науці, історії та світі від того часу, коли ти закрив підручник.`,
@@ -46,6 +47,21 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     a: "Нові факти додаються, коли з'являється стабільне джерело, без штучного «дайджест-розкладу». Стежити за новими фактами найзручніше через RSS.",
   },
 ] as const;
+
+const contacts = contactLinks();
+
+/** Питання про контакт з'являється лише тоді, коли контакт заданий у `SITE.contact`. */
+export const FAQ_ITEMS: readonly FaqItem[] =
+  contacts.length > 0
+    ? [
+        ...BASE_FAQ.slice(0, 4),
+        {
+          q: "Як запропонувати факт або повідомити про помилку?",
+          a: `Напиши ${contactSentence(contacts)}. Додай посилання на першоджерело, так ми швидше перевіримо.`,
+        },
+        ...BASE_FAQ.slice(4),
+      ]
+    : BASE_FAQ;
 
 /**
  * Будує `schema.org/FAQPage` JSON-LD за списком запитань.

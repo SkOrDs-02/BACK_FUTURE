@@ -1,6 +1,7 @@
 import type { CollectionEntry } from "astro:content";
 import { SITE, SUBJECTS } from "../config/site";
 import { factUrl } from "./url";
+import { factsWord } from "./plurals";
 
 type FactEntry = CollectionEntry<"facts">;
 
@@ -48,4 +49,58 @@ export function buildLlmsFull(facts: readonly FactEntry[], siteUrl: string): str
   });
 
   return [header, ...sections].join("\n");
+}
+
+/**
+ * Короткий індекс сайту для LLM (`/llms.txt`, формат llmstxt.org): що це за
+ * сайт, ключові сторінки, ери й предмети. Будується з конфігу, тож домен і
+ * лічильники не застарівають.
+ */
+export function buildLlmsIndex(
+  facts: readonly FactEntry[],
+  eras: readonly { slug: string; label: string; yearStart: number; yearEnd: number }[],
+  siteUrl: string,
+): string {
+  const published = facts.filter((f) => !f.data.draft);
+  const abs = (path: string) => new URL(path, siteUrl).toString();
+  const countBy = (id: string) => published.filter((f) => f.data.subject === id).length;
+  const lastYear = SITE.yearMax;
+
+  return [
+    `# ${SITE.name}`,
+    "",
+    `> ${SITE.description}`,
+    "",
+    `${SITE.name} це український просвітницький довідник: ${published.length} ${factsWord(published.length)} про зміни в науці, історії, технологіях і світі з ${SITE.yearMin} року. Кожен факт має щонайменше одне першоджерело, рік події, предмет шкільної програми і пояснення «було / стало». Контент українською, ліцензія CC BY-SA 4.0: цитуй із посиланням на сторінку факту.`,
+    "",
+    "## Основне",
+    "",
+    `- [Головна](${abs("/")}): введи рік випуску й отримай стрічку змін.`,
+    `- [Усі факти](${abs("/all/")}): повний каталог з фільтрами.`,
+    `- [Хронологія](${abs("/timeline/")}): факти на шкалі часу.`,
+    `- [Порівняти роки](${abs("/compare/")}): що змінилось між двома роками випуску.`,
+    `- [Методологія](${abs("/metodologia/")}): як відбираємо факти й перевіряємо джерела.`,
+    `- [Про проєкт](${abs("/about/")}): опис і часті питання.`,
+    "",
+    "## Ери шкільних програм",
+    "",
+    ...eras.map((e) => {
+      const end = e.yearEnd > lastYear ? "сьогодні" : String(e.yearEnd);
+      return `- [${e.label}](${abs(`/era/${e.slug}/`)}): що пропустили випускники ${e.yearStart}–${end}.`;
+    }),
+    "",
+    "## Предмети",
+    "",
+    ...SUBJECTS.map(
+      (s) =>
+        `- [${s.label}](${abs(`/subject/${s.id}/`)}): ${countBy(s.id)} ${factsWord(countBy(s.id))}.`,
+    ),
+    "",
+    "## Для машин",
+    "",
+    `- [Усі факти одним файлом](${abs("/llms-full.txt")}): назва, предмет, рік, опис, повний текст і джерела кожного факту.`,
+    `- [RSS](${abs("/rss.xml")})`,
+    `- [Sitemap](${abs("/sitemap-index.xml")})`,
+    "",
+  ].join("\n");
 }
