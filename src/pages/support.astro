@@ -28,30 +28,33 @@ const description = `Як підтримати ${SITE.name}: хто робить
         Донати йдуть на домен і сервіси, без яких сайт не працює, а ще на час: кожен факт треба
         знайти, звірити з першоджерелом і переписати простою українською.
       </p>
-      <p>
-        Сайт лишиться безкоштовним незалежно від донатів. Реклами тут немає, cookie-банерів теж:
-        аналітика працює без cookies і не рахує тих, хто ввімкнув Do Not Track.
-      </p>
+      <p>Сайт лишиться безкоштовним незалежно від донатів.</p>
     </div>
 
     <div class="mt-10" id="support-buttons">
       {
         hasJar ? (
-          <a
-            class="btn"
-            href={SITE.monobankJarUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-support-provider="monobank"
-          >
-            Задонатити на банку Monobank ↗
-          </a>
+          <>
+            <a
+              class="btn"
+              href={SITE.monobankJarUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-support-provider="monobank"
+            >
+              Задонатити на банку Monobank ↗
+            </a>
+            <p class="mt-3 text-sm text-[color:var(--muted)]">
+              Банка приймає картку будь-якого банку, Apple Pay і Google Pay. Реєструватись у
+              monobank не треба.
+            </p>
+          </>
         ) : (
           <p
             class="inline-block rounded-sm border border-[color:var(--card-edge)] bg-[color:var(--card)] px-4 py-3 font-mono text-sm text-[color:var(--muted)]"
             data-support-soon
           >
-            Банка скоро зʼявиться
+            Посилання для підтримки скоро зʼявиться
           </p>
         )
       }

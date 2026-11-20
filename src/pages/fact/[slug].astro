@@ -39,6 +39,11 @@ const ogImage = fact.data.image
 const description = fact.data.short;
 const homeUrl = `${SITE.defaultUrl}/`;
 const updatedAt = fact.data.updatedAt;
+// Сторінки років існують лише для [yearMin, yearMax]; подія 1983-го не має свого року.
+const yearHref =
+  fact.data.yearOfEvent >= SITE.yearMin && fact.data.yearOfEvent <= SITE.yearMax
+    ? yearUrl(fact.data.yearOfEvent)
+    : null;
 const dateModified = updatedAt ? isoDate(updatedAt) : `${fact.data.yearOfEvent}-01-01`;
 const regionLabel = fact.data.region === "ukraine" ? "Україна" : "Світ";
 const impactLabel =
@@ -69,8 +74,9 @@ const articleLd: Record<string, unknown> = {
   headline: fact.data.title,
   description,
   image: ogImage,
-  datePublished: `${fact.data.yearOfEvent}-01-01`,
-  dateModified,
+  // Дата публікації статті невідома, а рік події нею не є: без updatedAt
+  // Google показав би у видачі «1 січ. 1987». Тож дати лише коли вони справжні.
+  ...(updatedAt ? { datePublished: dateModified, dateModified } : {}),
   inLanguage: "uk",
   author: {
     "@type": "Organization",
@@ -181,12 +187,20 @@ const breadcrumbsLd: Record<string, unknown> = {
             <span>{subject.label}</span>
           </a>
           <span class="text-ink-500 dark:text-ink-400 font-sans text-xs uppercase">·</span>
-          <a
-            href={yearUrl(fact.data.yearOfEvent)}
-            class="text-ink-600 hover:text-accent-700 dark:hover:text-accent-300 font-mono text-xs tabular-nums underline-offset-2 hover:underline"
-          >
-            {fact.data.yearOfEvent}
-          </a>
+          {
+            yearHref ? (
+              <a
+                href={yearHref}
+                class="text-ink-600 hover:text-accent-700 dark:hover:text-accent-300 font-mono text-xs tabular-nums underline-offset-2 hover:underline"
+              >
+                {fact.data.yearOfEvent}
+              </a>
+            ) : (
+              <span class="text-ink-600 font-mono text-xs tabular-nums">
+                {fact.data.yearOfEvent}
+              </span>
+            )
+          }
         </p>
 
         <h1
@@ -396,15 +410,19 @@ const breadcrumbsLd: Record<string, unknown> = {
     safe-area-inset для iPhone notch.
   */
   }
-  <a
-    href={yearUrl(fact.data.yearOfEvent)}
-    class="back-to-year"
-    data-back-to-year
-    aria-label={`Повернутись до стрічки ${fact.data.yearOfEvent} року`}
-  >
-    <span aria-hidden="true">←</span>
-    <span>До {fact.data.yearOfEvent}</span>
-  </a>
+  {
+    yearHref && (
+      <a
+        href={yearHref}
+        class="back-to-year"
+        data-back-to-year
+        aria-label={`Повернутись до стрічки ${fact.data.yearOfEvent} року`}
+      >
+        <span aria-hidden="true">←</span>
+        <span>До {fact.data.yearOfEvent}</span>
+      </a>
+    )
+  }
 </Base>
 
 <script is:inline>

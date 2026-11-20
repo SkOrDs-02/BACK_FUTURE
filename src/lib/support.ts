@@ -1,7 +1,7 @@
 import { SITE } from "../config/site";
 
 /**
- * Посилання на /support/ показуємо лише тоді, коли є куди донатити.
+ * Посилання на /support/ показуємо лише тоді, коли є банка monobank.
  * Без банки сторінка існує, але віддає «скоро» і noindex.
  */
 export function hasSupportJar(jarUrl: string = SITE.monobankJarUrl): boolean {

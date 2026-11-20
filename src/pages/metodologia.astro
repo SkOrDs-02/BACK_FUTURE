@@ -4,7 +4,10 @@ import { ERAS } from "../lib/eras";
 import { SUBJECTS, SITE } from "../config/site";
 ---
 
-<Base title="Методологія">
+<Base
+  title="Методологія"
+  description="Як BACK_FUTURE обирає факти, перевіряє першоджерела, ділить час на шкільні ери і пише про чутливі теми."
+>
   <div class="container-prose pt-16">
     <span class="font-mono text-[11px] tracking-[0.14em] text-[color:var(--muted)] uppercase">
       {SITE.name} · редакційна політика
@@ -164,28 +167,9 @@ import { SUBJECTS, SITE } from "../config/site";
       </div>
     </section>
 
-    <!-- Report error + quiz CTA -->
+    <!-- Quiz CTA -->
     <section class="mt-16 pb-4">
-      <div class="grid gap-4 sm:grid-cols-2" data-reveal>
-        <div
-          class="rounded-sm border border-[color:var(--card-edge)] bg-[color:var(--paper-2)] p-6"
-        >
-          <h2 class="font-display text-lg font-bold text-[color:var(--ink)]">
-            Помилка чи неточність?
-          </h2>
-          <p class="mt-2 text-sm leading-relaxed text-[color:var(--ink-2)]">
-            Якщо ти знайшов фактичну помилку або маєш краще формулювання, створи завдання або
-            надішли зміни у репозиторії на GitHub.
-          </p>
-          <a
-            href={SITE.repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="mt-4 inline-flex items-center font-mono text-sm font-semibold text-[color:var(--accent)] underline-offset-2 hover:underline"
-          >
-            GitHub репозиторій ↗
-          </a>
-        </div>
+      <div class="grid gap-4" data-reveal>
         <div class="rounded-sm border-2 border-[color:var(--accent)] bg-[color:var(--card)] p-6">
           <h2 class="font-display text-lg font-bold text-[color:var(--ink)]">Перевір себе</h2>
           <p class="mt-2 text-sm leading-relaxed text-[color:var(--ink-2)]">

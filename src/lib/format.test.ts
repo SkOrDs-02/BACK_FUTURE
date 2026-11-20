@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatUkDate, formatUkShortDate, isoDate } from "./format";
+import { formatUkDate, formatUkShortDate, isoDate, metaDescription } from "./format";
 
 describe("formatUkDate", () => {
   it("renders Ukrainian long date with named month", () => {
@@ -28,5 +28,23 @@ describe("isoDate", () => {
 
   it("zero-pads month and day", () => {
     expect(isoDate(new Date("2024-01-05T00:00:00Z"))).toBe("2024-01-05");
+  });
+});
+
+describe("metaDescription", () => {
+  it("keeps short text as is, collapsing whitespace", () => {
+    expect(metaDescription("  Короткий   опис.  ")).toBe("Короткий опис.");
+  });
+
+  it("cuts long text on a word boundary within the limit", () => {
+    const long = "слово ".repeat(60).trim();
+    const out = metaDescription(long);
+    expect(out.length).toBeLessThanOrEqual(160);
+    expect(out.endsWith("слово…")).toBe(true);
+  });
+
+  it("drops trailing punctuation before the ellipsis", () => {
+    const out = metaDescription(`${"а".repeat(150)}, ${"б".repeat(30)}`);
+    expect(out).toBe(`${"а".repeat(150)}…`);
   });
 });

@@ -24,3 +24,16 @@ export function isoDate(date: Date): string {
   const dd = date.getUTCDate().toString().padStart(2, "0");
   return `${yyyy}-${mm}-${dd}`;
 }
+
+/**
+ * Обрізає текст для `<meta name="description">`: Google показує ~160 символів,
+ * тож довший опис ріжемо по межі слова і додаємо «…».
+ */
+export function metaDescription(text: string, max = 160): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  const base = lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut;
+  return `${base.replace(/[\s,;:.!?…-]+$/u, "")}…`;
+}

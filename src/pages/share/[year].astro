@@ -92,7 +92,13 @@ const posters = [
 ];
 ---
 
-<Base title={title} description={description} ogImage={posterAbsoluteUrl} noindex>
+<!-- Вертикальний постер 9:16 соцмережі обрізають у прев'ю, тож для og беремо горизонтальну картку року. -->
+<Base
+  title={title}
+  description={description}
+  ogImage={new URL(`/og/${year}.png`, SITE.defaultUrl).toString()}
+  noindex
+>
   <section class="container-prose mt-12">
     <p class="text-ink-500 dark:text-ink-400 font-mono text-xs tracking-widest uppercase">
       <a

@@ -85,7 +85,7 @@ Hе використовуй стрінгові літерали — імпор�
 | `fact_source_clicked`    | клік на outbound-лінку всередині FactCard | `host`, `path`, `fact_id`                                             |
 | `share_clicked`          | клік на share-кнопку                      | `target: "telegram" \| "twitter" \| "facebook" \| "copy" \| "native"` |
 | `share_succeeded`        | копія/native share успішно                | `target`                                                              |
-| `support_clicked`        | клік на «Banka Monobank» / BMC            | `provider: "monobank" \| "buymeacoffee"`                              |
+| `support_clicked`        | клік на «Банка Monobank»                  | `provider: "monobank"`                                                |
 | `quiz_started`           | старт квізу                               | —                                                                     |
 | `quiz_question_answered` | відповідь на питання                      | `question_index`, `correct`, `year`, `guessed_year`, `delta`          |
 | `quiz_finished`          | фінальний скор                            | `score`, `total`                                                      |

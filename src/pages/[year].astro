@@ -52,7 +52,6 @@ const fallbackYears =
     : [];
 const teaserFacts = totalCount === 0 ? sampleFacts(allFacts, 2) : [];
 const subjectMeta = new Map(SUBJECTS.map((s) => [s.id, s] as const));
-const issueUrl = `${SITE.repoUrl}/issues/new?title=${encodeURIComponent(`Факт під випуск ${year}`)}`;
 
 const buildDate = new Date().toISOString();
 const homeUrl = `${SITE.defaultUrl}/`;
@@ -177,18 +176,6 @@ const regionsPresent = matched.map((f) => f.data.region);
               </div>
             </div>
           )}
-
-          <p class="mt-6 text-sm text-[color:var(--ink-2)]">
-            Хочеш, щоб ми додали факт під цей рік?{" "}
-            <a
-              href={issueUrl}
-              class="text-[color:var(--accent)] underline-offset-2 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-            >
-              Запропонуй у GitHub
-            </a>
-          </p>
         </div>
       </section>
     )

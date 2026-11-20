@@ -4,13 +4,20 @@ import { SITE, SUBJECTS } from "../config/site";
 import { getCollection } from "astro:content";
 import { FAQ_ITEMS, buildFaqJsonLd } from "../lib/faq";
 import { factsWord } from "../lib/plurals";
+import { SUPPORT_PATH, hasSupportJar } from "../lib/support";
+import { contactLinks } from "../lib/contact";
 
 const allFacts = await getCollection("facts", ({ data }) => !data.draft);
 const factsCount = allFacts.length;
 const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
+const contacts = contactLinks();
 ---
 
-<Base title="Про проєкт" jsonLd={faqJsonLd}>
+<Base
+  title="Про проєкт"
+  description="Хто робить BACK_FUTURE, звідки беремо факти і навіщо: український довідник змін у науці, історії й світі після випускного з 1991 року."
+  jsonLd={faqJsonLd}
+>
   <div class="container-prose pt-16">
     <span class="font-mono text-[11px] tracking-[0.14em] text-[color:var(--muted)] uppercase">
       {SITE.name} · про нас
@@ -57,8 +64,8 @@ const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
       </p>
 
       <p data-reveal>
-        Це проєкт від ветерана. Усе, що ти тут читаєш, зібрано українськими руками: без редакції,
-        реклами й політики.
+        Це проєкт від ветерана. Усе, що ти тут читаєш, зібрано українськими руками: без редакції й
+        політики.
       </p>
 
       <h2 data-reveal>Навіщо</h2>
@@ -74,7 +81,7 @@ const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
         <li>Стабільні, консенсусні факти без новинного шуму.</li>
         <li>Кожне твердження має першоджерело, яке можна відкрити й перевірити.</li>
         <li>Українською мовою, без перекладів через кальку.</li>
-        <li>Без реклами, без трекерів, без думок редакції.</li>
+        <li>Факти й джерела без думок редакції.</li>
       </ul>
 
       <h2 data-reveal>Як влаштований сайт</h2>
@@ -115,16 +122,6 @@ const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
       }
     </div>
 
-    <div
-      class="prose prose-ink prose-headings:font-display dark:prose-invert text-ink-800 dark:text-ink-700 mt-12 max-w-none"
-    >
-      <h2 data-reveal>Як долучитись</h2>
-      <p data-reveal>
-        Усі матеріали у відкритому репозиторії на GitHub. Якщо ти знайшов помилку, маєш джерело для
-        нового факту або хочеш запропонувати тему, створи завдання (issue) або надішли зміни.
-      </p>
-    </div>
-
     <!-- FAQ -->
     <section
       id="faq"
@@ -142,9 +139,6 @@ const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
         >
           Поширені запитання
         </h2>
-        <p class="mt-2 text-[color:var(--ink-2)]">
-          Якщо чогось бракує, створи issue в репозиторії, і ми додамо.
-        </p>
       </header>
 
       <ul class="mt-6 grid gap-3" role="list">
@@ -172,14 +166,6 @@ const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
     <!-- CTAs -->
     <div class="mt-6 flex flex-wrap gap-3" data-reveal>
       <a
-        href={SITE.repoUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center rounded-sm border-2 border-[color:var(--ink)] px-6 py-3 font-mono text-sm font-semibold text-[color:var(--ink)] transition hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)]"
-      >
-        GitHub репозиторій ↗
-      </a>
-      <a
         href="/quiz/"
         class="inline-flex items-center rounded-sm border-2 border-[color:var(--accent)] px-6 py-3 font-mono text-sm font-semibold text-[color:var(--accent)] transition hover:bg-[color:var(--accent)] hover:text-[#fff7ec]"
       >
@@ -187,24 +173,56 @@ const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
       </a>
     </div>
 
-    <!-- Support block (visible only when monobank URL is set) -->
+    <!-- Contact (visible only when SITE.contact is set) -->
     {
-      SITE.monobankJarUrl && (
+      contacts.length > 0 && (
+        <section
+          id="contact"
+          aria-labelledby="contact-heading"
+          class="mt-12 scroll-mt-24 rounded-sm border border-[color:var(--card-edge)] bg-[color:var(--card)] p-6 sm:p-8"
+          data-reveal
+        >
+          <h2 id="contact-heading" class="font-display text-xl font-bold text-[color:var(--ink)]">
+            Зв'язатися
+          </h2>
+          <p class="mt-2 text-[color:var(--ink-2)]">
+            Знайшов помилку, маєш джерело для нового факту чи ідею? Напиши.
+          </p>
+          <ul class="mt-4 flex flex-wrap gap-3">
+            {contacts.map((c) => (
+              <li>
+                <a
+                  href={c.href}
+                  {...(c.href.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  class="inline-flex items-center gap-2 rounded-sm border border-[color:var(--accent)] px-5 py-2.5 font-mono text-sm font-semibold text-[color:var(--accent)] transition hover:bg-[color:var(--accent)] hover:text-white"
+                >
+                  {c.label}: {c.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- Support block (visible only when the monobank jar is set) -->
+    {
+      hasSupportJar() && (
         <div
           class="mt-12 rounded-sm border border-[color:var(--card-edge)] bg-[color:var(--paper-2)] p-6 sm:p-8"
           data-reveal
         >
           <h2 class="font-display text-xl font-bold text-[color:var(--ink)]">Підтримати проєкт</h2>
           <p class="mt-2 text-[color:var(--ink-2)]">
-            Сайт безкоштовний і без реклами. Якщо подобається, пригости кавою.
+            Якщо проєкт тобі корисний, пригости автора кавою.
           </p>
           <a
-            href={SITE.monobankJarUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={SUPPORT_PATH}
             class="mt-4 inline-flex items-center rounded-sm border border-[color:var(--accent)] px-5 py-2.5 font-mono text-sm font-semibold text-[color:var(--accent)] transition hover:bg-[color:var(--accent)] hover:text-white"
           >
-            monobank · банка →
+            Підтримати проєкт →
           </a>
         </div>
       )

@@ -1,6 +1,9 @@
 ---
 import { SITE } from "../config/site";
 import { SUPPORT_PATH, hasSupportJar } from "../lib/support";
+import { contactLinks } from "../lib/contact";
+
+const hasContact = contactLinks().length > 0;
 const year = new Date().getFullYear();
 ---
 
@@ -92,6 +95,18 @@ const year = new Date().getFullYear();
               Про проєкт
             </a>
           </li>
+          {
+            hasContact && (
+              <li>
+                <a
+                  href="/about/#contact"
+                  class="text-[color:var(--ink-2)] underline-offset-2 transition hover:text-[color:var(--accent)] hover:underline"
+                >
+                  Контакти
+                </a>
+              </li>
+            )
+          }
           <li>
             <a
               href="/rss.xml"
@@ -111,17 +126,6 @@ const year = new Date().getFullYear();
               RSS
             </a>
           </li>
-          <li>
-            <a
-              href={SITE.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub (відкривається в новій вкладці)"
-              class="text-[color:var(--ink-2)] underline-offset-2 transition hover:text-[color:var(--accent)] hover:underline"
-            >
-              GitHub <span aria-hidden="true">↗</span>
-            </a>
-          </li>
         </ul>
       </nav>
 
@@ -133,7 +137,7 @@ const year = new Date().getFullYear();
           Підтримати
         </h2>
         <p class="mb-4 text-sm leading-relaxed text-[color:var(--ink-2)]">
-          Проєкт безкоштовний і без реклами. Якщо подобається, пригости кавою.
+          Якщо проєкт тобі корисний, пригости автора кавою.
         </p>
         {
           hasSupportJar() && (
