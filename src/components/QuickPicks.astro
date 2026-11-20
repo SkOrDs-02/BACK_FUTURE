@@ -24,8 +24,9 @@ const decades = [
       </button>
     ))
   }
+  <!-- id відмінний від кнопки в Hero: з однаковим id getElementById знаходив ту, і ця не працювала. -->
   <button
-    id="random-year-btn"
+    id="quick-random-btn"
     type="button"
     class="inline-flex items-center rounded-full border border-dashed border-[color:var(--card-edge)] px-4 py-2 font-mono text-sm text-[color:var(--ink-2)] transition hover:border-[color:var(--accent)] hover:text-[color:var(--accent)]"
     data-min={SITE.yearMin}
@@ -48,7 +49,7 @@ const decades = [
     });
   });
 
-  document.getElementById("random-year-btn")?.addEventListener("click", () => {
+  document.getElementById("quick-random-btn")?.addEventListener("click", () => {
     randomYear();
     track(EVENTS.randomYearPicked, { year: getYear() });
   });

@@ -69,3 +69,21 @@ test("supports keyboard navigation and core landmarks", async ({ page }) => {
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/about\/?$/);
 });
+
+test("both random-year buttons on the landing page work", async ({ page }) => {
+  await page.goto("/");
+  // Обидві кнопки мали один id, і «※ випадковий» залишалась без обробника.
+  await expect(page.locator("#random-year-btn")).toHaveCount(1);
+
+  const go = page.locator("#go-button");
+  const quick = page.getByRole("button", { name: "Вибрати випадковий рік" });
+  const seen = new Set<string | null>([await go.getAttribute("href")]);
+  for (let i = 0; i < 6 && seen.size < 2; i++) {
+    await quick.click();
+    seen.add(await go.getAttribute("href"));
+  }
+  expect(seen.size).toBeGreaterThan(1);
+
+  await page.getByRole("button", { name: /Випадковий рік/ }).click();
+  await expect(page).toHaveURL(/\/\d{4}\/$/);
+});
