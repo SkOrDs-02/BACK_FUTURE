@@ -11,10 +11,14 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "npm run build && npm run preview -- --host 127.0.0.1",
+    // У CI крок «Build» уже зібрав dist, тож тут лише preview. Друга повна
+    // збірка (сотні OG-картинок) не вкладалась у таймаут webServer.
+    command: process.env.CI
+      ? "npm run preview -- --host 127.0.0.1"
+      : "npm run build && npm run preview -- --host 127.0.0.1",
     url: "http://127.0.0.1:4321",
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    timeout: 300_000,
   },
   projects: [
     {
