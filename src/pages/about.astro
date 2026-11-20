@@ -10,7 +10,11 @@ const factsCount = allFacts.length;
 const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
 ---
 
-<Base title="Про проєкт" jsonLd={faqJsonLd}>
+<Base
+  title="Про проєкт"
+  description="Хто робить BACK_FUTURE, звідки беремо факти і навіщо: український довідник змін у науці, історії й світі після випускного з 1991 року."
+  jsonLd={faqJsonLd}
+>
   <div class="container-prose pt-16">
     <span class="font-mono text-[11px] tracking-[0.14em] text-[color:var(--muted)] uppercase">
       {SITE.name} · про нас

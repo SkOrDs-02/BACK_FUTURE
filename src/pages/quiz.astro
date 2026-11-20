@@ -25,7 +25,10 @@ const resultsData = Array.from({ length: QUIZ_TOTAL + 1 }, (_, score) => ({
 }));
 ---
 
-<Base title="Квіз: вгадай рік">
+<Base
+  title="Квіз: вгадай рік"
+  description="Квіз із 5 питань: вгадай, у якому році сталася подія в науці, історії чи технологіях. Перевір, наскільки добре пам’ятаєш останні 30 років."
+>
   <div class="container-prose pt-16 pb-20">
     <span class="font-mono text-[11px] tracking-[0.14em] text-[color:var(--muted)] uppercase">
       {SITE.name} · квіз

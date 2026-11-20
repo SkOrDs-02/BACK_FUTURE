@@ -3,6 +3,7 @@
   "outputDirectory": "dist",
   "framework": "astro",
   "installCommand": "npm install",
+  "trailingSlash": true,
   "redirects": [
     {
       "source": "/:path*",

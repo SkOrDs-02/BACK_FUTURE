@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { SITE } from "../config/site";
+import { metaDescription } from "../lib/format";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Analytics from "../components/Analytics.astro";
@@ -28,6 +29,7 @@ const {
   noindex = false,
   canonicalPath,
 } = Astro.props;
+const metaDesc = metaDescription(description);
 const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | ${SITE.tagline}`;
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.defaultUrl).toString();
 const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
@@ -81,19 +83,19 @@ const serializeJsonLd = (data: Record<string, unknown>): string =>
     }
     {bingSiteVerification && <meta name="msvalidate.01" content={bingSiteVerification} />}
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDesc} />
     <link rel="canonical" href={canonical} />
     {/* Sitemap discovery hint for crawlers and `astro:sitemap` integration. */}
     <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={metaDesc} />
     <meta property="og:locale" content="uk_UA" />
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     {SITE.twitter && <meta name="twitter:site" content={`@${SITE.twitter}`} />}
     <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={metaDesc} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
     <link
