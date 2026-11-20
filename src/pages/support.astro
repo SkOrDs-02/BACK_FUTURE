@@ -1,13 +1,14 @@
 ---
 import Base from "../layouts/Base.astro";
 import { SITE } from "../config/site";
-import { hasSupportJar } from "../lib/support";
+import { hasSupport, hasSupportJar } from "../lib/support";
 
 const hasJar = hasSupportJar();
+const hasCoffee = SITE.buyMeACoffeeUrl.trim().length > 0;
 const description = `Як підтримати ${SITE.name}: хто робить проєкт і на що йдуть донати.`;
 ---
 
-<Base title="Підтримати проєкт" description={description} noindex={!hasJar}>
+<Base title="Підтримати проєкт" description={description} noindex={!hasSupport()}>
   <div class="container-prose pt-16 pb-8">
     <span class="font-mono text-[11px] tracking-[0.14em] text-[color:var(--muted)] uppercase">
       {SITE.name} · підтримка
@@ -28,17 +29,27 @@ const description = `Як підтримати ${SITE.name}: хто робить
         Донати йдуть на домен і сервіси, без яких сайт не працює, а ще на час: кожен факт треба
         знайти, звірити з першоджерелом і переписати простою українською.
       </p>
-      <p>
-        Сайт лишиться безкоштовним незалежно від донатів. Реклами тут немає, cookie-банерів теж:
-        аналітика працює без cookies і не рахує тих, хто ввімкнув Do Not Track.
-      </p>
+      <p>Сайт лишиться безкоштовним незалежно від донатів.</p>
     </div>
 
-    <div class="mt-10" id="support-buttons">
+    <div class="mt-10 flex flex-wrap gap-3" id="support-buttons">
       {
-        hasJar ? (
+        hasCoffee && (
           <a
             class="btn"
+            href={SITE.buyMeACoffeeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-support-provider="buymeacoffee"
+          >
+            Пригостити кавою ☕ ↗
+          </a>
+        )
+      }
+      {
+        hasJar && (
+          <a
+            class={hasCoffee ? "btn-ghost" : "btn"}
             href={SITE.monobankJarUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -46,12 +57,15 @@ const description = `Як підтримати ${SITE.name}: хто робить
           >
             Задонатити на банку Monobank ↗
           </a>
-        ) : (
+        )
+      }
+      {
+        !hasSupport() && (
           <p
             class="inline-block rounded-sm border border-[color:var(--card-edge)] bg-[color:var(--card)] px-4 py-3 font-mono text-sm text-[color:var(--muted)]"
             data-support-soon
           >
-            Банка скоро зʼявиться
+            Посилання для підтримки скоро зʼявиться
           </p>
         )
       }

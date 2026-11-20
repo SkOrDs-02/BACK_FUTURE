@@ -1,6 +1,6 @@
 ---
 import { SITE } from "../config/site";
-import { SUPPORT_PATH, hasSupportJar } from "../lib/support";
+import { SUPPORT_PATH, hasSupport } from "../lib/support";
 const year = new Date().getFullYear();
 ---
 
@@ -111,17 +111,6 @@ const year = new Date().getFullYear();
               RSS
             </a>
           </li>
-          <li>
-            <a
-              href={SITE.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub (відкривається в новій вкладці)"
-              class="text-[color:var(--ink-2)] underline-offset-2 transition hover:text-[color:var(--accent)] hover:underline"
-            >
-              GitHub <span aria-hidden="true">↗</span>
-            </a>
-          </li>
         </ul>
       </nav>
 
@@ -133,10 +122,10 @@ const year = new Date().getFullYear();
           Підтримати
         </h2>
         <p class="mb-4 text-sm leading-relaxed text-[color:var(--ink-2)]">
-          Проєкт безкоштовний і без реклами. Якщо подобається, пригости кавою.
+          Якщо проєкт тобі корисний, пригости автора кавою.
         </p>
         {
-          hasSupportJar() && (
+          hasSupport() && (
             <a
               href={SUPPORT_PATH}
               class="inline-flex items-center gap-2 rounded-sm border border-[color:var(--accent)] bg-transparent px-4 py-2.5 font-mono text-sm font-semibold text-[color:var(--accent)] transition hover:bg-[color:var(--accent)] hover:text-white"

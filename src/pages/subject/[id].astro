@@ -31,9 +31,6 @@ const description = `${subject.label}: усе, що змінилось за ро
 const ogImage = new URL("/og/default.png", SITE.defaultUrl).toString();
 const homeUrl = `${SITE.defaultUrl}/`;
 const canonical = new URL(Astro.url.pathname, SITE.defaultUrl).toString();
-const issueUrl = `${SITE.repoUrl}/issues/new?title=${encodeURIComponent(
-  `Факт у ${subject.label.toLowerCase()}`,
-)}`;
 
 const collectionLd: Record<string, unknown> = {
   "@context": "https://schema.org",
@@ -167,17 +164,6 @@ const breadcrumbsLd: Record<string, unknown> = {
         <div class="border-ink-200 rounded-3xl border border-dashed bg-white p-8 dark:border-[color:var(--card-edge)] dark:bg-[color:var(--card)]">
           <p class="font-display text-ink-900 text-xl font-bold">
             Поки що по «{subject.label.toLowerCase()}» нічого немає.
-          </p>
-          <p class="text-ink-500 dark:text-ink-400 mt-3 text-sm">
-            Хочеш, щоб ми додали факт?{" "}
-            <a
-              href={issueUrl}
-              class="text-accent-700 hover:text-accent-800 dark:text-accent-300 dark:hover:text-accent-200 underline-offset-2 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Запропонуй у GitHub
-            </a>
           </p>
         </div>
       </section>
