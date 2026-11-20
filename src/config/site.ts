@@ -18,13 +18,13 @@ export const SITE = {
   twitter: "",
   yearMin: 1991,
   yearMax: new Date().getFullYear(),
-  monobankJarUrl: "",
+  monobankJarUrl: "https://send.monobank.ua/jar/2w19XpzK6h",
   // Контакти для пропозицій фактів і повідомлень про помилки. Порожні поля
   // не показуються; якщо обидва порожні, блоку «Зв'язатися» немає.
   contact: {
     email: "",
     // Повне посилання, напр. https://t.me/username
-    telegram: "",
+    telegram: "https://t.me/SkOrDs1",
   },
 } as const;
 
