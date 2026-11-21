@@ -10,6 +10,12 @@ on:
 permissions:
   contents: read
 
+# Новий пуш у ту саму гілку скасовує попередній прогін: паралельні прогони
+# перевірки посилань впираються в rate limit GitHub і падають.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   links:
     runs-on: ubuntu-latest
@@ -32,6 +38,8 @@ jobs:
       - name: Dump fact source URLs
         run: npm run dump:source-urls
 
+      # Посилання на власні PR у docs/ (історія проєкту) не перевіряємо:
+      # GitHub періодично віддає на важкі сторінки PR 502 і валить job.
       - name: Check Markdown and built HTML links
         uses: lycheeverse/lychee-action@v2
         with:
@@ -40,6 +48,7 @@ jobs:
             --no-progress
             --root-dir "$GITHUB_WORKSPACE/dist"
             --exclude "https://back-future.example.com/.*"
+            --exclude "https://github.com/(?i:skords-0[12])/BACK_FUTURE/pull/.*"
             --exclude-path './dist/.*\.html'
             --exclude-path './content/.*'
             './README.md'
