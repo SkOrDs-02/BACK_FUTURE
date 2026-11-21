@@ -33,6 +33,11 @@ const targets = [
     href: `https://t.me/share/url?url=${urlEncoded}&text=${shareEncoded}`,
   },
   {
+    id: "threads",
+    label: "Threads",
+    href: `https://www.threads.com/intent/post?url=${urlEncoded}&text=${shareEncoded}`,
+  },
+  {
     id: "twitter",
     label: "X / Twitter",
     href: `https://twitter.com/intent/tweet?url=${urlEncoded}&text=${shareEncoded}`,
@@ -166,7 +171,7 @@ const targets = [
       }
     }
 
-    // Network share buttons (Telegram / X / Facebook). Click is captured but
+    // Network share buttons (Telegram / Threads / X / Facebook). Click is captured but
     // the link still navigates (target="_blank"); we only fire `share_clicked`
     // since outbound success cannot be confirmed for window.open targets.
     root.querySelectorAll("a[data-share-target]").forEach(function (a) {

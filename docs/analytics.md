@@ -67,36 +67,36 @@ npm run posthog:setup
 Hе використовуй стрінгові літерали — імпортуй константи, щоб імена не
 розходились.
 
-| Подія                    | Тригер                                    | Пропси                                                                |
-| ------------------------ | ----------------------------------------- | --------------------------------------------------------------------- |
-| `$pageview`              | автоматично PostHog                       | `$pathname`, `$current_url`                                           |
-| `$pageleave`             | автоматично PostHog                       | `$pathname`                                                           |
-| `$web_vitals`            | автоматично (Core Web Vitals)             | `$web_vitals_LCP_value`, `$web_vitals_CLS_value` …                    |
-| `$autocapture`           | автоматично — клік на будь-який елемент   | селектор, текст                                                       |
-| `$rageclick`             | автоматично — швидкі повторні кліки       | селектор                                                              |
-| `year_submitted`         | submit `<YearInput>` або клік `<Presets>` | `year`, `source: "manual" \| "preset"`                                |
-| `year_validation_failed` | невалідний рік у `<YearInput>`            | `reason: "empty" \| "not_integer" \| "out_of_range"`, `min`, `max`    |
-| `quick_pick_clicked`     | клік на decade-чіп                        | `year`, `label`                                                       |
-| `random_year_picked`     | клік на «※ випадковий»                    | `year`                                                                |
-| `preset_clicked`         | клік на preset-картку                     | `year`, `index`                                                       |
-| `era_clicked`            | клік на ера-картку                        | `era_id`, `era_slug`                                                  |
-| `subject_filter_changed` | фільтр предмета на /<year>/               | `subject_id`, `action: "add" \| "remove" \| "all"`                    |
-| `fact_card_clicked`      | клік «Докладніше →» на FactCard           | `fact_id`, `subject`, `year_of_event`                                 |
-| `fact_source_clicked`    | клік на outbound-лінку всередині FactCard | `host`, `path`, `fact_id`                                             |
-| `share_clicked`          | клік на share-кнопку                      | `target: "telegram" \| "twitter" \| "facebook" \| "copy" \| "native"` |
-| `share_succeeded`        | копія/native share успішно                | `target`                                                              |
-| `support_clicked`        | клік на «Банка Monobank»                  | `provider: "monobank"`                                                |
-| `quiz_started`           | старт квізу                               | —                                                                     |
-| `quiz_question_answered` | відповідь на питання                      | `question_index`, `correct`, `year`, `guessed_year`, `delta`          |
-| `quiz_finished`          | фінальний скор                            | `score`, `total`                                                      |
-| `quiz_restarted`         | клік «Спробувати знов»                    | —                                                                     |
-| `quiz_result_shared`     | шеринг результату квізу                   | `score`, `method: "native" \| "copy" \| "download"`                   |
-| `search_opened`          | відкритий пошук-діалог                    | `source: "button" \| "shortcut"`                                      |
-| `search_query`           | юзер набрав ≥2 символи (700ms throttle)   | `length` (тільки довжина, без вмісту)                                 |
-| `search_result_clicked`  | клік на результат пошуку                  | `result_index`                                                        |
-| `theme_toggled`          | світла/темна                              | `mode: "light" \| "dark"`                                             |
-| `back_to_top_clicked`    | флоат-кнопка «↑»                          | `scroll_y`                                                            |
-| `outbound_link_clicked`  | будь-який зовнішній лінк (не fact source) | `host`, `path`                                                        |
+| Подія                    | Тригер                                    | Пропси                                                                             |
+| ------------------------ | ----------------------------------------- | ---------------------------------------------------------------------------------- |
+| `$pageview`              | автоматично PostHog                       | `$pathname`, `$current_url`                                                        |
+| `$pageleave`             | автоматично PostHog                       | `$pathname`                                                                        |
+| `$web_vitals`            | автоматично (Core Web Vitals)             | `$web_vitals_LCP_value`, `$web_vitals_CLS_value` …                                 |
+| `$autocapture`           | автоматично — клік на будь-який елемент   | селектор, текст                                                                    |
+| `$rageclick`             | автоматично — швидкі повторні кліки       | селектор                                                                           |
+| `year_submitted`         | submit `<YearInput>` або клік `<Presets>` | `year`, `source: "manual" \| "preset"`                                             |
+| `year_validation_failed` | невалідний рік у `<YearInput>`            | `reason: "empty" \| "not_integer" \| "out_of_range"`, `min`, `max`                 |
+| `quick_pick_clicked`     | клік на decade-чіп                        | `year`, `label`                                                                    |
+| `random_year_picked`     | клік на «※ випадковий»                    | `year`                                                                             |
+| `preset_clicked`         | клік на preset-картку                     | `year`, `index`                                                                    |
+| `era_clicked`            | клік на ера-картку                        | `era_id`, `era_slug`                                                               |
+| `subject_filter_changed` | фільтр предмета на /<year>/               | `subject_id`, `action: "add" \| "remove" \| "all"`                                 |
+| `fact_card_clicked`      | клік «Докладніше →» на FactCard           | `fact_id`, `subject`, `year_of_event`                                              |
+| `fact_source_clicked`    | клік на outbound-лінку всередині FactCard | `host`, `path`, `fact_id`                                                          |
+| `share_clicked`          | клік на share-кнопку                      | `target: "telegram" \| "threads" \| "twitter" \| "facebook" \| "copy" \| "native"` |
+| `share_succeeded`        | копія/native share успішно                | `target`                                                                           |
+| `support_clicked`        | клік на «Банка Monobank»                  | `provider: "monobank"`                                                             |
+| `quiz_started`           | старт квізу                               | —                                                                                  |
+| `quiz_question_answered` | відповідь на питання                      | `question_index`, `correct`, `year`, `guessed_year`, `delta`                       |
+| `quiz_finished`          | фінальний скор                            | `score`, `total`                                                                   |
+| `quiz_restarted`         | клік «Спробувати знов»                    | —                                                                                  |
+| `quiz_result_shared`     | шеринг результату квізу                   | `score`, `method: "native" \| "copy" \| "download"`                                |
+| `search_opened`          | відкритий пошук-діалог                    | `source: "button" \| "shortcut"`                                                   |
+| `search_query`           | юзер набрав ≥2 символи (700ms throttle)   | `length` (тільки довжина, без вмісту)                                              |
+| `search_result_clicked`  | клік на результат пошуку                  | `result_index`                                                                     |
+| `theme_toggled`          | світла/темна                              | `mode: "light" \| "dark"`                                                          |
+| `back_to_top_clicked`    | флоат-кнопка «↑»                          | `scroll_y`                                                                         |
+| `outbound_link_clicked`  | будь-який зовнішній лінк (не fact source) | `host`, `path`                                                                     |
 
 ### Super-properties
 
