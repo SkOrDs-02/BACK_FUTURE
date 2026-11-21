@@ -10,6 +10,12 @@ on:
 permissions:
   contents: read
 
+# Новий пуш у ту саму гілку скасовує попередній прогін: паралельні прогони
+# перевірки посилань впираються в rate limit GitHub і падають.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   links:
     runs-on: ubuntu-latest
